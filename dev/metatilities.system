@@ -1,0 +1,123 @@
+
+;;; -*- Mode: Lisp; package: CL-USER; Syntax: Common-lisp; Base: 10 -*-
+
+(in-package common-lisp-user)
+
+(glu-define-logical-pathname-translations (metatilities)
+  (source)
+  (mcl-utils ("utilities" "mcl"))
+  (openmcl-utils ("utilities" "openmcl"))
+  (allegro-utils ("allegro" "mcl"))
+  (lispworks-utils ("utilities" "lispworks")))
+
+;;; ---------------------------------------------------------------------------
+
+(define-glu-system :metatilities-base
+  ((("package"
+     "l0-utils"
+     "l0-macros"
+     "l0-arrays"
+     "l0-clos"
+     "l0-files"
+     "set-equal"
+     "generic-lisp"
+     "generic-interface"))
+   
+   (("defclass-star"
+     "define-class"
+     )))
+  
+  :base-dir "metatilities:source;"
+  :bin-identifiers (:platform :vendor)
+  :initially-do (progn
+                  #+(and DIGITOOL ANSI-MAKE-LOAD-FORM)
+                  (require 'ansi-make-load-form)
+                  (pushnew :metatilities *features*))
+  :include-in-menu nil
+  :depends-on (:moptilities))
+
+;;; ---------------------------------------------------------------------------
+
+(define-glu-system :metabang.generic-lisp
+  ((("generic-lisp"
+     ;"generic-interface-support"
+     )))
+  :base-dir (or #+OpenMCL "metatilities:openmcl;"
+                #+DIGITOOL "metatilities:mcl;"
+                (warn "Generic Lisp not defined for platform"))
+  :bin-identifiers (:platform :vendor)
+  :include-in-menu nil)
+
+;;; ---------------------------------------------------------------------------
+
+(define-glu-system :metabang.dynamic-classes
+  ((("dynamic-class")))
+  :base-dir "metatilities:source;"
+  :bin-identifiers (:platform :vendor)
+  :include-in-menu nil
+  :depends-on (:metatilities-base ))
+
+;;; ---------------------------------------------------------------------------
+
+(define-glu-system :metatilities
+  ((("anaphoric"
+     "graham"
+     "dates-and-times"
+     "files"
+     "macros"
+     "locks"
+     "notifications"
+     "sequences"
+     "spy"
+     "strings"
+     #+Ignore "threads"
+     "sequences"
+     "utilities"   
+     "tcp"
+     "searching"
+     "views-and-windows"))
+   
+   #+Digitool
+   (("tcp-mcl") :base-dir "metatilities:mcl-utils;")
+   #+Lispworks
+   (("tcp-lispworks") :base-dir "metatilities:source;utilities;lispworks;")
+   #+Allegro
+   (("tcp-allegro") :base-dir "metatilities:source;utilities;allegro;")
+   #+openmcl
+   (("tcp-openmcl") :base-dir "metatilities:source;utilities;openmcl;")
+   
+   ;;; contrib
+   #+Digitool
+   ((;; "appearance-mcl"
+     "windoid-key-events"
+     ;; "scrolling-windows"
+     ;; "qt-midi"
+     ;; "progress-indicator"
+     ;; "processes"
+     ;; "image-window"
+     ;; "Image-Dialog-Item"
+     "eval-apple-script"
+     ;; "appleevent-toolkit"
+     )
+    :base-dir "metatilities:source;contrib;mcl;")
+   
+   (("notes.text") 
+    :associates? t)
+   )
+   
+   :base-dir "metatilities:source;utilities;"
+   :bin-identifiers (:platform :vendor)
+   :include-in-menu nil
+   :depends-on (:metatilities-base :cl-containers metabang.bind
+                                   :metabang.generic-lisp))
+
+;;; ---------------------------------------------------------------------------
+
+(define-glu-system :metatilities-development
+  ((("profile")
+    :base-dir "metatilities:source;contrib;mcl;"))
+  :bin-identifiers (:platform :vendor)
+  :include-in-menu nil
+  :depends-on (:metatilities :phex :metabang.interface))
+
+

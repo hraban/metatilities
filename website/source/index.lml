@@ -1,0 +1,53 @@
+;;; -*- Mode: Lisp -*-
+
+(in-package rw)
+
+(html-file-page ("index")
+  (html
+   (:HEAD (:TITLE "Metatilities")
+          (generate-shared-headers))
+   (:BODY
+    (generate-two-line-header "Metatilities"
+                              "Now where is that kitchen sink...")
+    
+    ((:TABLE :CLASS "system-overview")
+     (:tr
+      (generate-system-sidebar)
+      
+      ((:TD :CLASS "system-description")
+       (:H3 "What it is")
+       (:P "Utilities, utilities, utilities!")
+       (:P "Everyone needs utilities and until things like " (rw:link :cln-cl-utilities)
+           " get going (and probably even after!), projects need to have them nearby. Metatilities is "
+           (rw:link :metabang) "'s set of core utilities. It includes much of what you 
+might expect and other stuff too. These are used in " (rw:link :cl-containers) ", "
+           (rw:link :cl-graph) ", " (rw:link :cl-mathstats) ", " (rw:link :cl-variates)
+           ", and " (rw:link :tinaa) ". You are welcome to use them too.  Some documentation is " 
+           (rw:link :Metatilities-tinaa :title "available") " and more is on the way.")
+       
+       ((:A :NAME "mailing-lists"))
+       (:h3 "Mailing Lists")
+       (:P "Metatilities isn't a separate project at this point but if you have
+questions, comments or concerns, just drop " (rw:link :mail-gwking :title "Gary King")
+           " a line.")
+       
+       ((:A :NAME "downloads"))
+       (:H3 "Where is it")
+       (:P "A " (rw:link :darcs) " repository is available. You'll need " (rw:link :moptilities) " too. The commands to get them are listed below:")
+       (:PRE
+        "darcs get http://common-lisp.net/project/cl-containers/metatilities/darcs/metatilities
+darcs get http://common-lisp.net/project/cl-containers/moptilities/darcs/moptilities")
+       (:P "Metatilities is " (rw:link :asdf-install :title "ASDF installable") ". Its CLiki home is right " (rw:link :metatilities-cliki :title "where") " you'd expect.")
+       (:P "There's also a handy " (rw:link :metatilities-package :title "gzipped tar file") ".")
+      
+      ((:A :NAME "news"))
+      (:H3 "What is happening")
+      ((:TABLE :BORDER "0") 
+       ((:TR :ALIGN "left" :VALIGN "top")
+        ((:TD) "13 Nov 2005")
+        (:TD "Initial setup"))))))
+    
+    ((:DIV :CLASS "footer")
+     (generate-button-row 
+      (format nil "Last updated: ~A" 
+              (format-date "%A, %e %B %Y" (get-universal-time))))))))

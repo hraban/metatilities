@@ -1,0 +1,472 @@
+
+
+(in-package :common-lisp-user)
+
+(defpackage metabang.utilities
+  (:nicknames :metatilities)
+  (:use #-CLIM      "COMMON-LISP"
+        #+CLIM      "CLIM"
+        #+CLIM      "CLIM-LISP"
+        ;; #+EXPLORER  "CLOS"
+        ;; #+ALLEGRO   "SYS"
+        ;; #+ALLEGRO   "CLOS"
+        ;; #+LISPWORKS "MP"
+        ;; #+LISPWORKS "CLOS"
+        ;; #+MCL       "CCL"
+        "MOPTILITIES"
+	)
+  
+  #+GLU-GENERIC-LOAD-UTILS
+  (:import-from "CL-USER"
+                #:ecs #:ers)
+  #+GLU-GENERIC-LOAD-UTILS
+  (:export 
+   #:ecs #:ers)
+  #+ASDF
+  (:import-from "ASDF"
+                #:load-op #:compile-op #:test-op 
+                #:operate #:oos)
+  #+ASDF
+  (:export
+   #:load-op #:compile-op #:test-op 
+   #:operate #:oos)
+  
+  #+MCL                                 ; ??? I think this is the right thing...
+  (:shadow #:line #:copy-file
+           #:lock-owner #:lock-name
+           #:selected? #:whitespacep)
+  
+  (:export 
+   neq)
+  
+  #+CLIM
+  (:shadow #:POINTP #:POINT-Y #:POINT #:POINT-X #:MAKE-RGB-COLOR)
+  
+  #-ALLEGRO
+  (:import-from #+Lispworks "MP"
+                #+MCL       "CCL"
+                #+CMU       "SYSTEM"
+                #+SBCL      "SB-SYS"
+                #:without-interrupts)
+    
+  (:export
+   #:size
+   #:root
+   #:next-element
+   #:total-size)
+  
+  (:export
+   #:defclass-property
+   #:deprecated
+   #:once-only
+   #:with-variables
+   #:eval-always
+   #:with-atomic-execution)
+  
+  (:export
+   #:defclass-brief 
+   #:defclass*
+   #:defcondition)
+  
+  (:export 
+   #:include-class-dependencies
+   #:existing-subclass
+   #:add-parameter->dynamic-class
+   #:add-dynamic-class-for-parameters
+   #:remove-parameter->dynamic-class
+   #:empty-add-parameter->dynamic-class
+   #:empty-all-add-parameter->dynamic-class
+   #:parameter->dynamic-class
+   #:determine-dynamic-class)
+  
+  (:export 
+   #:copy-array
+   #:linearize-array
+   #:maparray! 
+   #:maparray
+   #:array-row
+   #:it
+   #:group)
+  
+  (:export 
+   #:element
+   #:parent
+   #:tag
+   #:find-or-create-class)
+  
+  (:export #:without-interrupts)
+  
+  (:export 
+   #:make-allocatable
+   #:allocate
+   #:deallocate
+   #:allocation-status 
+   #:with-object
+   #:with-objects
+   #:reallocate-instance)
+  
+  ;; views-and-windows
+  (:export
+   #:update-dialog-ui
+   #:dialog-item-value 
+   
+   #:help-text
+   
+   #:note-view-settings-changed
+   
+   #:view-scale
+   #:view-x/view-y->x/y
+   #:view-rect->rect
+   #:x/y->view-x/view-y
+   #:view-x/view-y->point
+   #:distance-x/distance-y->x/y
+   #:x/y->distance-x/distance-y
+   #:adjust-point-for-scaling
+   #:scale-x
+   #:scale-y
+   #:view-x/view-y->point
+   
+   #:view-requiring-cleanup-mixin
+   #:clean-up-view
+   
+   #:redraw
+   
+   #:begin-new-selection
+   #:end-new-selection
+   
+   #:relative-view-position
+   #:selected-items
+   #:empty-selections!
+   #:can-extend-selection-p
+   #:can-add-to-selection-p
+   #:item-selected-p
+   #:anything-selected-p
+   #:first-selected-item
+   #:select-item
+   #:unselect-item
+   #:unselect-all)
+  
+  ;; utilities
+  (:export
+   #:firstn
+   #:mapappend
+   #:find-all
+   #:find-all-if
+   #:find-all-if-not
+   #:partition
+   #:tree-find
+   #:tree-find-if
+   #:tree-remove-if
+   #:tree-map
+   #:push-end
+   
+   #:compact-array
+   #:linearize-array
+   #:copy-array
+   #:maparray
+   
+   #:nmerge-list
+   #:circular-list
+   #:make-initialized-array
+   #:fixnump
+   #:object->string
+   #:float->integer
+   #:sort-using-list-order
+   #:unused-variables
+   #:lambda-list->args
+   #:car-safe
+   #:cdr-safe
+   
+   #:curry
+   #:curry-after
+   #:compose
+   #:conjoin
+   #:disjoin
+   
+   #:argmax
+   #:argmin
+   #:best-item ; see also u:minimize, u:reduce-if
+   #:singleton-or-list
+   #:very-small-number-p
+   #:+very-small-number+
+   #:set-equal
+   #:remove-leading-quote
+   
+   #:shuffle-list! 
+   
+   #:nth-elt-of-cross-product
+   #:nth-elt-of-cross-product-as-multiple-values
+   
+   #:evaluate-argument-list
+   
+   #:constant-expression-p
+   #:inspect-hyaline
+   
+   #:make-sorter
+   #:copy-template
+   
+   #:cleanup-parsed-parameter
+   #:convert-clauses-into-lists
+   #:convert-clauses-into-lists*
+   #:add-class-if-necessary
+   #:add-classes-if-necessary
+   #:length-at-least-p
+   #:length-at-most-p
+   )
+  
+  ;; threads
+  (:export
+   #:make-thread
+   #:destroy-thread
+   #:current-thread
+   #:all-threads
+   #:thread-wait
+   #:thread-wait-with-timeout
+   #:thread-yield
+   #:thread-interrupt
+   #:thread-halt
+   #:with-timeout
+   #:without-interrupts
+   #:thread-name
+   #:store-foreground-streams
+   #:with-foreground-io
+   #:make-output-safe-thread
+   #:find-thread)
+  
+  ;; sockets
+  (:export
+   #:open-socket-stream
+   #:close-socket-stream
+   #:with-open-socket
+   #:start-server
+   #:socket-read 
+   #:socket-read-line
+   #:read-until
+   #:read-no-hang
+   #:read-until-no-hang
+   #:start-server)
+  
+  ;; notifications
+  (:export 
+   #:basic-notification
+   #:register
+   #:unregister
+   #:unregister-all
+   #:post-notification
+   #:notify
+   #:with-registration
+   #:still-cares-about-notification-p)
+  
+  (:export 
+   #:spy
+   #:spyx)
+  
+  (:export
+   #:binary-search)
+  
+  ;; macros
+  (:export
+   #:nyi
+   #:deprecated
+   #:make-obsolete
+   #:defsubst
+   #:named-lambda
+   #:deletef
+   #:removef
+   #:circular-list
+   
+   #:doplist
+   #:group
+   #:gensym0
+   #:with-conditional-open-file
+   #:with-conditional-open-files
+   #:assert*
+   #:maxf
+   #:minf
+   #:multf
+   #:incf-assoc
+   #:some*
+   #:handler-case-if
+   
+   #:gensym*
+   #:with-unique-names
+   #:rebinding
+   
+   #:\\                           ; yes, this is actually the name of a macro. ---L
+   
+   #:hcase
+   
+   #:dovect
+   #:ensure-type
+   #:with-slot-bindings
+   
+   #:defun*
+   #:defmethod*
+   #:*add-check-types*
+   #:*optimizations-to-ignore*
+   
+   #:delegates-to
+   
+   #:funcall-if
+   
+   #:*file-if-exists*
+   #:with-new-file)
+  
+  ;; graham
+  (:export
+   #:with-gensyms
+   #:allf
+   #:nilf
+   #:tf
+   #:toggle!                       ; renamed toggle to toggle!
+   #:filter-values
+   #:with-array
+   #:with-matrix
+   #:with-struct
+   #:match
+   #:if-match
+   
+   #:most
+   #:best
+   #:mostn
+   
+   #:map0-n
+   #:map1-n
+   #:mapa-b
+   #:map->
+   #:mapcars
+   
+   #:fn
+   #:compose
+   
+   #:concf)
+  
+  ;; files
+  (:export
+   #:copy-file
+   #:file-to-list
+   #:file-newer-than-file-p
+   #:conjure-up-filename
+   #:unique-file-name-from-date
+   #:pretty-namestring-from-date
+   #:eos-namestring-from-date
+   #:short-eos-namestring-from-date
+   #:rename-file-if-present
+   #:uniquify-file-name
+   #:remove-illegal-filename-characters
+   #:shorten-filename-for-os
+   #:map-files
+   #:map-forms-in-file
+   #:map-lines-in-file 
+   #:map-lines
+   #:next-line
+   #:file-package
+   #:nicely-format-filename
+   #:touch-file
+   #:ensure-filename-safe-for-os
+   #:pathname-name+type)
+  
+  ;; dates and times
+  (:export
+   #:day->string 
+   
+   #:month->string
+   #:string->month
+   
+   #:print-date date-string 
+   #:date-string-brief 
+   #:print-time 
+   #:print-universal-time
+   #:time-string
+   #:time-string-with-no-colons
+   #:date-and-time-string 
+   #:parse-date-and-time-string
+   #:parse-date-and-time 
+   #:print-brief-ut 
+   #:print-ut
+   #:print-time-interval 
+   #:print-brief-time-interval
+   #:parse-interval-or-never
+   
+   #:+minutes-per-hour+
+   #:+seconds-per-hour+
+   #:+seconds-per-minute+
+   #:+usual-days-per-year+
+   
+   #:format-date
+   #:days-in-month
+   #:day-of-year
+   #:leap-year-p)
+  
+  ;; anaphoric, it is
+  (:export 
+   #:aif 
+   #:awhen 
+   #:awhile 
+   #:aand 
+   #:acond 
+   #:alambda 
+   #:ablock 
+   #:aif2 
+   #:awhen2 
+   #:awhile2 
+   #:acond2
+   #:aprog1
+   #:it
+   #:self
+   #:atypecase)
+  
+  ;; strings
+  (:export 
+   #:string-before
+   #:string-starts-with
+   #:string-ends-with
+   #:string-after
+   #:string-contains-p
+   #:string->symbol
+   #:symbol->string
+   #:substring
+   #:tokenize-string
+   #:list->formatted-string)
+  
+  ;; sequences
+  (:export 
+   #:reduce-if
+   #:minimize
+   
+   #:dotted-pair-p
+   
+   #:flatten
+   #:power-set
+   #:all-pairs
+   #:map-combinations
+   #:combinations
+   #:remove-members
+   #:permute
+   
+   #:transpose
+   #:transpose2
+   #:iterate-over-indexes))
+
+
+
+#|
+
+  #+MCL
+  (:import-from ccl #:class-prototype #:class-direct-superclasses
+		#:class-direct-subclasses #:class-precedence-list
+                #:slot-definition-name #:neq)
+
+  #+Allegro
+  (:import-from clos #:class-prototype #:class-direct-superclasses 
+		#:class-direct-subclasses #:class-precedence-list
+		#:class-finalized-p #:finalize-inheritance
+                #:class-slots #:slot-definition-name)
+  
+  #+Lispworks
+  (:import-from clos class-prototype class-direct-superclasses 
+		class-direct-subclasses class-precedence-list 
+		class-finalized-p finalize-inheritance
+                validate-superclass
+                class-slots slot-definition-name)
+|#
