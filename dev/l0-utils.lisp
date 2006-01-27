@@ -204,9 +204,9 @@ not sticky."
   (declare (optimize (speed 3) (space 3) (debug 0) (safety 0))
            (dynamic-extent x threshold))
   ;; ABS conses
-  (if (>= x 0)
-    (<= x threshold)
-    (<= threshold x)))
+  (if (< 0.0 x)
+    (> threshold x)
+    (> x threshold)))
 
 #+Test
 (timeit (:report t)

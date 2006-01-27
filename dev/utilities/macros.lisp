@@ -278,6 +278,7 @@ levels of parens are added."
 
 ;;; ---------------------------------------------------------------------------
 
+#|
 (defun make-hcase-table (clauses &rest opts)
   (let ((hash (apply #'make-hash-table opts))
         (keys (mappend (compose #'ensure-list #'car) clauses)))
@@ -296,6 +297,7 @@ levels of parens are added."
                        (make-hcase-table ',clauses :test ',test :hash-function ,hash-function) t)))
            (case (gethash ,thing ,hash)
              ,@clauses))))))
+|#
 
 ;;; ---------------------------------------------------------------------------
 

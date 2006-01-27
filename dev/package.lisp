@@ -262,7 +262,8 @@
    #:spyx)
   
   (:export
-   #:binary-search)
+   #:binary-search
+   #:graph-search)
   
   ;; macros
   (:export

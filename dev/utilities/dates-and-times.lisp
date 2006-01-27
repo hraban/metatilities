@@ -756,18 +756,18 @@ if stream is nil, construct and return a string."
          (defun ,function-name
                 (&optional (universal-time (get-universal-time))
                            (time-zone nil))
-           (nth-value ,position (apply #'decode-universal-time universal-time time-zone)))))))
-
-;;; ---------------------------------------------------------------------------
-
-(generate-time-part-function second 0)
-(generate-time-part-function minute 1)
-(generate-time-part-function hour 2)
-(generate-time-part-function date 3)
-(generate-time-part-function month 4)
-(generate-time-part-function year 5)
-(generate-time-part-function day-of-week 6)
-(generate-time-part-function daylight-savings-time-p 7)
+           (nth-value ,position (apply #'decode-universal-time universal-time time-zone))))))
+  
+  ;;; ---------------------------------------------------------------------------
+  
+  (generate-time-part-function second 0)
+  (generate-time-part-function minute 1)
+  (generate-time-part-function hour 2)
+  (generate-time-part-function date 3)
+  (generate-time-part-function month 4)
+  (generate-time-part-function year 5)
+  (generate-time-part-function day-of-week 6)
+  (generate-time-part-function daylight-savings-time-p 7))
 
 
 ;;; ---------------------------------------------------------------------------

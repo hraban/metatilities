@@ -136,9 +136,7 @@
     (when (and dynamic-class (not (some (lambda (class-name)
                                           (subtypep dynamic-class class-name))
                                         class-list)))
-      (nconc class-list (list dynamic-class))
-      #+Old
-      (push-end dynamic-class class-list))
+      (nconc class-list (list dynamic-class)))
     
     (setf class-list (delete-duplicates class-list))
     
