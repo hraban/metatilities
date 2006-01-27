@@ -422,11 +422,20 @@ separator is the hypen, in which case the wrapping parentheses are optional."
 (defparameter *defcondition-options*
   '(((:automatic-accessors :generate-accessors) t nil)
     ((:automatic-initargs :generate-initargs) t nil)
-    ((:export-p :export?) t nil)))
+    ((:export-p :export?) t nil)
+    ((:export-slots-p :export-slots?) t nil))
+  "Extra options to defcondition macro. Format is a list of sub-lists. 
+Each sublist should be of length three and consists of a list of option 
+synonyms, the default value for the option [currently ignored], and whether
+or not to signal an error if this option is used as an atom [currently 
+ignored]")
 
 ;;; ---------------------------------------------------------------------------
 
 (defmacro defcondition (name supers slots &rest options)
+  "Defcondition is a handy shortcut for defining Common Lisp conditions. It
+supports all of #[H][define-condition]'s options and more."
+
   (let ((elt nil)
         (extra-options nil))
     (loop for (option-list default error-if-atom?) in *defcondition-options* do
@@ -442,15 +451,18 @@ separator is the hypen, in which case the wrapping parentheses are optional."
                                   :key (lambda (x) 
                                          (or (and (consp x) (first x)) x))))
             (pushnew (first option-list) extra-options)))
-    `(progn
-       ,@(when (member :export-p extra-options)
-           `((export ',name)))
-       (define-condition 
-         ,name ,supers
-         ,(mapcar (lambda (s)
-                    (parse-brief-slot s 
-                                      (member :automatic-accessors extra-options)
-                                      (member :automatic-initargs extra-options)
-                                      nil nil))
-                  slots)
-         ,@options))))
+    (let ((slot-specs 
+           (mapcar (lambda (s)
+                     (parse-brief-slot s 
+                                       (member :automatic-accessors extra-options)
+                                       (member :automatic-initargs extra-options)
+                                       nil nil))
+                   slots)))
+      `(progn
+         ,@(when (member :export-p extra-options)
+             `((export ',name)))
+         ,@(when (member :export-slots-p extra-options)
+             `((export ',(mapcar #'first slot-specs))))
+         (define-condition 
+           ,name ,supers ,slot-specs
+           ,@options)))))
