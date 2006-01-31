@@ -1,6 +1,8 @@
+(in-package metatilities)
+
+
 ;;; not perfect but not too bad.
-;;; In this case, I used SBCL but we could do better by taking the gf in a package
-;;; without documentation
+;;; doesn't do setfs
 
  
 (defun gf-info (symbol)
@@ -13,6 +15,8 @@
      :methods (ccl:generic-function-methods  gf) 
      :name (ccl:generic-function-name  gf))))
 
+;;; ---------------------------------------------------------------------------
+
 (defun write-gf-template (symbol stream)
   (let ((info (gf-info symbol)))
     (format stream "\(defgeneric ~(~A~) " (getf info :name))
@@ -23,7 +27,7 @@
       (format stream "~%  \(:method-combination ~(~A~)\)" (getf info :method-combination)))
     (if (documentation symbol 'function)
       (format stream "~%  \(:documentation ~S\)\)" (documentation symbol 'function))
-      (format stream "~%  \(:documentation \"\"\)\)")))
+      (format stream "~%  \(:documentation \"\"\)\)~%")))
   (terpri stream)
   (values))
 
@@ -38,10 +42,41 @@
                  (typep it 'standard-generic-function))
        (return-from find-symbol-function (find-symbol symbol-name package))))))
 
+
 ;;; ---------------------------------------------------------------------------
 
+(defun build-defgenerics-for-undocumented-methods (package file)
+  (let* ((p (make-container 'package-container :packages package))
+         (ms
+          (sort
+           (collect-elements 
+            p
+            :filter (lambda (symbol)
+                      (and (fboundp symbol)
+                           (typep (symbol-function symbol) 'standard-generic-function)
+                           (some (lambda (m)
+                                   (not (or (reader-method-p m)
+                                            (writer-method-p m))))
+                                 (mopu:generic-function-methods (symbol-function symbol)))
+                           (not (documentation symbol 'function)))))
+           #'string-lessp)))
+    (when ms
+      (with-new-file (out file)
+        (iterate-elements 
+         ms
+         (lambda (symbol)
+           (write-gf-template symbol out)))))))
+         
+;;; ---------------------------------------------------------------------------
+
+#+Test
 (delete-file "user-home:darcs;generics.lisp")
 
+#+Test
+(metatilities::build-defgenerics-for-undocumented-methods
+ :lift "user-home:darcs;g.lisp") 
+
+#+Test
 (with-new-file (out "user-home:darcs;generics.lisp")
   (let ((package nil))
     (iterate-elements 

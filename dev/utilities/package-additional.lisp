@@ -1,7 +1,9 @@
 
 (in-package metatilities)
 
-(use-package "METABANG.BIND" "METATILITIES")
+(export-exported-symbols "METABANG.BIND" "METATILITIES")
+
+(shadowing-import '(copy-file) "CL-FAD")
 (use-package "CL-FAD" "METATILITIES")
 
 ;;?? Gary King 2005-07-12: not quite sure about this one.
