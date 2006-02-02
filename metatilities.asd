@@ -62,8 +62,8 @@ See the file COPYING for details
                                      (:file "strings"
                                             :depends-on ("package-additional"))
                                      (:file "threads")
-                                     (:file "utilities" :depends-on ("anaphoric" "macros")
-                                            :depends-on ("package-additional"))  
+                                     (:file "utilities"
+                                            :depends-on ("package-additional" "anaphoric" "macros"))  
                                      (:file "tcp"
                                             :depends-on ("package-additional"))
                                      (:file "searching"
