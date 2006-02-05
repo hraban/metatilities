@@ -447,8 +447,96 @@
    
    #:transpose
    #:transpose2
-   #:iterate-over-indexes))
-
+   #:iterate-over-indexes
+   
+   #:form-symbol-in-package
+   #:form-symbol
+   #:form-keyword
+   #:form-uninterned-symbol
+   
+   #:current-load-file
+   #:with-unique-names
+   
+   #:ensure-list 
+   #:newsym
+   #:export-exported-symbols
+   
+   #:length-at-most-p
+   #:length-at-least-p
+   #:length-1-list-p
+   
+   #:nearly-zero-p
+   #:nearly-equal-p
+   
+   #:+whitespace-characters+
+   #:whitespacep
+   
+   #:samep
+   #:nearly-samep
+   #:*samep-test*
+   #:reset
+   
+   #:set-equal
+   
+   #:is-interface-available-p
+   #:is-default-interface-available-p
+   #:default-interface
+   
+   #:quit-lisp
+   #:quit-lisp*
+   
+   #:inspect-thing*
+   #:inspect-thing
+   #:inspect-things
+   
+   #:total-bytes-allocated*
+   #:total-bytes-allocated
+   
+   #:gc-time*
+   #:gc-time
+   
+   #:collect-garbage*
+   #:collect-garbage
+   
+   #:make-load-form*
+   
+   #:*development-mode* 
+   #:*use-native-debugger*
+   
+   #:with-progress-bar 
+   #:progress
+   #:make-progress-bar
+   #:progress-bar-value
+   #:close-progress-bar
+   #:with-process-message
+   #:handle-errors
+   #:gui-error
+   #:gui-warn
+   #:interface-beep
+   #:sound-note
+   #:stop-notes
+   #:select-instrument
+   #:make-color*
+   #:make-scaled-color
+   #:make-gray
+   #:y-or-n-question
+   #:choose-file-question
+   #:choose-new-file-question
+   #:choose-directory-question
+   #:choose-item-question
+   #:query-user-for-string
+   #:query-user-for-integer
+   #:choose-item-from-pup
+   #:choose-item-from-pup-no-singletons
+   #:make-ui-point*
+   #:process-parameters
+   #:put-item-on-clipboard
+   #:inspect-thing
+   #:inspect-things
+   #:prompt-for
+   #:shell-command
+   
+   #:parse-brief-slot))
 
 
 #|

@@ -1,11 +1,5 @@
 (in-package metatilities)
 
-(export '(
-          samep
-          nearly-samep
-          *samep-test*
-          reset))
-
 (defmethod reset ((object t))
   (values nil))
 

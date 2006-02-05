@@ -1,10 +1,13 @@
 (in-package metatilities)
 
+#+Remove
 (export '(macintosh-path->unix))
 
+#+Remove
 (defmethod macintosh-path->unix ((path pathname))
   (macintosh-path->unix (namestring (translate-logical-pathname path))))
 
+#+Remove
 (defmethod macintosh-path->unix ((path string))
   (concatenate 'string "/Volumes/" (substitute #\/ #\: path)))
 

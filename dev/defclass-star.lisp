@@ -1,7 +1,5 @@
 (in-package metatilities)
 
-(export '(parse-brief-slot))
-
 (defvar *automatic-slot-accessors?* nil)
 (defvar *automatic-slot-initargs?* nil)
 (defvar *clos-slot-options* 

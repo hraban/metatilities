@@ -1,27 +1,5 @@
 (in-package metatilities)
 
-(export '(is-interface-available-p
-          is-default-interface-available-p
-          default-interface
-          
-          quit-lisp
-          quit-lisp*
-          
-          inspect-thing*
-          inspect-thing
-          inspect-things
-          
-          total-bytes-allocated*
-          total-bytes-allocated
-          
-          gc-time*
-          gc-time
-
-          collect-garbage*
-          collect-garbage
-          
-          make-load-form*))
-
 ;;; ---------------------------------------------------------------------------
 ;;; Interface determination
 ;;; ---------------------------------------------------------------------------

@@ -1,7 +1,5 @@
 (in-package metatilities)
 
-(export 'set-equal)
-
 (defun set-equal (list1 list2 &rest args)
   "Returns t if list1 and list2 are equal (as sets). If list1 and list2 are not
 equal returns (as multiple values) nil and two lists. The first list contains the 

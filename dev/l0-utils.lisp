@@ -2,35 +2,6 @@
 
 ;;; ----------------------------------------------------------------------------
 ;;;
-;;;   EXPORTS
-;;;
-
-(export 
- '(form-symbol-in-package
-   form-symbol
-   form-keyword
-   form-uninterned-symbol
-   
-   current-load-file
-   with-unique-names
-   
-   ensure-list 
-   newsym
-   export-exported-symbols
-
-   length-at-most-p
-   length-at-least-p
-   length-1-list-p
-   
-   nearly-zero-p
-   nearly-equal-p
-
-   +whitespace-characters+
-   whitespacep))
-
-
-;;; ----------------------------------------------------------------------------
-;;;
 ;;;   MACROS
 ;;;
 
@@ -145,11 +116,12 @@ not sticky."
 
 ;;; ---------------------------------------------------------------------------
 
-(defun export-exported-symbols (from-package to-package)
+(defmacro export-exported-symbols (from-package to-package)
   "Make the exported symbols in from-package be also exported from to-package."
-  (use-package from-package to-package)
-  (do-external-symbols (sym (find-package from-package))
-    (export sym to-package)))
+  `(eval-when (:compile-toplevel)
+     (use-package ,from-package ,to-package)
+     (do-external-symbols (sym (find-package ,from-package))
+       (export sym ,to-package))))
 
 ;;; ---------------------------------------------------------------------------
 
