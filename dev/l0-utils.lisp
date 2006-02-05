@@ -116,12 +116,11 @@ not sticky."
 
 ;;; ---------------------------------------------------------------------------
 
-(defmacro export-exported-symbols (from-package to-package)
+(defun export-exported-symbols (from-package to-package)
   "Make the exported symbols in from-package be also exported from to-package."
-  `(eval-when (:compile-toplevel)
-     (use-package ,from-package ,to-package)
-     (do-external-symbols (sym (find-package ,from-package))
-       (export sym ,to-package))))
+  (use-package from-package to-package)
+  (do-external-symbols (sym (find-package from-package))
+    (export sym to-package)))
 
 ;;; ---------------------------------------------------------------------------
 
