@@ -267,7 +267,6 @@ separator is the hypen, in which case the wrapping parentheses are optional."
 
 ;;; ---------------------------------------------------------------------------
 
-(export 'class-copyable-p)
 (defun class-copyable-p (class-name)
   ;; (spy class-name)
   (or (eq class-name 'copyable-mixin)
@@ -458,9 +457,11 @@ supports all of #[H][define-condition]'s options and more."
                    slots)))
       `(progn
          ,@(when (member :export-p extra-options)
-             `((export ',name)))
+             `((eval-when (:compile-toplevel)
+                 (export ',name))))
          ,@(when (member :export-slots-p extra-options)
-             `((export ',(mapcar #'first slot-specs))))
+             `((eval-when (:compile-toplevel)
+                (export ',(mapcar #'first slot-specs)))))
          (define-condition 
            ,name ,supers ,slot-specs
            ,@options)))))

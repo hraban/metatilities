@@ -365,7 +365,8 @@
    #:nicely-format-filename
    #:touch-file
    #:ensure-filename-safe-for-os
-   #:pathname-name+type)
+   #:pathname-name+type
+   #:physical-pathname-directory-separator)
   
   ;; dates and times
   (:export
@@ -536,7 +537,8 @@
    #:prompt-for
    #:shell-command
    
-   #:parse-brief-slot))
+   #:parse-brief-slot
+   #:class-copyable-p))
 
 
 #|
