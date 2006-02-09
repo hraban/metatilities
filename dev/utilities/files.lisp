@@ -364,6 +364,24 @@ the object file."
        (return-from file-package (second form))))
    pathname))
 
+#+New
+(defun file-package (pathname &key (ignore-errors? t))
+  (handler-bind* 
+   ((error (lambda (c) 
+             (print c)
+             (cond (ignore-errors?
+                    (print :resume)
+                    (:resume))
+                   (t
+                    (print :error)
+                    (error c))))))
+   (map-forms-in-file 
+    (lambda (form)
+      (when (and (consp form)
+                 (eq (first form) 'in-package))
+        (return-from file-package (second form))))
+    pathname)))
+
 ;;; ---------------------------------------------------------------------------
 
 (defvar *glu-blast-pathname-defaults*
