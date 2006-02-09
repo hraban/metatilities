@@ -157,3 +157,18 @@ create the mnemonic gensyms.
   `(without-interrupts
      ,@forms))
 
+;;; ---------------------------------------------------------------------------
+
+(defmacro handler-bind* (binds &rest body)
+  "Special handler-bind which allow two special control contructs
+inside of the condition handlers.  resume will resume execution
+past the handler-bind*.  retry will execute the code from body,
+i.e. so you usually fix the problem and then call retry."
+  (let ((catch-tag (gensym)))
+    `(catch ',catch-tag
+       (flet ((:resume () (throw ',catch-tag 0))
+              (:retry () ,@body))
+         (handler-bind ,binds
+           (:retry))))))
+
+

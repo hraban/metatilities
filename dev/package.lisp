@@ -61,7 +61,8 @@
    #:once-only
    #:with-variables
    #:eval-always
-   #:with-atomic-execution)
+   #:with-atomic-execution
+   #:handler-bind*)
   
   (:export
    #:defclass-brief 
