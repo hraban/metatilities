@@ -1,5 +1,3 @@
-
-
 (in-package :common-lisp-user)
 
 (defpackage metabang.utilities
@@ -7,12 +5,6 @@
   (:use #-CLIM      "COMMON-LISP"
         #+CLIM      "CLIM"
         #+CLIM      "CLIM-LISP"
-        ;; #+EXPLORER  "CLOS"
-        ;; #+ALLEGRO   "SYS"
-        ;; #+ALLEGRO   "CLOS"
-        ;; #+LISPWORKS "MP"
-        ;; #+LISPWORKS "CLOS"
-        ;; #+MCL       "CCL"
         "MOPTILITIES"
 	)
   
@@ -31,7 +23,7 @@
    #:load-op #:compile-op #:test-op 
    #:operate #:oos)
   
-  #+MCL                                 ; ??? I think this is the right thing...
+  #+(or OPENMCL DIGITOOL)               ; ??? I think this is the right thing...
   (:shadow #:line #:copy-file
            #:lock-owner #:lock-name
            #:selected? #:whitespacep)
@@ -44,7 +36,7 @@
   
   #-ALLEGRO
   (:import-from #+Lispworks "MP"
-                #+MCL       "CCL"
+                #+(or OPENMCL DIGITOOL)       "CCL"
                 #+CMU       "SYSTEM"
                 #+SBCL      "SB-SYS"
                 #:without-interrupts)
@@ -345,7 +337,6 @@
   
   ;; files
   (:export
-   #:copy-file
    #:file-to-list
    #:file-newer-than-file-p
    #:conjure-up-filename
@@ -539,7 +530,15 @@
    #:shell-command
    
    #:parse-brief-slot
-   #:class-copyable-p))
+   #:class-copyable-p)
+  
+  (:export 
+   #:source/target-file-error
+   #:source-pathname
+   #:target-pathname
+   #:source/target-target-already-exists-error
+   #:source/target-source-does-not-exist-error
+   #:copy-file))
 
 
 #|
