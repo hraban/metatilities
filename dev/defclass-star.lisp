@@ -11,8 +11,9 @@
        (slot &optional
 	     (automatic-accessors? *automatic-slot-accessors?*)
 	     (automatic-initargs? *automatic-slot-initargs?*)
-	     conc-name
-             (conc-separator "-")
+	     name-prefix
+             name-postfix
+             (name-separator "-")
              (additional-options nil))
   "Returns a verbose-style slot specification given a brief style, consisting of
 a single symbol, the name of the slot, or a list of the slot name, optional
@@ -27,9 +28,9 @@ returned unchanged.
 
 If `automatic-accessors?  is true, an accessor is defined, whether A is
 specified or not _unless_ R is specified.  If `automatic-initargs?  is true, 
-an initarg is defined whether I is specified or not.  If `conc-name' is
-specified, the accessor name has that prepended, with conc-separator, and then 
-the slot name. 
+an initarg is defined whether I is specified or not.  If `name-prefix' or
+`name-postfix' is specified, the accessor name has that prepended or appended,
+with name-separator, and the slot name in the middle. 
 
 All other CLOS slot options are processed normally."
   
@@ -51,10 +52,16 @@ All other CLOS slot options are processed normally."
                                 (append *clos-slot-options* additional-options)
                                 *clos-slot-options*)))
     (flet ((make-conc-name ()
-             (if conc-name
-               (form-symbol conc-name conc-separator name)
-               name))
-           
+             (let (names)
+               (when name-postfix
+                 (push name-postfix names)
+                 (push name-separator names))
+               (push name names)
+               (when name-prefix
+                 (push name-separator names)
+                 (push name-prefix names))
+               (apply 'form-symbol names)))
+
            (add-option (option argument)
              (push option new-slot)
              (push argument new-slot))
@@ -152,8 +159,8 @@ All other CLOS slot options are processed normally."
   (spy (parse-brief-slot '(baz nil "the baz slot") t t 'class))
   (spy (parse-brief-slot '(baz nil a) nil nil 'class))
   (spy (parse-brief-slot '(baz nil r) nil nil 'class))
-  (spy (parse-brief-slot '(baz nil r) nil nil 'class "."))
-  (spy (parse-brief-slot '(baz nil r) t t 'class "."))
+  (spy (parse-brief-slot '(baz nil r) nil nil 'class nil "."))
+  (spy (parse-brief-slot '(baz nil r) t t 'class nil "."))
   (spy (parse-brief-slot '(foo 2 :type 'fixnum ia "the foo class" :initarg :what)))
   )
 
@@ -170,7 +177,8 @@ name. All other CLOS options are processed normally.
 In addition, three new class options are defined.
   :AUTOMATIC-ACCESSORS means that an accessor is defined for every slot
   :AUTOMATIC-INITARGS means that an initarg is defined for every slot
-  (:CONC-NAME <symbol> <separator.) prepends `symbol' with `separator'
+  (:NAME-PREFIX <symbol> <separator>) (:NAME-POSTFIX <separator> <symbol>)
+prepends or appends `symbol' with `separator'
 to each slot accessor. The default symbol is the class name and the default
 separator is the hypen, in which case the wrapping parentheses are optional."
   (let ((docstring (if (stringp slots)
@@ -188,20 +196,24 @@ separator is the hypen, in which case the wrapping parentheses are optional."
 			   *automatic-slot-accessors?*))
 	    (initargs? (or (delete-option :automatic-initargs)
 			   *automatic-slot-initargs?*))
-	    (conc-name (delete-option :conc-name))
-            conc-separator)
-	(when conc-name
-          (setf (values conc-name conc-separator)
-                (cond ((cddr conc-name)
-                       (values (cadr conc-name) (caddr conc-name)))
-                      ((cdr conc-name)
-                       (values (cadr conc-name) "-"))
-                      (t
-                       (values name "-"))))
-          (setf conc-name (string-upcase conc-name)))
+            (name-prefix (delete-option :name-prefix))
+            (name-postfix (delete-option :name-postfix))
+            name-separator)
+        (macrolet ((process-name-pre/post-fix (name-pre/post-fix name-separator)
+                     `(when ,name-pre/post-fix
+                       (setf (values ,name-pre/post-fix ,name-separator)
+                             (cond ((cddr ,name-pre/post-fix)
+                                    (values (cadr ,name-pre/post-fix) (caddr ,name-pre/post-fix)))
+                                   ((cdr ,name-pre/post-fix)
+                                    (values (cadr ,name-pre/post-fix) "-"))
+                                   (t
+                                    (values name "-"))))
+                       (setf ,name-pre/post-fix (string-upcase ,name-pre/post-fix)))))
+          (process-name-pre/post-fix name-prefix name-separator)
+          (process-name-pre/post-fix name-postfix name-separator))
 	`(progn
            (defclass ,name ,superclasses
-	     ,(mapcar #'(lambda (s) (parse-brief-slot s accessors? initargs? conc-name conc-separator))
+	     ,(mapcar #'(lambda (s) (parse-brief-slot s accessors? initargs? name-prefix name-postfix name-separator))
 		      slots)
 	     ,@(when docstring
 	         `((:documentation ,docstring)))
@@ -232,21 +244,21 @@ separator is the hypen, in which case the wrapping parentheses are optional."
   (a b)
   :automatic-accessors
   :automatic-initargs
-  :conc-name)
+  :name-prefix)
 
 #+test
 (defclass-brief foo ()
   "the Foo class"
   ((a 1 r)
    (c 3 a))
-  :conc-name)
+  :name-prefix)
 
 #+test
 (defclass-brief foo ()
   "the Foo class"
   (a b)
   :automatic-accessors
-  :conc-name)
+  :name-prefix)
 
 #+test
 (defclass-brief foo ()
@@ -254,7 +266,7 @@ separator is the hypen, in which case the wrapping parentheses are optional."
   (a b)
   :automatic-accessors
   :automatic-initargs
-  (:conc-name ugly))
+  (:name-prefix ugly))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -453,7 +465,7 @@ supports all of #[H][define-condition]'s options and more."
                      (parse-brief-slot s 
                                        (member :automatic-accessors extra-options)
                                        (member :automatic-initargs extra-options)
-                                       nil nil))
+                                       nil nil nil))
                    slots)))
       `(progn
          ,@(when (member :export-p extra-options)
