@@ -1,5 +1,7 @@
 (in-package metatilities)
 
+#+Remove
+;;?? Gary King 2006-02-27: 
 (export '(source/target-file-error
           source-pathname
           target-pathname
@@ -65,7 +67,9 @@ by the TO pathname already exists.
           if-does-not-exist)
   (cond ((probe-file from)
          #+:allegro 
-         (excl.osi:copy-file from to :overwrite (eq if-exists :ignore))
+         (excl.osi:copy-file 
+	  from to 
+	  :overwrite (if (eq if-exists :supersede) :ignore nil)) 
          #-:allegro
          (let ((element-type #-:cormanlisp '(unsigned-byte 8)
                              #+:cormanlisp 'unsigned-byte))
