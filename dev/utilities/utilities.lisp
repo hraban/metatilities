@@ -478,7 +478,8 @@ ignoreable or something.  Returns a flat list of symbols."
 
 ;;; ---------------------------------------------------------------------------
 
-(defconstant +very-small-number+ 1E-12)
+(unless (boundp '+very-small-number+) 
+  (defconstant +very-small-number+ 1E-12))
 
 ;;; ---------------------------------------------------------------------------
 
