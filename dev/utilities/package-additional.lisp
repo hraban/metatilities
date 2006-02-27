@@ -3,7 +3,7 @@
 
 (export-exported-symbols "METABANG.BIND" "METATILITIES")
 
-(eval-when (:compile-toplevel)
+(eval-when (:compile-toplevel :load-toplevel)
   (shadowing-import '(copy-file) "CL-FAD")
 
   ;;?? Gary King 2005-07-12: not quite sure about this one.
