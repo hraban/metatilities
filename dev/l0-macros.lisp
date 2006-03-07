@@ -133,7 +133,7 @@ create the mnemonic gensyms.
 
 ;;; ---------------------------------------------------------------------------
 
-#+allegro
+#+(or allegro clisp)
 ;; everyone else already defines this...
 (defmacro without-interrupts (&body forms)
   "Executes `forms' as a critical section; no other threads can get in."

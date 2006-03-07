@@ -34,7 +34,7 @@
   #+CLIM
   (:shadow #:POINTP #:POINT-Y #:POINT #:POINT-X #:MAKE-RGB-COLOR)
   
-  #-ALLEGRO
+  #-(or ALLEGRO clisp)
   (:import-from #+Lispworks "MP"
                 #+(or OPENMCL DIGITOOL)       "CCL"
                 #+CMU       "SYSTEM"
