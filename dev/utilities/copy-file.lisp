@@ -65,6 +65,7 @@ by the TO pathname already exists.
           nil
           "The if-does-not-exist keyword parameter must be one of :error or :ignore. It is currently set to ~S" 
           if-does-not-exist)
+  (ensure-directories-exist to)
   (cond ((probe-file from)
          #+:allegro 
          (excl.osi:copy-file 
