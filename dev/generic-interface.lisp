@@ -186,7 +186,7 @@
 ;;; ---------------------------------------------------------------------------
 ;;; Errors and warnings
 
-#+ACL
+#-(or DIGITOOL OPENMCL)
 (defmethod report-condition ((condition condition) stream)
   (write-string 
    (cond ((typep condition 'error) "Error")
@@ -194,7 +194,6 @@
 	 (t "Unknown Condition"))
    stream)
   (print-object condition stream))
-
 
 (defmethod gui-error* (interface condition &optional (prefix "") (standard-message nil)) 
   (gui-warn* 
@@ -204,7 +203,8 @@
        (let ((*print-array* nil)
              (*print-length* 10)
              (*print-level* 4))
-         (#+MCL ccl::report-condition #-MCL report-condition condition stream)))
+         (#+(or DIGITOOL OPENMCL) ccl::report-condition 
+	  #-(or DIGITOOL OPENMCL) report-condition condition stream)))
      (format nil "~A~A" prefix 
              (if standard-message 
                standard-message
