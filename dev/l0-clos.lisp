@@ -26,10 +26,9 @@ in the sense of being interchangable. Implementations use the special variable
 'the same'. See nearly-samep too.")
   (:method (thing-1 thing-2)
            (funcall *samep-test* thing-1 thing-2))
-  ;;CL doesn't specify that FIXNUM is a class, so these specialize on
-  ;;INTEGER instead where fixnum isn't a class
-  (:method #-clisp ((thing-1 fixnum) (thing-2 fixnum))
-           #+clisp ((thing-1 integer) (thing-2 integer))
+  (:method ((thing-1 integer) (thing-2 integer))
+           ;; we specialize on integers so that they don't get compared 
+           ;; with nearly-equal-p
            (= thing-1 thing-2))
   (:method ((thing-1 number) (thing-2 number))
            (= thing-1 thing-2))
