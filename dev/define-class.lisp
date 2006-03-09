@@ -4,7 +4,8 @@
 ;;; some class defining functions
 ;;; ---------------------------------------------------------------------------
 
-(defvar *define-class-form* 'defclass*)
+(defvar *define-class-form* 'defclass*
+  "The name of the form used to define a class. Usually, this will be bound to 'defclass* but when we are using GBBOpen, it will probably be bound to define-class or define-class*.")
 
 ;;; ---------------------------------------------------------------------------
 
@@ -62,6 +63,7 @@ from every class in superclasses."
 ;;; ---------------------------------------------------------------------------
 
 (defun find-or-create-class (root classes)
+  "Try to find a class which is a subclass of root and all of the other `classes` as well. If no such class exists, then it will be created and returned."
   (or (find-existing-subclass root classes)
       (let ((superclasses (remove-redundant-classes classes)))
         (define-class (simple-define-class-name (remove-redundant-classes superclasses))

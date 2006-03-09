@@ -234,6 +234,7 @@ k-elements from the original list."
 ;;; ---------------------------------------------------------------------------
 
 (defun length-exactly-p (thing n)
+  "Returns true if the lenght of `thing` is exactly `n`... no more, no less."
   (and (length-at-least-p thing n)
        (length-at-most-p thing n)))
 

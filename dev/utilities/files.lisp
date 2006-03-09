@@ -7,6 +7,7 @@
 (defun nicely-format-filename (file stream &key
                                     (depth 2) (use-ellipsis? nil) (show-type? t) 
                                     (initial-ellipsis? nil))
+  "Write out a representation of file to stream. There are options to show or hide the type of the file, to display only part of the files directory structure and to include elipses if the directory shown is not complete."
   (let* ((directories (pathname-directory file))
          (kind (first directories))
          (directories (rest directories)))
@@ -26,6 +27,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun file-to-list (&optional (pathname (choose-file-question)))
+  "Convert a file into a list by opening it and calling read repeatedly."
   (let ((eof (gensym)))
     (with-open-file (in pathname)
       (loop for line = (read in nil eof)
@@ -37,6 +39,7 @@
 #+GLU-GENERIC-LOAD-UTILS
 ;; Add this to experiment interface someday.
 (defun conjure-up-filename (&optional (prefix "FILE-") (type "lisp"))
+  "Return a string representing a filename whose value consists of the `perfix`, followed by a representation of the date and time, followed by an file type."
   (multiple-value-bind (ignore minute hour date month year) (get-decoded-time)
     (declare (ignore ignore))
     (format nil "~a~a~2,'0d~2,'0d~2,'0d-~2,'0d~2,'0d~@[.~a~]"
@@ -78,6 +81,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun pretty-namestring-from-date (prefix &optional (date (get-universal-time)))
+  "Returns a representation of the date \(which defaults to the current date and time\) preceeded by a prefix. The date is printed as MM/DD/YYYY."
   (multiple-value-bind (second minute hour date month year) (decode-universal-time date)
     (declare (ignore second minute hour))
     (uniquify-file-name
@@ -357,6 +361,7 @@ the object file."
 ;;; ---------------------------------------------------------------------------
 
 (defun file-package (pathname)
+  "Tries to determine the package of a file by reading it and return the package name of the first in-package form encountered. This obviously does not handle the case of files with multiple in-package forms."
   (map-forms-in-file 
    (lambda (form)
      (when (and (consp form)

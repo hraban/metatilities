@@ -9,6 +9,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun default-interface ()
+  "Return the current default interface (this is setfable)."
   *default-interface*)
 
 ;;; ---------------------------------------------------------------------------
@@ -67,6 +68,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun gc-time ()
+  "Returns the total amount of time that this Lisp session has spent in garbage collection."
   (gc-time* *default-interface*))
 
 ;;; ---------------------------------------------------------------------------
@@ -77,6 +79,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun collect-garbage ()
+  "Tell lisp that now is a good time to collect any accumulated garbage."
   (collect-garbage* *default-interface*))
 
 

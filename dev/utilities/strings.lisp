@@ -155,6 +155,7 @@
 
 ;;?? look in CLtL2 for the full deal
 (defun list->formatted-string (list &optional (separator ", ") (end-with "."))
+  "This is a convenience function for when the intracacies of format are just too much. It takes a list and returns a string formatted with `delimiter' between each sucessive element and ending with `ends-with`."
   (apply #'format nil
          (concatenate 'string "~#[~;~A" end-with "~:;~@{~#[~;~]~A~^"  separator "~}~]")
          list))

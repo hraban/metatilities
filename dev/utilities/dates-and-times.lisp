@@ -5,19 +5,23 @@
 ;;; obvious constants
 ;;; ---------------------------------------------------------------------------
 
-(defconstant +minutes-per-hour+ 60)
+(defconstant +minutes-per-hour+ 60
+  "The number of minutes in one hour.")
 
 ;;; ---------------------------------------------------------------------------
 
-(defconstant +seconds-per-minute+ 60)
+(defconstant +seconds-per-minute+ 60
+  "The number of seconds in one minute.")
 
 ;;; ---------------------------------------------------------------------------
 
-(defconstant +usual-days-per-year+ 365)
+(defconstant +usual-days-per-year+ 365
+  "The number of days in an ordinary year.")
 
 ;;; ---------------------------------------------------------------------------
 
-(defconstant +seconds-per-hour+ (* +seconds-per-minute+ +minutes-per-hour+))
+(defconstant +seconds-per-hour+ (* +seconds-per-minute+ +minutes-per-hour+)
+  "The number of seconds in one hour.")
 
 ;;; ---------------------------------------------------------------------------
 
@@ -58,6 +62,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun day->string (day-of-the-week &optional (format :long))
+  "Returns the name of `day-of-the-week`. The parameter should be a number between 0 and 6 where 0 represents Sunday and 6 repressents Saturday. The optional format argument can be either :long or :short. In the latter case, the return string will be of length three; in the former it will be the complete name of the appropriate day."
   (check-type day-of-the-week (mod 7))
   (check-type format (member :long :short))
   (nth day-of-the-week (case format
@@ -98,6 +103,7 @@
     (print-date nil year month day day-of-the-week)))
 
 (defun date-string-brief (&optional (time (get-universal-time)))
+  "Returns a string representing the `time` \(which defaults to the current universal time\). The string is in the form MM-DD-YYYY."
   (multiple-value-bind (second minute hour day month year day-of-the-week)
       (decode-universal-time time)
     (declare (ignore second minute hour day-of-the-week))
@@ -128,6 +134,7 @@
     (print-time-with-no-colons stream hour minute brief)))
 
 (defun print-universal-time (ut &optional stream brief)
+  "Prints a universal time to stream using `print-time`. The output can be normal or brief."
   (multiple-value-bind (second minute hour)
                        (decode-universal-time ut)
     (declare (ignore second))
