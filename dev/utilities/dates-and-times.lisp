@@ -168,7 +168,7 @@
 ;;; ---------------------------------------------------------------------------
 ;;; these are context-predicates
 
-(proclaim '(inline month-ok-p day-ok-p yearp nth-ok-p))
+(declaim (inline month-ok-p day-ok-p yearp nth-ok-p))
 
 ;; okay to parse an nTH token
 (defun nth-ok-p (context) (member context '(:month)))
@@ -186,10 +186,10 @@
   "finds the index of an item in a list, or, in a list embedded in a list.
 this allows the user to make 'nicknames' for items in a list."
   (cond
-   ((null list) NIL)
+   ((null list) nil)
    ((consp (car list)) (or (index-of item (car list)) (index-of item (cdr list))))
    (t (let ((k (position item list)))
-        (if k (1+ k) NIL)))))
+        (if k (1+ k) nil)))))
 
 ;;; ---------------------------------------------------------------------------
 ;;; reader functions
@@ -291,14 +291,14 @@ this allows the user to make 'nicknames' for items in a list."
         ;; a month by name
         ((and (index-of ,token +month-list+)
               (month-ok-p ,context))
-         (when (eql ,context :number) (setf ,da ,cont-q) (setf ,cont-q NIL))
+         (when (eql ,context :number) (setf ,da ,cont-q) (setf ,cont-q nil))
          (setf ,mo (index-of ,token +month-list+) ,context :month))
         ;; a day of the week by name
         ((and (index-of ,token +day-list+)
               (day-ok-p ,context))
          (setf ,context :day-of-week))
         ;; a fluff token
-        ((index-of ,token +fluff-list+) NIL)
+        ((index-of ,token +fluff-list+) nil)
         ;; a symbol is likely to depend on context, but is probably an nth
         ((symbolp ,token)
          (cond
@@ -335,7 +335,7 @@ in the future."
 	(minute 0)
 	(second 0)
         (context :none)
-        (context-queue NIL)
+        (context-queue nil)
         next-stop token
         (no-date-specified? t))
     ;; set up default date
@@ -757,14 +757,15 @@ if stream is nil, construct and return a string."
 
 (eval-always 
   (defmacro generate-time-part-function (part-name position)
-    (let ((function-name (form-symbol "TIME-" part-name)))
+    (let ((function-name (form-symbol (symbol-name 'time) "-" part-name)))
       `(eval-always
          (export ',function-name)
          (defun ,function-name
                 (&optional (universal-time (get-universal-time))
                            (time-zone nil))
+           ,(format nil "Returns the ~(~A~) part of the given time." part-name)
            (nth-value ,position (apply #'decode-universal-time universal-time time-zone))))))
-  
+
   ;;; ---------------------------------------------------------------------------
   
   (generate-time-part-function second 0)

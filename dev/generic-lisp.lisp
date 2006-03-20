@@ -19,6 +19,11 @@
 
 ;;; ---------------------------------------------------------------------------
 
+(defgeneric is-interface-available-p (interface-name)
+  (:documentation "Returns true is interface-name is available."))
+
+;;; ---------------------------------------------------------------------------
+
 (defmethod is-interface-available-p ((interface (eql nil)))
   (values nil))
 
@@ -55,6 +60,7 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun total-bytes-allocated ()
+  "Returns the total number of bytes that this Lisp session has allocated."
   (total-bytes-allocated* *default-interface*))
 
 ;;; ---------------------------------------------------------------------------

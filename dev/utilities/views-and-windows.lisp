@@ -311,7 +311,8 @@ of the scale of VIEW-TO.")
 
 (defgeneric (setf dialog-item-value) (value item) 
   (:method (value (item t))
-           (error "don't know how to find the value of ~A" item)))
+    (declare (ignore value))
+    (error "don't know how to find the value of ~A" item)))
 
 
 ;;; ***************************************************************************

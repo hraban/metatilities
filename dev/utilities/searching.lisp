@@ -66,7 +66,6 @@
 ;;;; with minor modifications
 ;;; ---------------------------------------------------------------------------
 
-(export '(tree-search))
 
 (defun tree-search (states goal-p successors combiner)
   "Find a state that satisfies goal-p.  Start with states,

@@ -143,7 +143,7 @@ create the mnemonic gensyms.
   ;; is used as an otherwise case, since it will be defined as long as this
   ;; code is being loaded via our loading procedure.
   (or 
-   #+ALLEGRO
+   #+allegro
    `(excl:without-interrupts . ,forms)
   
    ;; just in case...

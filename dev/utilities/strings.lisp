@@ -133,6 +133,7 @@
 
 (defun tokenize-string (string &key (start 0) (end (length string)) 
                                (delimiter #\Space) (include-empties? nil))
+  "Splits a string at delimiter and returns a list of the parts."  
   (declare (type string string))
   (let ((current start)
         (token nil) (result nil))

@@ -59,6 +59,7 @@
 
 (defun unique-file-name-from-date (name &key (date (get-universal-time))
                                         (type "lisp"))
+  "Returns a namestring whose suffix is the `date` in the form YYMMMDDHHMMSS. The names prefix will include as much of the original name as possible given the limitations of the underlying OS. The name is _not_ guaranteed to be unique. [[Bad name]]."
   (bind:bind (((values second minute hour date month year) (decode-universal-time date))
          (date-part 
           (format nil "~2,'0d~2,'0d~2,'0d~2,'0d~2,'0d~2,'0d"
@@ -119,6 +120,7 @@
 
 ;; Rename the file based on the time it was created...
 (defun rename-file-if-present (filename)
+  "Renames a file to a unique name based on its file-write-date. See unique-file-name-from-date."
   (when (probe-file filename)
     (rename-file filename
                  (merge-pathnames 
@@ -126,6 +128,11 @@
                                         (pathname-name filename)
                                         :date (file-write-date filename)))
                   filename))))
+
+;;; ---------------------------------------------------------------------------
+
+(defgeneric uniquify-file-name (file-specifier)
+  (:documentation "Returns a file name that is not currently in use. The strategy used if there is a conflict is to append an integer to the name component until there is no conflict. This could fail in multi-threaded situations."))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -169,6 +176,11 @@ additional args are passed along to the function."
 
 ;;; ---------------------------------------------------------------------------
 
+(defgeneric map-forms-in-file (function file-specifier)
+  (:documentation "Reads file one form at a time \(using read\) and applies `function` to each one in turn."))
+
+;;; ---------------------------------------------------------------------------
+
 (defmethod map-forms-in-file (fn (filename pathname))
   (with-open-file (stream filename
                           :direction :input)
@@ -189,6 +201,11 @@ additional args are passed along to the function."
   (with-open-file (stream filename
                           :direction :input)
     (map-lines-in-file fn stream)))
+
+;;; ---------------------------------------------------------------------------
+
+(defgeneric map-lines-in-file (function file-specifier)
+  (:documentation "Reads the file to which file-specifier resolves one line at a time \(using read-line\) and applies `function` to each line. File-specifier can be a string pointing to a file, a logical or physical pathname or a stream."))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -432,6 +449,7 @@ the object file."
 
 #+DIGITOOL
 (defun touch-file (file)
+  "Updates the file-write-date of `file`."
   (if (probe-file file)
     (ccl::set-file-write-date file (get-universal-time))
     (with-new-file (out file)
@@ -476,6 +494,11 @@ the object file."
 (defun remove-illegal-filename-characters (name)
   "Removes illegal characters from the file name NAME."
   (remove-if-not #'good-filename-char-p name))
+
+;;; ---------------------------------------------------------------------------
+
+(defgeneric shorten-filename-for-os (file-specifier)
+  (:documentation "Returns a file-name for file-specifier such that it is a valid name for the current underlying OS. Mainly, this means ensuring that the name component is not too long."))
 
 ;;; ---------------------------------------------------------------------------
 

@@ -20,7 +20,7 @@ See the file COPYING for details
                                         ,(or #+OpenMCL "openmcl"
                                              #+DIGITOOL "mcl"
                                              #+SBCL     "sbcl"
-                                             #+ALLEGRO  "allegro" 
+                                             #+allegro  "allegro" 
                                              )))
   :components ((:file "generic-lisp")
                #+DIGITOOL (:file "pop-up-menu")
@@ -49,23 +49,27 @@ See the file COPYING for details
                                             :depends-on ("package-additional" "graham"))
                                      (:file "macros"
                                             :depends-on ("package-additional"))
+
+                                     #+Remove
                                      (:file "locks"
                                             :depends-on ("package-additional"))
+
                                      #+Ignore
                                      ;;?? Gary King 2005-11-17: Need priority queue heap
                                      (:file "notifications"
                                             :depends-on ("package-additional" "graham"))
+
                                      (:file "sequences"
                                             :depends-on ("package-additional"))
                                      (:file "spy"
                                             :depends-on ("package-additional" "macros"))
                                      (:file "strings"
                                             :depends-on ("package-additional"))
+                                     #+Remove
                                      (:file "threads")
+
                                      (:file "utilities"
                                             :depends-on ("package-additional" "anaphoric" "macros"))  
-                                     (:file "tcp"
-                                            :depends-on ("package-additional"))
                                      (:file "searching"
                                             :depends-on ("package-additional"))
                                      (:file "copy-file"

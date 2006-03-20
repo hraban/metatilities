@@ -5,9 +5,10 @@
 ;;; ---------------------------------------------------------------------------
 ;;; exported API
 
-(export '(with-eksl-lock with-read-access with-write-access
-           access-lock-p +write-lock+ +read-lock+ 
-           grant-lock))
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (export '(with-eksl-lock with-read-access with-write-access
+	    access-lock-p +write-lock+ +read-lock+ 
+	    grant-lock)))
 
 #+Ignore
 (define-debugging-class eksl-locks ()
@@ -18,9 +19,9 @@
 
 (defclass eksl-lock ()
   ((name  :initarg :name :accessor lock-name)
-   (owner :initform NIL :accessor lock-owner)
-   (type  :initform NIL :accessor lock-type)
-   (queue :initform NIL :accessor lock-queue)))
+   (owner :initform nil :accessor lock-owner)
+   (type  :initform nil :accessor lock-type)
+   (queue :initform nil :accessor lock-queue)))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -166,7 +167,7 @@
   "Does the caller have access to the named lock ?"
   #+Remove
   (when (null (lock-owner lock)) ;;; this is a hack - I dunno how this happens
-    (release-eksl-lock lock NIL))
+    (release-eksl-lock lock nil))
   (member caller (lock-owner lock)))
 
 ;;; ---------------------------------------------------------------------------

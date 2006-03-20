@@ -4,11 +4,11 @@
 ;;; specify that we're using the ALLEGRO interface
 ;;; ---------------------------------------------------------------------------
 
-(setf (default-interface) :ALLEGRO)
+(setf (default-interface) :allegro)
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod is-interface-available-p ((interface (eql :ALLEGRO)))
+(defmethod is-interface-available-p ((interface (eql :allegro)))
   (values t))
 
 
@@ -16,7 +16,7 @@
 ;;; quitting
 ;;; ---------------------------------------------------------------------------
 
-(defmethod quit-lisp* ((interface (eql :ALLEGRO)))
+(defmethod quit-lisp* ((interface (eql :allegro)))
   (excl:exit))
 
 
@@ -25,17 +25,17 @@
 ;;; memory management stuff
 ;;; ---------------------------------------------------------------------------
 
-(defmethod total-bytes-allocated* ((interface (eql :ALLEGRO)))
-  (values (ALLEGRO::total-bytes-allocated)))
+(defmethod total-bytes-allocated* ((interface (eql :allegro)))
+  (values (allegro::total-bytes-allocated)))
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod gc-time* ((interface (eql :ALLEGRO)))
+(defmethod gc-time* ((interface (eql :allegro)))
   (values (gctime)))
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod collect-garbage* ((interface (eql :ALLEGRO)))
+(defmethod collect-garbage* ((interface (eql :allegro)))
   (gc))
 |#
 

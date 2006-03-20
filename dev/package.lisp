@@ -1,21 +1,16 @@
 (in-package :common-lisp-user)
 
-(defpackage metabang.utilities
-  (:nicknames :metatilities)
-  (:use #-CLIM      "COMMON-LISP"
-        #+CLIM      "CLIM"
-        #+CLIM      "CLIM-LISP"
-        "MOPTILITIES"
-	)
+(defpackage #:metabang.utilities
+  (:nicknames #:metatilities)
+  (:use #-clim      #:common-lisp
+        #+clim      #:clim
+        #+clim      #:clim-lisp
+        
+        #:moptilities)
   
-  #+GLU-GENERIC-LOAD-UTILS
-  (:import-from "CL-USER"
-                #:ecs #:ers)
-  #+GLU-GENERIC-LOAD-UTILS
-  (:export 
-   #:ecs #:ers)
+
   #+ASDF
-  (:import-from "ASDF"
+  (:import-from #:asdf
                 #:load-op #:compile-op #:test-op 
                 #:operate #:oos)
   #+ASDF
@@ -32,13 +27,14 @@
    neq)
   
   #+CLIM
-  (:shadow #:POINTP #:POINT-Y #:POINT #:POINT-X #:MAKE-RGB-COLOR)
+  (:shadow #:pointp #:point-y #:point #:point-x #:make-rgb-color)
   
-  #-(or ALLEGRO clisp)
-  (:import-from #+Lispworks "MP"
-                #+(or OPENMCL DIGITOOL)       "CCL"
-                #+CMU       "SYSTEM"
-                #+SBCL      "SB-SYS"
+  #-(or allegro clisp)
+  (:import-from #+lispworks #:mp
+                #+(or openmcl digitool)       #:ccl
+                #+cmu       #:system
+                #+sbcl      #:sb-sys
+
                 #:without-interrupts)
     
   (:export
@@ -485,7 +481,6 @@
    #:total-bytes-allocated*
    #:total-bytes-allocated
    
-   #:gc-time*
    #:gc-time
    
    #:collect-garbage*
@@ -538,7 +533,17 @@
    #:target-pathname
    #:source/target-target-already-exists-error
    #:source/target-source-does-not-exist-error
-   #:copy-file))
+   #:copy-file)
+
+  (:export
+   #:length-at-least-p
+   #:length-at-most-p
+   #:length-exactly-p
+   #:same-length-p
+   #:percent-overlap)
+
+  (:export
+   #:tree-search))
 
 
 #|
@@ -548,7 +553,7 @@
 		#:class-direct-subclasses #:class-precedence-list
                 #:slot-definition-name #:neq)
 
-  #+Allegro
+  #+allegro
   (:import-from clos #:class-prototype #:class-direct-superclasses 
 		#:class-direct-subclasses #:class-precedence-list
 		#:class-finalized-p #:finalize-inheritance

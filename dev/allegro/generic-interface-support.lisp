@@ -8,7 +8,7 @@ Author: Gary Warren King
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod choose-file-question* ((interface (eql :Allegro)) &rest args
+(defmethod choose-file-question* ((interface (eql :allegro)) &rest args
                                   &key (prompt "Choose file: "))
   (let ((command (format nil "(read-from-minibuffer \"~A\")" prompt)))
     (lep::eval-in-emacs command)))
@@ -26,7 +26,7 @@ Author: Gary Warren King
   
 ;;; ---------------------------------------------------------------------------
 
-(defmethod choose-item-question* ((interface (eql :Allegro)) list &rest args 
+(defmethod choose-item-question* ((interface (eql :allegro)) list &rest args 
                                   &key (title "Select item:")
                                   (table-print-function #'princ) &allow-other-keys)
   (declare (ignore args))
@@ -52,7 +52,7 @@ Author: Gary Warren King
 ;;; inspect-thing
 ;;; ---------------------------------------------------------------------------
 
-(defmethod inspect-thing* ((interface (eql :Allegro)) thing &rest args)
+(defmethod inspect-thing* ((interface (eql :allegro)) thing &rest args)
   (declare (ignore args))
   (inspect thing))
 

@@ -1,6 +1,6 @@
 (in-package metatilities)
 
-(defmacro NYI (&rest args)
+(defmacro nyi (&rest args)
   "Signals an error saying that this function is not yet implemented.  The args
 are ignored, but by supplying args from the calling function, you can get them
 ignored by the compiler."

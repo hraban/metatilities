@@ -1,4 +1,4 @@
-(in-package #+MCL ccl #+Allegro sys #-(or MCL ALLEGRO) cl-user)
+(in-package #+MCL ccl #+allegro sys #-(or MCL allegro) cl-user)
 
 #|
 

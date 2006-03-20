@@ -378,7 +378,7 @@ Estimated total monitoring overhead: 0.88 seconds
   (:use :common-lisp)
   (:nicknames :mon)
   
-  #+Allegro
+  #+allegro
   (:import-from cltl1
    #:provide
    #:require

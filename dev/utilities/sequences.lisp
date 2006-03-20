@@ -74,7 +74,7 @@ well optimized."
 (defun power-set ( set )
   "Returns the power set of SET.  This of course uses exponential time and space."
   (cond
-   ((null set) (list NIL))
+   ((null set) (list nil))
    (t
     (nconc
      (power-set (cdr set))
@@ -217,15 +217,8 @@ k-elements from the original list."
 
 ;;; ---------------------------------------------------------------------------
 
-(export '(length-at-least-p
-          length-at-most-p
-          length-exactly-p
-          same-length-p
-          percent-overlap))
-
-;;; ---------------------------------------------------------------------------
-
 (defun same-length-p (list-1 list-2)
+  "An optimized version of the naive \(= \(length list-1\) \(length list-2\)\)."
   (do ((x list-1 (rest x))
        (y list-2 (rest y)))
       ((not (and (or x (rest x)) (or y (rest y))))

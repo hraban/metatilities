@@ -8,7 +8,7 @@ symbols are more informative. Also, `args' is only used for the MCL implementati
    (if args 
      (apply #'mp:process-run-function name '() function args)
      (mp:process-run-function name '() function))                
-   #+ALLEGRO
+   #+allegro
    (if args
      (mp:process-run-function name function args)
      (mp:process-run-function name function))
@@ -25,11 +25,11 @@ symbols are more informative. Also, `args' is only used for the MCL implementati
   #+DIGITOOL  (ccl:process-kill thread)
   #+OPENMCL   (ccl:process-reset thread t)
   #+LISPWORKS (mp:process-kill thread)
-  #+ALLEGRO   (mp:process-kill thread))
+  #+allegro   (mp:process-kill thread))
 
 (defun thread-name (thread)
   #+lispworks (mp::process-name thread)
-  #+ALLEGRO (mp::process-name thread)
+  #+allegro (mp::process-name thread)
   #+MCL (ccl::process-name thread))
 
 (defun find-thread (name)
@@ -43,14 +43,14 @@ symbols are more informative. Also, `args' is only used for the MCL implementati
   "Returns the currently running thread, which will be the same kind of object
 returned by `make-thread.'"
   #+Clim     (clim-sys:current-process)
-  #+ALLEGRO  SYS:*CURRENT-PROCESS*
+  #+allegro  SYS:*CURRENT-PROCESS*
   #+LISPWORKS mp:*current-process*
   #+MCL      ccl:*current-process*)
 
 (defun all-threads ()
   "Returns a sequence of all the threads."
    #+Clim     (clim-sys:all-processes)
-   #+ALLEGRO  SYS:*ALL-PROCESSES*
+   #+allegro  SYS:*ALL-PROCESSES*
    #+LISPWORKS mp::*processes*
    #+DIGITOOL  *all-processes*
    #+OPENMCL   (all-processes))
@@ -60,7 +60,7 @@ returned by `make-thread.'"
 `Reason-string' is primarily for debugging/observation purposes."
   ;; Call it once so that the trivial errors happen in the user's process
   ;; (funcall wait-predicate)
-  #+ALLEGRO  (apply #'mp:process-wait reason-string wait-predicate wait-args)
+  #+allegro  (apply #'mp:process-wait reason-string wait-predicate wait-args)
   #+LISPWORKS  (apply #'mp:process-wait reason-string wait-predicate wait-args)
   #+MCL      (apply #'ccl:process-wait reason-string wait-predicate wait-args)
   #+Clim     
@@ -71,7 +71,7 @@ returned by `make-thread.'"
 (defun thread-halt (reason thread)
   "Stops a thread in it's tracks by giving it an arrest reason."
   #+lispworks (push reason (mp:process-arrest-reasons thread))
-   #+ALLEGRO (mp:process-add-arrest-reason thread reason)
+   #+allegro (mp:process-add-arrest-reason thread reason)
    #+DIGITOOL 
    (progn
      (assert (symbolp reason) nil "Reason must be #'eq testable")
@@ -80,13 +80,13 @@ returned by `make-thread.'"
 (defun thread-halted-p (thread)
   "Returns non-nill if the thread has been halted."
   #+lispworks (not (null (mp::process-arrest-reasons thread)))
-   #+ALLEGRO (not (null (mp::process-arrest-reasons thread)))
+   #+allegro (not (null (mp::process-arrest-reasons thread)))
    #+DIGITOOL (not (null (ccl::process-arrest-reasons thread))))
 
 (defun thread-resume (reason thread)
   "Possibly resumes a thread by taking away an arrest reason."
   #+lispworks (pop (mp::process-arrest-reasons thread))
-  #+ALLEGRO (mp:process-revoke-arrest-reason thread reason)
+  #+allegro (mp:process-revoke-arrest-reason thread reason)
   #+DIGITOOL
   (progn 
     (assert (symbolp reason) nil "Reason must be #'eq testable")
@@ -95,7 +95,7 @@ returned by `make-thread.'"
 (defun thread-resume-absolute (thread)
   "Resumes a thread by taking away all arrest reasons."
   #+lispworks (setf (mp::process-arrest-reasons thread) NIL)
-  #+ALLEGRO (loop for reason-string in (mp:process-arrest-reasons thread) do
+  #+allegro (loop for reason-string in (mp:process-arrest-reasons thread) do
 		  (mp:process-revoke-arrest-reason thread reason-string))
   #+DIGITOOL (loop for reason-string in (ccl:process-arrest-reasons thread) do
 	           (ccl::process-disable-arrest-reason thread reason-string)))
@@ -104,7 +104,7 @@ returned by `make-thread.'"
   "This thread is suspended until `wait-predicate' returns true or `seconds'
 pass.  `Reason-string' is primarily for debugging/observation purposes."
   #+Explorer (ticl:process-wait-with-timeout reason-string (* 60 seconds) wait-predicate)
-   #+ALLEGRO (mp:process-wait-with-timeout reason-string seconds wait-predicate)
+   #+allegro (mp:process-wait-with-timeout reason-string seconds wait-predicate)
    #+Clim     (clim-sys:process-wait-with-timeout reason-string seconds wait-predicate)
    #+LISPWORKS (mp:process-wait-with-timeout reason-string seconds wait-predicate)
    #+MCL      (ccl:process-wait-with-timeout reason-string (round (* 60 seconds)) wait-predicate))
@@ -112,7 +112,7 @@ pass.  `Reason-string' is primarily for debugging/observation purposes."
 (defun thread-yield ()
   "Allows other processes to run.  As soon as others have had a chance, this
 thread continues."
-   #+ALLEGRO (multiprocessing:process-allow-schedule)
+   #+allegro (multiprocessing:process-allow-schedule)
    #+Clim     (clim-sys:process-yield)
    #+LISPWORKS (mp::process-allow-scheduling)
    #+MCL      (ccl:process-allow-schedule))
@@ -121,7 +121,7 @@ thread continues."
   "Interrupts `thread,' throwing out of its computation, and forces it to call
 `function.'"
    #+Clim     (clim-sys:process-interrupt thread function)
-   #+ALLEGRO (multiprocessing::process-preset thread function)
+   #+allegro (multiprocessing::process-preset thread function)
    #+LISPWORKS (mp::process-interrupt thread function)
    #+MCL      (ccl:process-preset thread function))
 
@@ -201,7 +201,7 @@ streams: *debug-io* *error-output* *query-io* *standard-output* *standard-input*
 and *trace-output*.  Note that this will only work if the function
 `store-foreground streams' has already been run in the foreground, that is, it
 was run before starting up a thread."
-  #+(or Lispworks Allegro Lucid MCL) 
+  #+(or Lispworks allegro Lucid MCL) 
   `(destructuring-bind
      (*debug-io* *error-output* *query-io* *standard-output*
                  *standard-input* *trace-output*)
@@ -250,12 +250,12 @@ output streams to reasonable places. See `with-foreground-io' for details."
 
 (defmacro with-timeout ((seconds &body timeout-forms) &body body)
   "Execute BODY; if execution takes more than SECONDS seconds, terminate and evaluate TIMEOUT-FORMS."
-  #-ALLEGRO
+  #-allegro
   (with-gensyms (bodyf timeoutf)
     `(flet ((,bodyf () ,@body)
             (,timeoutf () ,@timeout-forms))
        (with-timeout-fn ,seconds #',bodyf #',timeoutf)))
-  #+ALLEGRO
+  #+allegro
   `(mp::with-timeout (,seconds ,@timeout-forms) ,@body))
 
 #+test

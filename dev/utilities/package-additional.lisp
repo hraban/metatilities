@@ -1,19 +1,18 @@
 
 (in-package metatilities)
 
-(export-exported-symbols "METABANG.BIND" "METATILITIES")
+(export-exported-symbols 'metabang.bind 'metatilities)
 
 (eval-when (:compile-toplevel :load-toplevel)
-  (shadowing-import '(copy-file) "CL-FAD")
+  (shadowing-import '(copy-file) 'cl-fad)
 
   ;;?? Gary King 2005-07-12: not quite sure about this one.
-  (shadowing-import '(containers:root) "METATILITIES")
-  (shadowing-import '(containers:move) "METATILITIES")
+  (shadowing-import '(containers:root) 'metatilities)
+  (shadowing-import '(containers:move) 'metatilities)
 
-  (use-package "CL-FAD" "METATILITIES"))
+  (use-package 'cl-fad 'metatilities))
 
-(metatilities:export-exported-symbols "CONTAINERS" "METATILITIES")
+(export-exported-symbols 'containers 'metatilities)
 
-(make-load-form* containers:abstract-container)
 (make-load-form* containers::bst-node)
 (make-load-form* containers::quad-tree-node)

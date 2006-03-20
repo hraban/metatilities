@@ -110,6 +110,7 @@ be used in the rest of the forms. The whole thing returns IT."
 ;;; ---------------------------------------------------------------------------
 
 (defmacro atypecase (keyform &body body)
+  "Atypecase is anaphoric typecase. It is just like typecase except that it binds the thing being tested to `it`."
   `(let ((it ,keyform))
      (typecase it 
        ,@body)))

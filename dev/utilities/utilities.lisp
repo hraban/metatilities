@@ -87,7 +87,7 @@
 
 ;; No sense paying extra for a function that does not do anything over
 ;; what is already there.
-(proclaim '(inline find-all))
+(declaim (inline find-all))
 
 (defun find-all (item sequence &rest keyword-args
                  &key (test #'eql) &allow-other-keys)
@@ -466,20 +466,20 @@ ignoreable or something.  Returns a flat list of symbols."
 
 ;;; ============================================================================
 
-(proclaim '(inline car-safe))
+(declaim (inline car-safe))
 (defun car-safe (x)
   "Returns the car of `x' if it's a cons, NIL otherwise."
   (and (consp x) (car x)))
 
-(proclaim '(inline car-safe))
+(declaim (inline car-safe))
 (defun cdr-safe (x)
   "Returns the cdr of `x' if it's a cons, NIL otherwise."
   (and (consp x) (cdr x)))
 
 ;;; ---------------------------------------------------------------------------
 
-(unless (boundp '+very-small-number+) 
-  (defconstant +very-small-number+ 1E-12))
+(defparameter +very-small-number+ 1E-12
+  "Someones idea of a very small number. Used in very-small-number-p.")
 
 ;;; ---------------------------------------------------------------------------
 
