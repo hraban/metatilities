@@ -89,7 +89,7 @@ All other CLOS slot options are processed normally."
           (setf done-initform? t)
           (unless allowed-item?
             (setf  process-item? nil)
-            (unless (eq item :UNBOUND)
+            (unless (eq item :unbound)
               (push :initform new-slot)
               (push item new-slot))))
         
