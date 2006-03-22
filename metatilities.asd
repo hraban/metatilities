@@ -12,7 +12,7 @@ See the file COPYING for details
 (defsystem metabang-generic-lisp
   :author "Gary Warren King <gwking@metabang.com>"
   :version "0.5"
-  :depends-on (METATILITIES-BASE)
+  :depends-on (metatilities-base)
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :pathname (make-pathname :directory `(,@(pathname-directory *load-truename*)
@@ -21,7 +21,7 @@ See the file COPYING for details
                                              #+DIGITOOL "mcl"
                                              #+SBCL     "sbcl"
                                              #+allegro  "allegro" 
-                                             )))
+                                             #-(or OpenMCL DIGITOOL SBCL allegro) "unsupported")))
   :components ((:file "generic-lisp")
                #+DIGITOOL (:file "pop-up-menu")
                (:file "generic-interface-support" 
@@ -29,7 +29,7 @@ See the file COPYING for details
 
 ;;; ---------------------------------------------------------------------------
 
-(defsystem METATILITIES
+(defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
   :version "0.5"
   :maintainer "Gary Warren King <gwking@metabang.com>"
@@ -65,6 +65,7 @@ See the file COPYING for details
                                             :depends-on ("package-additional" "macros"))
                                      (:file "strings"
                                             :depends-on ("package-additional"))
+                                     
                                      #+Remove
                                      (:file "threads")
 
