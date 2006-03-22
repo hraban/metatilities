@@ -38,21 +38,6 @@ well optimized."
           (when val
             (setf last val)))))))
 
-(defun dotted-pair-p (putative-pair)
-  (and (consp putative-pair)
-       (cdr putative-pair)
-       (not (consp (cdr putative-pair)))))
-
-#+No
-(deftestsuite test-dotted-pair-p ()
-  ()
-  (:tests
-   ((ensure (dotted-pair-p '(a . b))))
-   ((ensure (not (dotted-pair-p '(a b)))))
-   ((ensure (not (dotted-pair-p :a))))
-   ((ensure (not (dotted-pair-p '(a b . c)))))
-   ((ensure (not (dotted-pair-p nil))))))
-
 ;;; ---------------------------------------------------------------------------
 
 (defun flatten (list)

@@ -226,6 +226,27 @@ not sticky."
 (defun whitespacep (char)
   (find char +whitespace-characters+ :test #'char=))
 
+;;; ---------------------------------------------------------------------------
+;;; dotted-pair-p
+;;; ---------------------------------------------------------------------------
+
+(defun dotted-pair-p (putative-pair)
+  "Returns true if and only if `putative-pair` is a dotted-list. I.e., if `putative-pair` is a cons cell with a non-nil cdr."
+  (and (consp putative-pair)
+       (cdr putative-pair)
+       (not (consp (cdr putative-pair)))))
+
+#+No
+;;?? move to test suite 
+(deftestsuite test-dotted-pair-p ()
+  ()
+  (:tests
+   ((ensure (dotted-pair-p '(a . b))))
+   ((ensure (not (dotted-pair-p '(a b)))))
+   ((ensure (not (dotted-pair-p :a))))
+   ((ensure (not (dotted-pair-p '(a b . c)))))
+   ((ensure (not (dotted-pair-p nil))))))
+
 
 
 
