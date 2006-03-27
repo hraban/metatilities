@@ -533,13 +533,6 @@ the object file."
 
 ;;; ---------------------------------------------------------------------------
 
-(defun pathname-name+type (pathname)
-  "Returns a new pathname consisting of only the name and type from a non-wild pathname."
-  (make-pathname :name (pathname-name pathname)
-                 :type (pathname-type pathname)))
-
-;;; ---------------------------------------------------------------------------
-
 #+MCL
 (defmethod samep ((file1 pathname) (file2 pathname))
   (bind:bind ((s1 (open file1 :direction :input
