@@ -378,6 +378,25 @@ the object file."
 ;;; ---------------------------------------------------------------------------
 
 (defun file-package (pathname)
+  "Tries to determine the package of a file by reading it one form at a time and looking for in-package forms. Though it does handle the case of a file with multiple in-package and defpackages forms -- in which case it returns the last in-package encountered -- it  not handle the general case of files with multiple in-package forms."
+  (let ((putative-package nil)) 
+    (flet ((stop-form-p (form)
+             (and (consp form)
+                  (not (member (first form) '(defpackage))))))
+      (map-forms-in-file 
+       (lambda (form)
+         (cond ((and (consp form)
+                     (eq (first form) 'in-package))
+                (setf putative-package (second form)))
+               ((and putative-package (stop-form-p form))
+                (return-from file-package putative-package))))
+       pathname))))
+
+;;; ---------------------------------------------------------------------------
+
+#+Old
+;; this one gives after after the first in-package.
+(defun file-package (pathname)
   "Tries to determine the package of a file by reading it and return the package name of the first in-package form encountered. This obviously does not handle the case of files with multiple in-package forms."
   (map-forms-in-file 
    (lambda (form)
