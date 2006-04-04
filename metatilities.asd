@@ -9,23 +9,26 @@ See the file COPYING for details
 
 ;;; ---------------------------------------------------------------------------
 
+#+Remove
+;;Gary King 2006-04-03: borged into metatilities
 (defsystem metabang-generic-lisp
   :author "Gary Warren King <gwking@metabang.com>"
   :version "0.5"
   :depends-on (metatilities-base)
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
-  :pathname (make-pathname :directory `(,@(pathname-directory *load-truename*)
+  :components ((:module "what"
+  	        :pathname (make-pathname :directory `(,@(pathname-directory *load-truename*)
                                         "dev"
                                         ,(or #+OpenMCL "openmcl"
                                              #+DIGITOOL "mcl"
                                              #+SBCL     "sbcl"
                                              #+allegro  "allegro" 
                                              #-(or OpenMCL DIGITOOL SBCL allegro) "unsupported")))
-  :components ((:file "generic-lisp")
-               #+DIGITOOL (:file "pop-up-menu")
-               (:file "generic-interface-support" 
-                      :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))
+               :components ((:file "generic-lisp")
+                            #+DIGITOOL (:file "pop-up-menu")
+                            (:file "generic-interface-support" 
+                                   :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -78,6 +81,21 @@ See the file COPYING for details
 	                             (:file "views-and-windows"
                                             :depends-on ("package-additional"))))
                
+               
+               (:module "what"
+  	                :pathname #.(make-pathname 
+                                     :directory `(,@(pathname-directory *load-truename*)
+                                                  "dev"
+                                                  ,(or #+OpenMCL "openmcl"
+                                                       #+DIGITOOL "mcl"
+                                                       #+SBCL     "sbcl"
+                                                       #+allegro  "allegro" 
+                                                       #-(or OpenMCL DIGITOOL SBCL allegro) "unsupported")))
+                        :components ((:file "generic-lisp")
+                                     #+DIGITOOL (:file "pop-up-menu")
+                                     (:file "generic-interface-support" 
+                                            :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))
+               
                #+DIGITOOL
                (:module "contrib"
                         :pathname #.(make-pathname :directory '(:relative "dev" "contrib" "mcl"))
@@ -91,7 +109,7 @@ See the file COPYING for details
                  moptilities
                  cl-containers
                  metabang-bind
-                 metabang-generic-lisp
+                 #+Remove metabang-generic-lisp
                  defsystem-compatibility
 		 cl-fad)
   
