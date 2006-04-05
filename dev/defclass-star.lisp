@@ -77,6 +77,9 @@ All other CLOS slot options are processed normally."
                  (loop for key being each hash-key of opts using (hash-value vals)
                        nconc (mapcan #'(lambda (x) (list key x)) vals) into spec
                        finally (return (cons slot-name spec)))))))
+
+      (setf accessor-added? (find :accessor slot)
+            done-initform? (find :initform slot))
       
       (do* ((items slot (rest items))
             (item (first items) (first items))
