@@ -1,15 +1,4 @@
 (in-package metatilities)
-
-#+Remove
-;;?? Gary King 2006-02-27: 
-(export '(source/target-file-error
-          source-pathname
-          target-pathname
-          source/target-target-already-exists-error
-          source/target-source-does-not-exist-error
-          copy-file))
-
-;;; ---------------------------------------------------------------------------
         
 (define-condition source/target-file-error (file-error)
                   ((pathname :reader source-pathname
@@ -27,7 +16,7 @@
                   ()
   (:report (lambda (c s)
              (format s "File action failed because target ~S already exists"
-                     (source-pathname c) (target-pathname c))))
+                     (target-pathname c))))
   (:documentation "This error is signaled when the target pathname already exists."))
 
 ;;; ---------------------------------------------------------------------------
