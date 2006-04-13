@@ -132,13 +132,7 @@
 
 (defmethod interface-beep (&rest args)
   (apply #'interface-beep* *default-interface* args))
-          
-;;; ---------------------------------------------------------------------------
-;;; quit-lisp
-;;; ---------------------------------------------------------------------------
-
-(defgeneric quit-lisp* (interface)
-  (:documentation "Quits AFS"))
+         
 
 ;;; ---------------------------------------------------------------------------
 ;;; y-or-n-question

@@ -37,6 +37,9 @@
 ;;; quitting
 ;;; ---------------------------------------------------------------------------
 
+(defgeneric quit-lisp* (interface)
+  (:documentation "Quits Lisp"))
+
 (defmethod quit-lisp* (interface)
   (declare (ignore interface))
   (print "I would love to quit for you, but I'm not sure how?"))
