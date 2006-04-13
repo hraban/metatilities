@@ -387,7 +387,9 @@ the object file."
        (lambda (form)
          (cond ((and (consp form)
                      (eq (first form) 'in-package))
-                (setf putative-package (second form)))
+                (setf putative-package 
+                      (intern (package-name (find-package (second form)))
+                              :keyword)))
                ((and putative-package (stop-form-p form))
                 (return-from file-package putative-package))))
        pathname))))
@@ -477,7 +479,7 @@ the object file."
 ;;; ---------------------------------------------------------------------------
 
 (defparameter *filename-escape-characters* 
-  (list #\/ #\* #\\ #\  #\< #\> #\@ #\. #\: #\( #\) #\&))
+  (list #\/ #\* #\\ #\  #\< #\> #\@ #\. #\: #\( #\) #\& #\ ))
 
 ;;; ---------------------------------------------------------------------------
 
