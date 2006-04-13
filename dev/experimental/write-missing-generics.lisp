@@ -1,10 +1,9 @@
 (in-package metatilities)
 
-
 ;;; not perfect but not too bad.
-;;; doesn't do setfs
+;;; needs to strip out defaults from &optional and &key arguments
 
- 
+
 (defun gf-info (symbol)
   (let ((gf (symbol-function symbol)))
     (list 
@@ -42,25 +41,48 @@
                  (typep it 'standard-generic-function))
        (return-from find-symbol-function (find-symbol symbol-name package))))))
 
-
 ;;; ---------------------------------------------------------------------------
 
 (defun build-defgenerics-for-undocumented-methods (package file)
   (let* ((p (make-container 'package-container :packages package))
          (ms
           (sort
-           (collect-elements 
-            p
-            :filter (lambda (symbol)
-                      (and (fboundp symbol)
-                           (typep (symbol-function symbol) 'standard-generic-function)
-                           (some (lambda (m)
-                                   (not (or (reader-method-p m)
-                                            (writer-method-p m))))
-                                 (mopu:generic-function-methods (symbol-function symbol)))
-                           (not (documentation symbol 'function)))))
-           #'string-lessp)))
+           (append
+            (collect-elements 
+             p
+             :filter (lambda (symbol)
+                       (and (fboundp symbol)
+                            (typep (symbol-function symbol) 'standard-generic-function)
+                            (some (lambda (m)
+                                    (not (or (reader-method-p m)
+                                             (writer-method-p m))))
+                                  (mopu:generic-function-methods (symbol-function symbol)))
+                            (not (documentation symbol 'function)))))
+            (collect-elements 
+             p
+             :filter (lambda (base-symbol)
+                       (let ((symbol (list 'setf base-symbol)))
+                         (and (fboundp symbol)
+                              (typep (symbol-function symbol) 'standard-generic-function)
+                              (some (lambda (m)
+                                      (not (or (reader-method-p m)
+                                               (writer-method-p m))))
+                                    (mopu:generic-function-methods (symbol-function symbol)))
+                              (not (documentation symbol 'function)))))
+             :transform (lambda (base-symbol)
+                          (list 'setf base-symbol))))
+           (lambda (a b)
+             (cond ((and (consp a) (consp b))
+                    (string-lessp (second a) (second b)))
+                   ((and (consp a) (not (consp b)))
+                    1)
+                   ((and (not (consp a)) (consp b))
+                    -1)
+                   (t
+                    (string-lessp a b)))))))
+    
     (when ms
+      (princ "Creating file...")
       (with-new-file (out file)
         (iterate-elements 
          ms
@@ -70,11 +92,11 @@
 ;;; ---------------------------------------------------------------------------
 
 #+Test
-(delete-file "user-home:darcs;generics.lisp")
+(delete-file "user-home:darcs;lift-generics.lisp")
 
 #+Test
 (metatilities::build-defgenerics-for-undocumented-methods
- :lift "user-home:darcs;g.lisp") 
+ :cl-containers "user-home:darcs;cl-containers-generics.lisp") 
 
 #+Test
 (with-new-file (out "user-home:darcs;generics.lisp")
