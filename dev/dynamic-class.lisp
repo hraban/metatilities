@@ -132,14 +132,12 @@
                      collect class))))
     (setf class-list
           (apply #'include-class-dependencies class-type dynamic-class class-list parameters))
-    
     (when (and dynamic-class (not (some (lambda (class-name)
                                           (subtypep dynamic-class class-name))
                                         class-list)))
-      (nconc class-list (list dynamic-class)))
+      (setf class-list (nconc (list dynamic-class) class-list)))
     
     (setf class-list (delete-duplicates class-list))
-    
     #+Ignore
     (when-debugging-format determine-dynamic-class
                            "DDC: class list ~A" class-list)

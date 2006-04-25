@@ -47,6 +47,8 @@ simple-define-class for the simpler version."
 
 ;;; ---------------------------------------------------------------------------
 
+#+Old
+;; returns first match
 (defun find-existing-subclass (superclass superclasses)
   "Look through all the sub-classes of superclass and see if any of them descend
 from every class in superclasses."
@@ -54,11 +56,31 @@ from every class in superclasses."
    superclass
    (lambda (subclass)
      (when (every (lambda (superclass)
-                    (member superclass (mopu:superclasses subclass)
+                    (member superclass (mopu:superclasses subclass :proper? nil)
                             :key (lambda (x) (class-name x))))
                   superclasses)
        (return-from find-existing-subclass (class-name subclass)))))
   (values nil))
+
+(defun find-existing-subclass (superclass superclasses)
+  "Look through all the sub-classes of superclass and see if any of them descend
+from every class in superclasses."
+  (let ((results nil))
+    (mopu:map-subclasses
+     superclass
+     (lambda (subclass)
+       (let ((last-position -1))
+         (when (every (lambda (superclass)
+                        (let ((pos
+                               (position 
+                                superclass (mopu:superclasses subclass :proper? nil)
+                                :key (lambda (x) (class-name x)))))
+                          (prog1
+                            (and pos (< last-position pos))
+                            (setf last-position pos))))
+                      superclasses)
+           (push (class-name subclass) results)))))
+    (values (first results))))
 
 ;;; ---------------------------------------------------------------------------
 
