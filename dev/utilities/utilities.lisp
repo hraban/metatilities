@@ -4,7 +4,7 @@
   "A non-destructive mapcan."
   (reduce #'append (apply #'mapcar fun lists)))
 
-(eval-when (load)
+(eval-when (:load-toplevel)
   (setf (fdefinition 'mappend) #'mapappend))
 
 
@@ -492,7 +492,8 @@ ignoreable or something.  Returns a flat list of symbols."
       (zerop number)))
 
 (defun very-small-number-p (number)
-  (declare (optimize (speed 3) (space 3) (debug 0) (safety 0)))
+  (declare (optimize (speed 3) (space 3) (debug 0) (safety 0))
+           (type number real))
   (< (abs number) +very-small-number+))
 
 ;;; ---------------------------------------------------------------------------
@@ -770,7 +771,7 @@ See it for documentation."
   (not (special-operator-p operator)))
 
 ;;; ---------------------------------------------------------------------------
-;;; MAKE-SORTER - from Gary W. King
+;;; make-sorter
 ;;; ---------------------------------------------------------------------------
 
 ;;?? Should probably do this at compile time, not at run time but that requires

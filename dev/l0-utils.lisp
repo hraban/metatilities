@@ -223,7 +223,8 @@ not sticky."
 ;;; ---------------------------------------------------------------------------
 
 (defun whitespacep (char)
-  (find char +whitespace-characters+ :test #'char=))
+  "Returns true if char is an element of +whitespace-characters+ and nil otherwise."
+  (not (null (find char +whitespace-characters+ :test #'char=))))
 
 ;;; ---------------------------------------------------------------------------
 ;;; dotted-pair-p

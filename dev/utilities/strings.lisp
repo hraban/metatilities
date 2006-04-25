@@ -154,13 +154,26 @@
 
 ;;; ---------------------------------------------------------------------------
 
-;;?? look in CLtL2 for the full deal
 (defun list->formatted-string (list &optional (separator ", ") (end-with "."))
-  "This is a convenience function for when the intracacies of format are just too much. It takes a list and returns a string formatted with `delimiter' between each sucessive element and ending with `ends-with`."
+  "This is a convenience function for when the intracacies of format are just too much. It takes a list and returns a string formatted with `delimiter' between each sucessive element and ending with `ends-with`. look in CLtL2, section 22.3.7.2 for the full deal."
   (apply #'format nil
          (concatenate 'string "~#[~;~A" end-with "~:;~@{~#[~;~]~A~^"  separator "~}~]")
          list))
             
+#+WIP
+(defun format-list (list &key (separator ", ") (end-with ".") (final-separator " and")
+                         (empty-list "none"))
+  (apply #'format nil
+         (concatenate 'string "~#["
+                      empty-list "~;~S~;~S"
+                      final-separator "~S~:;~@{~#[~;"
+                      final-separator "~]~S~^"
+                      separator "~}~]"
+                      end-with) 
+         list))
+            
+
+
 ;;; ***************************************************************************
 ;;; *                              End of File                                *
 ;;; ***************************************************************************
