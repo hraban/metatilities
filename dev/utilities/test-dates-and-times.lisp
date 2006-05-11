@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (lift:deftestsuite test-leap-year-p ()
   ()

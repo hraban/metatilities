@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 ;;; not perfect but not too bad.
 ;;; needs to strip out defaults from &optional and &key arguments

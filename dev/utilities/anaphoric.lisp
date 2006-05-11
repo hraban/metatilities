@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 #|
 
 Functions are not externalizable objects, so cannot be used in code

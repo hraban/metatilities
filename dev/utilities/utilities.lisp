@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defun mapappend (fun &rest lists)
   "A non-destructive mapcan."

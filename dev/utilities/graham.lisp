@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 ;;; ---------------------------------------------------------------------------
 ;;; Chapter 4.4: Search functions

@@ -386,7 +386,7 @@ Estimated total monitoring overhead: 0.88 seconds
 
   ) ; defpackage
 
-(in-package "MONITOR")
+(in-package #:MONITOR)
 
 
 (provide "monitor")
@@ -574,7 +574,7 @@ Estimated total monitoring overhead: 0.88 seconds
                      (%ilogand2 #xfff fp))))))
 
 #+:mcl1.3.2
-(in-package "MONITOR")
+(in-package #:MONITOR)
 
 #+:mcl1.3.2
 (defun get-cons ()
@@ -618,7 +618,7 @@ Estimated total monitoring overhead: 0.88 seconds
 ;  "Returns number of conses (8 bytes each)"
 ;  (ccl::total-bytes-allocated))
 ;#+:mcl
-;(in-package "MONITOR")
+;(in-package #:MONITOR)
 ;#+:mcl
 ;(defun get-cons ()
 ;  (the consing-type (+ (ccl::total-bytes-consed) ccl::*bytes-consed-chkpt*)))
@@ -1112,7 +1112,7 @@ adjusted for overhead."
                                     t)))))))
 
 #|
-(in-package mon)
+(in-package #:mon)
 
 (setf *existing-encapsulations* (make-hash-table :test #'equal))
 

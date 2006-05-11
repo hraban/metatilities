@@ -4,7 +4,7 @@ Author: Gary Warren King
 
 |#
 
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defvar *default-instrument* (list 1))
 

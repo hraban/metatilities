@@ -1,4 +1,4 @@
-(in-package u)
+(in-package #:u)
 
 ;;; ---------------------------------------------------------------------------
 ;;; specify that we're using the LISPWORKS interface

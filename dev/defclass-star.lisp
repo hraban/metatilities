@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defvar *automatic-slot-accessors?* nil)
 (defvar *automatic-slot-initargs?* nil)

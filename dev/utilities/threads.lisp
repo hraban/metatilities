@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defun make-thread (name function &rest args)
   "Creates a new thread named `name' that executes `function' and takes arguments `args,'

@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 ;;; Printing rationals as floats doesn't work in Lispworks; it has no effect. (Westy)
 ;;; We could do this without too much trouble in spy-princ.  We could also 

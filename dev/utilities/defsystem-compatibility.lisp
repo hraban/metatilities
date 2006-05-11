@@ -28,7 +28,7 @@ DISCUSSION
 
 |#
 
-(in-package metatilities)
+(in-package #:metatilities)
 
 ;;; ---------------------------------------------------------------------------
 ;;; compatibility

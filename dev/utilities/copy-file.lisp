@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
         
 (define-condition source/target-file-error (file-error)
                   ((pathname :reader source-pathname

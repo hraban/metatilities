@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defmacro nyi (&rest args)
   "Signals an error saying that this function is not yet implemented.  The args

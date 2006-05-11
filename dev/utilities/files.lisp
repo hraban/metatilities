@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defconstant +mac-os-filename-limit+ 31)
 

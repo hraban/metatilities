@@ -1,5 +1,5 @@
 
-(in-package metatilities)
+(in-package #:metatilities)
 
 (export-exported-symbols 'metabang.bind 'metatilities)
 

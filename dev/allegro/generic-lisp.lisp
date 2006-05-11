@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 ;;; ---------------------------------------------------------------------------
 ;;; specify that we're using the ALLEGRO interface

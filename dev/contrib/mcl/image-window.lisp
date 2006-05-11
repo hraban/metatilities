@@ -1,4 +1,4 @@
-(in-package ccl)
+(in-package #:ccl)
 
 (defclass image-window (window)
   ((image-dialog-item :initform nil :reader image-dialog-item)

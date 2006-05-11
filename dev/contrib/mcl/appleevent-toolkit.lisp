@@ -61,7 +61,7 @@
 ; on should also be disposed of with AEDisposeDesc first. I hope this makes sense.
 ; 
 
-(in-package ccl)
+(in-package #:ccl)
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (export '(create-appleevent choose-appleevent-target choose-process-dialog

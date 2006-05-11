@@ -1,6 +1,6 @@
 ;;;; -*- Mode: Lisp; Syntax: Common-Lisp -*-
 
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defun binary-search (predicate min max 
                                 &key (tolerance *samep-tolerance*)

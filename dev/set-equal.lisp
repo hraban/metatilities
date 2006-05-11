@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
 
 (defun set-equal (list1 list2 &rest args)
   "Returns t if list1 and list2 are equal (as sets). If list1 and list2 are not

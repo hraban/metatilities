@@ -8,7 +8,7 @@
 ;;;
 
 
-(in-package "BUNDLE-SYS")
+(in-package #:BUNDLE-SYS)
 
 (export '(load-framework-bundle-from-cfurl
           lookup-function-in-framework

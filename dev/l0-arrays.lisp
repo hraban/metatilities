@@ -1,4 +1,4 @@
-(in-package metatilities)
+(in-package #:metatilities)
         
 (defun linearize-array (array)
   (make-array (array-total-size array) :displaced-to array))
