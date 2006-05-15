@@ -381,6 +381,33 @@ that symbol is the name of the slot and is bound in the let.
                      ,@body)))))
            body))))
 
+;;; ---------------------------------------------------------------------------
+
+(defmacro push-end (value place &environment env)
+  "Like PUSH, except that the value goes on the end of the PLACE list.  
+If PLACE is (), then (value) is returned."
+  #+Explorer (declare (ignore env))
+  (multiple-value-bind (tmpvars tmpvals storevar storeform refform)
+      (get-setf-expansion place #-Explorer env)
+    (let ((oldval  (gensym "OLDVAL"))
+	  (newcons (gensym "NEWCONS")))
+    `(let* (,@(mapcar #'list tmpvars tmpvals)
+	    (,oldval ,refform)
+	    (,newcons (cons ,value nil)))
+       (if ,oldval
+	   (progn (setf (cdr (last ,oldval)) ,newcons)
+		  ,oldval)
+	   (let ((,@storevar ,newcons))
+	     ,storeform)))))
+  #+obsolete
+  (let ((place-to-setf place))
+    (once-only (place value)
+      `(if ,place
+           (progn
+             (setf (cdr (last ,place)) (cons ,value nil))
+             ,place)
+           (setf ,place-to-setf (cons ,value nil))))))
+
     
 ;;; ***************************************************************************
 ;;; *                              End of File                                *

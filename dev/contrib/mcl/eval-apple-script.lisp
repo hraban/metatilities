@@ -103,7 +103,7 @@ end tell"
 ;;; simple shell script support
 ;;; ---------------------------------------------------------------------------
 
-(defvar *applescript-host* "Finder")
+(defvar *applescript-host* "System Events")
 
 (defun do-shell-script (script) 
   (let ((command (format nil

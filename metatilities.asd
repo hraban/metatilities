@@ -47,7 +47,7 @@ See the file COPYING for details
                                             :depends-on ("package-additional"))
                                      (:file "graham" :depends-on ("anaphoric" "package-additional"))
                                      (:file "dates-and-times"
-                                            :depends-on ("anaphoric" "package-additional"))
+                                            :depends-on ("macros" "anaphoric" "package-additional"))
                                      (:file "files"
                                             :depends-on ("package-additional" "graham"))
                                      (:file "macros"
@@ -73,7 +73,7 @@ See the file COPYING for details
                                      (:file "threads")
 
                                      (:file "utilities"
-                                            :depends-on ("package-additional" "anaphoric" "macros"))  
+                                            :depends-on ("macros" "package-additional" "anaphoric" "macros"))  
                                      (:file "searching"
                                             :depends-on ("package-additional"))
                                      (:file "copy-file"

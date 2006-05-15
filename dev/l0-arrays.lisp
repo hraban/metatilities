@@ -1,7 +1,9 @@
 (in-package #:metatilities)
         
 (defun linearize-array (array)
-  (make-array (array-total-size array) :displaced-to array))
+  (make-array (array-total-size array) 
+              :displaced-to array
+              :element-type (array-element-type array)))
 
 (defun copy-array (array)
   (let ((storage (copy-seq (linearize-array array))))

@@ -4,6 +4,17 @@
 
 ;;; ---------------------------------------------------------------------------
 
+(defgeneric map-lines-in-file (function file-specifier)
+  (:documentation "Reads the file to which file-specifier resolves one line at a time \(using read-line\) and applies `function` to each line. File-specifier can be a string pointing to a file, a logical or physical pathname or a stream."))
+
+;;; ---------------------------------------------------------------------------
+
+(defgeneric map-forms-in-file (function file-specifier)
+  (:documentation "Reads file one form at a time \(using read\) and applies `function` to each one in turn."))
+
+
+;;; ---------------------------------------------------------------------------
+
 (defun nicely-format-filename (file stream &key
                                     (depth 2) (use-ellipsis? nil) (show-type? t) 
                                     (initial-ellipsis? nil))
@@ -176,11 +187,6 @@ additional args are passed along to the function."
 
 ;;; ---------------------------------------------------------------------------
 
-(defgeneric map-forms-in-file (function file-specifier)
-  (:documentation "Reads file one form at a time \(using read\) and applies `function` to each one in turn."))
-
-;;; ---------------------------------------------------------------------------
-
 (defmethod map-forms-in-file (fn (filename pathname))
   (with-open-file (stream filename
                           :direction :input)
@@ -201,11 +207,6 @@ additional args are passed along to the function."
   (with-open-file (stream filename
                           :direction :input)
     (map-lines-in-file fn stream)))
-
-;;; ---------------------------------------------------------------------------
-
-(defgeneric map-lines-in-file (function file-specifier)
-  (:documentation "Reads the file to which file-specifier resolves one line at a time \(using read-line\) and applies `function` to each line. File-specifier can be a string pointing to a file, a logical or physical pathname or a stream."))
 
 ;;; ---------------------------------------------------------------------------
 

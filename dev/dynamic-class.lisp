@@ -1,5 +1,16 @@
 (in-package #:metatilities)
 
+(defgeneric include-class-dependencies (class-type
+                                        dynamic-class class-list &rest parameters)
+  (:documentation ""))
+
+;;; ---------------------------------------------------------------------------
+
+(defgeneric existing-subclass (class-type class-list)
+  (:documentation ""))
+
+
+
 ;;; ---------------------------------------------------------------------------
 ;;; Support for dynamic classes based on the parameters for instantiation...
 ;;;

@@ -18,8 +18,8 @@
                                    (no-expand '*spy-no-expand*) (debug '*spy-debugging*)) (car forms)
            (values (cdr forms) stream no-newline no-expand 
                    ;; XXX The docstring for debugging-p-fn is wrong viz a viz t.  
-                ;; Let's hope it stays that way...
-                   (or (debugging-p-fn debug) '*spy-debugging*))))
+                   ;; Let's hope it stays that way...
+                   (or #+Ignore (debugging-p-fn debug) '*spy-debugging*))))
         (t (values forms '*spy-output* '*spy-no-newline* '*spy-no-expand* '*spy-debugging*))))
 
 (defun spy-do-form (form)
