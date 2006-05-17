@@ -16,26 +16,28 @@ See the file COPYING for details
   :long-description "These are metabang.com's Common Lisp basic utilities and what not."
   :components ((:module "dev"
                         :components ((:file "package")
+                                     (:file "api" 
+                                            :depends-on ("package"))
                                      (:file "l0-utils"
-                                            :depends-on ("package"))
+                                            :depends-on ("api"))
                                      (:file "l0-macros"
-                                            :depends-on ("package" "l0-utils"))
+                                            :depends-on ("api" "l0-utils"))
                                      (:file "l0-arrays"
-                                            :depends-on ("package"))
+                                            :depends-on ("api"))
                                      (:file "l0-clos"
-                                            :depends-on ("package"))
+                                            :depends-on ("api"))
                                      (:file "l0-files"
-                                            :depends-on ("package"))
+                                            :depends-on ("api"))
                                      (:file "set-equal"
-                                            :depends-on ("package"))
+                                            :depends-on ("api"))
                                      (:file "generic-lisp"
-                                            :depends-on ("package"))
+                                            :depends-on ("api"))
                                      (:file "generic-interface"
-                                            :depends-on ("package" "generic-lisp"
+                                            :depends-on ("api" "generic-lisp"
                                                          "l0-macros"))
                                      (:file "defclass-star"
-                                            :depends-on ("package" "l0-macros"))
+                                            :depends-on ("api" "l0-macros"))
                                      (:file "define-class"
-                                            :depends-on ("package" "defclass-star")))))
+                                            :depends-on ("api" "defclass-star")))))
     :depends-on (moptilities))
 

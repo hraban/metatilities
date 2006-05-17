@@ -9,29 +9,6 @@ See the file COPYING for details
 
 ;;; ---------------------------------------------------------------------------
 
-#+Remove
-;;Gary King 2006-04-03: borged into metatilities
-(defsystem metabang-generic-lisp
-  :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.5"
-  :depends-on (metatilities-base)
-  :maintainer "Gary Warren King <gwking@metabang.com>"
-  :licence "MIT Style license"
-  :components ((:module "what"
-  	        :pathname (make-pathname :directory `(,@(pathname-directory *load-truename*)
-                                        "dev"
-                                        ,(or #+OpenMCL "openmcl"
-                                             #+DIGITOOL "mcl"
-                                             #+SBCL     "sbcl"
-                                             #+allegro  "allegro" 
-                                             #-(or OpenMCL DIGITOOL SBCL allegro) "unsupported")))
-               :components ((:file "generic-lisp")
-                            #+DIGITOOL (:file "pop-up-menu")
-                            (:file "generic-interface-support" 
-                                   :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))))
-
-;;; ---------------------------------------------------------------------------
-
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
   :version "0.5"
@@ -39,7 +16,8 @@ See the file COPYING for details
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
   :long-description "These are the rest of metabang.com's Common Lisp utilities and what not."
-  
+  :properties ((:ait-timeout . 10) 
+               (:system-applicable-p . 3))
   :components ((:module "extensions"
                         :pathname #.(make-pathname :directory '(:relative "dev" "utilities"))
                         :components ((:file "package-additional")
@@ -73,7 +51,7 @@ See the file COPYING for details
                                      (:file "threads")
 
                                      (:file "utilities"
-                                            :depends-on ("macros" "package-additional" "anaphoric" "macros"))  
+                                            :depends-on ("macros" "graham"))  
                                      (:file "searching"
                                             :depends-on ("package-additional"))
                                      (:file "copy-file"

@@ -173,4 +173,12 @@ i.e. so you usually fix the problem and then call retry."
          (handler-bind ,binds
            (:retry))))))
 
+;;; ---------------------------------------------------------------------------
+
+(defmacro with-gensyms (syms &body body)
+  `(let ,(mapcar #'(lambda (s)
+                     `(,s (gensym)))
+                 syms)
+     ,@body))
+
 

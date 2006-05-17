@@ -19,7 +19,7 @@
 (defun write-gf-template (symbol stream)
   (let ((info (gf-info symbol)))
     (format stream "\(defgeneric ~(~A~) " (getf info :name))
-    (format stream "~(~A~)" (getf info :lambda-list))
+    (format stream "~(~A~)" (fix-lambda-list (getf info :lambda-list)))
     (when (and (getf info :method-combination)
                (not (eq (ccl::method-combination-name (getf info :method-combination)) 
                         'standard)))
@@ -29,6 +29,14 @@
       (format stream "~%  \(:documentation \"\"\)\)~%")))
   (terpri stream)
   (values))
+
+;;; ---------------------------------------------------------------------------
+
+(defun fix-lambda-list (list)
+  ;; not complete but hopefully good enough
+  (loop for item in list collect
+        (cond ((atom item) item)
+              ((consp item) (first item)))))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -44,7 +52,10 @@
 ;;; ---------------------------------------------------------------------------
 
 (defun build-defgenerics-for-undocumented-methods (package file)
-  (let* ((p (make-container 'package-container :packages package))
+  (let* ((p (make-container 'package-container 
+                            :packages package
+                            :exported-symbols-only-p nil
+                            :present-symbols-only-p t))
          (ms
           (sort
            (append
@@ -96,7 +107,11 @@
 
 #+Test
 (metatilities::build-defgenerics-for-undocumented-methods
- :cl-containers "user-home:darcs;cl-containers-generics.lisp") 
+ :cl-containers "user-home:darcs;cl-containers-generics.lisp")
+
+#+Test
+(metatilities::build-defgenerics-for-undocumented-methods
+ :metatilities "user-home:darcs;generics.lisp")
 
 #+Test
 (with-new-file (out "user-home:darcs;generics.lisp")
