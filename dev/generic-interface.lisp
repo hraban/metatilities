@@ -496,21 +496,6 @@ is an atom or a singleton list."
   (apply #'prompt-for* *default-interface* type message args))
 
 
-;;; ---------------------------------------------------------------------------
-;;; shell-command
-;;; ---------------------------------------------------------------------------
-
-(defmethod shell-command* (interface command &rest args)
-  (declare (ignore interface command args))
-  (warn "I don't know how to issue shell commands"))
-
-;;; ---------------------------------------------------------------------------
-
-(defmethod shell-command (command &rest args)
-  (apply #'shell-command* *default-interface* command args))
-
-
-
 ;;; ***************************************************************************
 ;;; *                              End of File                                *
 ;;; ***************************************************************************

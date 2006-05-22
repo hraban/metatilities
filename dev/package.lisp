@@ -1,4 +1,4 @@
-(in-package :common-lisp-user)
+(in-package #:common-lisp-user)
 
 (defpackage #:metabang.utilities
   (:nicknames #:metatilities)
@@ -202,25 +202,6 @@
    #:length-at-least-p
    #:length-at-most-p
    )
-  
-  ;; threads
-  (:export
-   #:make-thread
-   #:destroy-thread
-   #:current-thread
-   #:all-threads
-   #:thread-wait
-   #:thread-wait-with-timeout
-   #:thread-yield
-   #:thread-interrupt
-   #:thread-halt
-   #:with-timeout
-   #:without-interrupts
-   #:thread-name
-   #:store-foreground-streams
-   #:with-foreground-io
-   #:make-output-safe-thread
-   #:find-thread)
   
   ;; sockets
   (:export
@@ -522,7 +503,6 @@
    #:inspect-thing
    #:inspect-things
    #:prompt-for
-   #:shell-command
    
    #:parse-brief-slot
    #:class-copyable-p)
