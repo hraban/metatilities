@@ -81,14 +81,6 @@ Author: Gary Warren King
   (declare (ignore args))
   (cl-user::inspect thing))
 
-;;; ---------------------------------------------------------------------------
-;;; shell-command
-;;; ---------------------------------------------------------------------------
-
-#+Ignore
-;;?? Gary King 2005-11-16: needs implementation
-(defmethod shell-command* ((interface (eql :SBCL)) command &rest args)
-  )
 
 ;;; ***************************************************************************
 ;;; *                              End of File                                *

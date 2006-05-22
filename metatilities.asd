@@ -74,11 +74,6 @@ See the file COPYING for details
                                      (:file "generic-interface-support" 
                                             :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))
                
-               #+DIGITOOL
-               (:module "contrib"
-                        :pathname #.(make-pathname :directory '(:relative "dev" "contrib" "mcl"))
-                        :components ((:file "eval-apple-script")))
-               
                (:module "website"
                         :components ((:module "source"
                                               :components ((:static-file "index.lml"))))))
@@ -87,7 +82,6 @@ See the file COPYING for details
                  moptilities
                  cl-containers
                  metabang-bind
-                 #+Remove metabang-generic-lisp
                  defsystem-compatibility
 		 cl-fad)
   

@@ -95,15 +95,6 @@ Author: Gary Warren King
   (declare (ignore args))
   (ccl::inspect thing))
 
-;;; ---------------------------------------------------------------------------
-;;; shell-command
-;;; ---------------------------------------------------------------------------
-
-(defmethod shell-command* ((interface (eql :OPENMCL)) command &rest args)
-  (let* ((space-pos (position #\  command))
-         (command (if space-pos (subseq command 0 (1- space-pos)) command))
-         (shell-args (if space-pos (subseq command 0 (1- space-pos)) nil)))
-    (ccl::run-program command shell-args :output t)))
 
 ;;; ***************************************************************************
 ;;; *                              End of File                                *

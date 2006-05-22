@@ -312,14 +312,6 @@ It probably conses like hell too."
   (setf *default-instrument* (list instrument)))
 |#
 
-#|
-;;; ---------------------------------------------------------------------------
-;;; shell command
-;;; ---------------------------------------------------------------------------
-
-(defmethod shell-command* ((interface (eql :CCL)) command &rest args)
-  (apply #'system-command command args))
-|#
 
                         
 ;;; ***************************************************************************
