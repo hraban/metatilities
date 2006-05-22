@@ -471,12 +471,13 @@ supports all of #[H][define-condition]'s options and more."
                                        nil nil nil))
                    slots)))
       `(progn
-         ,@(when (member :export-p extra-options)
-             `((eval-when (:compile-toplevel)
-                 (export ',name))))
-         ,@(when (member :export-slots-p extra-options)
-             `((eval-when (:compile-toplevel)
-                (export ',(mapcar #'first slot-specs)))))
+         ,@(when (or (member :export-p extra-options)
+                     (member :export-slots-p extra-options))
+             `((eval-when (:compile-toplevel :load-toplevel :execute)
+                 ,@(when (member :export-p extra-options)
+                     `((export ',name)))
+                 ,@(when (member :export-slots-p extra-options)
+                     `((export ',(mapcar #'first slot-specs)))))))
          (define-condition 
            ,name ,supers ,slot-specs
            ,@options)))))
