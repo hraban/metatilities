@@ -7,7 +7,18 @@ See the file COPYING for details
 (defpackage :asdf-metatilities (:use #:asdf #:cl))
 (in-package :asdf-metatilities)
 
-;;; ---------------------------------------------------------------------------
+;; try hard
+(unless (find-system 'asdf-system-connections nil)
+ (when (find-package 'asdf-install)
+   (funcall (intern (symbol-name :install) :asdf-install) 'asdf-system-connections)))
+;; give up with a useful (?) error message
+(unless (find-system 'asdf-system-connections nil)
+  (error "The LIFT system requires ASDF-SYSTEM-CONNECTIONS. See 
+http://www.cliki.net/asdf-system-connections for details and download
+instructions."))
+
+;; now make sure it's loaded
+(operate 'load-op 'asdf-system-connections)
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
@@ -83,21 +94,20 @@ See the file COPYING for details
                  cl-containers
                  metabang-bind
                  defsystem-compatibility
-		 cl-fad)
-  
-  #+Ignore
-  (
-   #+Digitool
-   (("tcp-mcl") :base-dir "metatilities:source;utilities;mcl;")
-   #+Lispwork
-   (("tcp-lispworks") :base-dir "metatilities:source;utilities;lispworks;")
-   #+Allegro
-   (("tcp-allegro") :base-dir "metatilities:source;utilities;allegro;")
-   #+openmcl
-   (("tcp-openmcl") :base-dir "metatilities:source;utilities;openmcl;")))
+		 cl-fad
+                 asdf-system-connections))
 
-;;; ---------------------------------------------------------------------------
-   
+(asdf:defsystem-connection lift-and-metatilities
+  :requires (lift metatilities-base)
+  :perform (load-op :after (op c)
+                    (use-package (find-package :lift) 
+                                 (find-package :metatilities))
+                    (funcall (intern 
+                              (symbol-name :export-exported-symbols)
+                              'metatilities)
+                             :lift :metatilities)))
+
+
 #+(and DIGITOOL IGNORE)
 (defsystem :metatilities-development
   ((("profile")

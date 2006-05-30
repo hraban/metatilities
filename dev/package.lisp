@@ -203,19 +203,6 @@
    #:length-at-most-p
    )
   
-  ;; sockets
-  (:export
-   #:open-socket-stream
-   #:close-socket-stream
-   #:with-open-socket
-   #:start-server
-   #:socket-read 
-   #:socket-read-line
-   #:read-until
-   #:read-no-hang
-   #:read-until-no-hang
-   #:start-server)
-  
   ;; notifications
   (:export 
    #:basic-notification
