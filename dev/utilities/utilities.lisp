@@ -493,7 +493,8 @@ ignoreable or something.  Returns a flat list of symbols."
 
 (defun very-small-number-p (number)
   (declare (optimize (speed 3) (space 3) (debug 0) (safety 0))
-           (type number real))
+           ;; Gary King 2006-06-03: thanks to Cyrus Harmon
+           (type real number))
   (< (abs number) +very-small-number+))
 
 ;;; ---------------------------------------------------------------------------

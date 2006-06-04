@@ -38,7 +38,7 @@ instructions."))
                                      (:file "dates-and-times"
                                             :depends-on ("macros" "anaphoric" "package-additional"))
                                      (:file "files"
-                                            :depends-on ("package-additional" "graham"))
+                                            :depends-on ("graham" "macros"))
                                      (:file "macros"
                                             :depends-on ("package-additional"))
 
