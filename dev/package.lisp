@@ -18,7 +18,7 @@
    #:load-op #:compile-op #:test-op 
    #:operate #:oos)
   
-  #+(or OPENMCL DIGITOOL)               ; ??? I think this is the right thing...
+  #+(or openmcl digitool)               ; ??? I think this is the right thing...
   (:shadow #:line #:copy-file
            #:lock-owner #:lock-name
            #:selected? #:whitespacep)

@@ -16,6 +16,7 @@
   (cond ((and (consp (car forms)) (keywordp (caar forms)))
          (destructuring-bind (&key (stream '*spy-output*) (no-newline '*spy-no-newline*)
                                    (no-expand '*spy-no-expand*) (debug '*spy-debugging*)) (car forms)
+           (declare (ignore debug))
            (values (cdr forms) stream no-newline no-expand 
                    ;; XXX The docstring for debugging-p-fn is wrong viz a viz t.  
                    ;; Let's hope it stays that way...
