@@ -6,6 +6,7 @@
   '(:initform :initarg :reader :writer 
     :accessor :documentation :type
     :allocation))
+(defvar *prune-unknown-slot-options* nil)
 
 (defun parse-brief-slot
        (slot &optional
@@ -85,9 +86,8 @@ All other CLOS slot options are processed normally."
             (item (first items) (first items))
             (process-item? t t)
             (allowed-item? (member item all-allowed-options) 
-                        (member item all-allowed-options)))
+                           (member item all-allowed-options)))
            ((null items) nil)
-        
         (unless done-initform?
           (setf done-initform? t)
           (unless allowed-item?
@@ -116,15 +116,17 @@ All other CLOS slot options are processed normally."
         
         (when process-item?
           (unless (or done-documentation? (not (stringp item)))
-            (setf done-documentation? t)
+            (setf done-documentation? t
+                  process-item? nil)
             (push :documentation new-slot)
             (push item new-slot)
             ))
         
         (when process-item?
-          (when allowed-item?
+          (when (or (not *prune-unknown-slot-options*) allowed-item?)
             (push item new-slot)
             (pop items)
+            ;(assert items)
             (push (first items) new-slot)))
         
         ;(spy new-slot)
@@ -140,32 +142,6 @@ All other CLOS slot options are processed normally."
       
       ;; finish-new-slot cleans up duplicates
       (finish-new-slot (nreverse new-slot)))))
-
-#+test
-(defun test-parse-brief-slot ()
-  (spy (parse-brief-slot 'foo))
-  (spy (parse-brief-slot '(foo)))
-  (spy (parse-brief-slot '(foo t)))
-  (spy (parse-brief-slot '(foo t i)))
-  (spy (parse-brief-slot '(foo t r)))
-  (spy (parse-brief-slot '(foo t ia)))
-  (spy (parse-brief-slot '(foo t ia "test slot")))
-  (spy (parse-brief-slot '(foo t * "test slot")))
-  (spy (parse-brief-slot '(foo t "slot")))
-  (spy (parse-brief-slot '(bar :initform nil)))
-  (spy (parse-brief-slot 'baz t t))
-  (spy (parse-brief-slot 'baz t t 'class))
-  (spy (parse-brief-slot '(baz nil) t t 'class))
-  (spy (parse-brief-slot '(baz nil) nil t 'class))
-  (spy (parse-brief-slot '(baz nil) t nil 'class))
-  (spy (parse-brief-slot '(baz nil) nil nil 'class))
-  (spy (parse-brief-slot '(baz nil "the baz slot") t t 'class))
-  (spy (parse-brief-slot '(baz nil a) nil nil 'class))
-  (spy (parse-brief-slot '(baz nil r) nil nil 'class))
-  (spy (parse-brief-slot '(baz nil r) nil nil 'class nil "."))
-  (spy (parse-brief-slot '(baz nil r) t t 'class nil "."))
-  (spy (parse-brief-slot '(foo 2 :type 'fixnum ia "the foo class" :initarg :what)))
-  )
 
 (defmacro defclass-brief (name superclasses slots &rest class-options)
   "A macro with simpler syntax than `defclass' that allows some
@@ -216,7 +192,9 @@ separator is the hypen, in which case the wrapping parentheses are optional."
           (process-name-pre/post-fix name-postfix name-separator))
 	`(progn
            (defclass ,name ,superclasses
-	     ,(mapcar #'(lambda (s) (parse-brief-slot s accessors? initargs? name-prefix name-postfix name-separator))
+	     ,(mapcar #'(lambda (s) (parse-brief-slot
+                                     s accessors? initargs? 
+                                     name-prefix name-postfix name-separator))
 		      slots)
 	     ,@(when docstring
 	         `((:documentation ,docstring)))
@@ -231,45 +209,6 @@ separator is the hypen, in which case the wrapping parentheses are optional."
                             ,(getf (rest parse) :initform))))
            
            (values ',name))))))
-
-#+test
-(defclass-brief foo ()
-  "the Foo class"
-  (a
-    (b)
-    (c 1)
-    (d 2 i)
-    (e 3 ia "The E slot")))
-
-#+test
-(defclass-brief foo ()
-  "the Foo class"
-  (a b)
-  :automatic-accessors
-  :automatic-initargs
-  :name-prefix)
-
-#+test
-(defclass-brief foo ()
-  "the Foo class"
-  ((a 1 r)
-   (c 3 a))
-  :name-prefix)
-
-#+test
-(defclass-brief foo ()
-  "the Foo class"
-  (a b)
-  :automatic-accessors
-  :name-prefix)
-
-#+test
-(defclass-brief foo ()
-  "the Foo class"
-  (a b)
-  :automatic-accessors
-  :automatic-initargs
-  (:name-prefix ugly))
 
 ;;; ---------------------------------------------------------------------------
 
