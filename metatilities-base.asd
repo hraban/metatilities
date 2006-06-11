@@ -39,5 +39,6 @@ See the file COPYING for details
                                             :depends-on ("api" "l0-macros"))
                                      (:file "define-class"
                                             :depends-on ("api" "defclass-star")))))
-    :depends-on (moptilities))
+  :in-order-to ((test-op (test-op metatilities-base-test)))
+  :depends-on (moptilities))
 
