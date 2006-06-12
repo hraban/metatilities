@@ -96,7 +96,8 @@ All other CLOS slot options are processed normally."
               (push :initform new-slot)
               (push item new-slot))))
         
-        (when process-item?
+        ;;?? maybe want (not (slot-reader-writer-initarg-accessor-spec-p ?!))
+        (when (and process-item? (not (keywordp item)))
           (unless (or done-spec? (not (symbolp item)) allowed-item?)
             (setf done-spec? t)
             (setf process-item? nil)

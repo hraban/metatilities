@@ -48,15 +48,25 @@
   (ensure-same (parse-brief-slot '(foo t a)) '(foo :accessor foo :initform t)))
 
 (addtest
-  initform-accessor-1
+  initform-accessor-with-extra
   (ensure-same (parse-brief-slot '(foo t a :wow 2)) 
                '(foo :accessor foo :initform t :wow 2)))
 
 (addtest
-  initform-accessor-1
+  unbound-with-extra
+  (ensure-same (parse-brief-slot '(bar :unbound :component nil)) 
+               '(bar :component nil)))
+
+(addtest
+  initform-accessor-documentation
   (ensure-same (parse-brief-slot '(foo t ia "test slot")) 
                '(foo :accessor foo :initform t :initarg :foo 
                  :documentation "test slot")))
+
+(addtest
+  unbound-with-extra
+  (ensure-same (parse-brief-slot '(bar :unbound :component nil)) 
+               '(bar :component nil)))
 
 #|
   (spy (parse-brief-slot '(foo t ia "test slot")))
