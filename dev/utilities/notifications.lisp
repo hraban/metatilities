@@ -4,22 +4,8 @@
 ;;; class defs
 ;;; ---------------------------------------------------------------------------
 
-#+Ignore
-(define-debugging-class notifications-verbose ()
-  (:export-p t))
-
-;;; ---------------------------------------------------------------------------
-
-#+Ignore
-(define-debugging-class notifications (notifications-verbose)
-  (:export-p t))
-
-;;; ---------------------------------------------------------------------------
-
-(defclass* notification-manager (#+ignore copyable-mixin)
-  ((notification-linkages :unbound r))
-  #+Ignore
-  :copy-slots)
+(defclass* notification-manager ()
+  ((notification-linkages :unbound r)))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -30,14 +16,10 @@
 
 ;;; ---------------------------------------------------------------------------
 
-(defclass* basic-notification (#+Ignore copyable-mixin)
+(defclass* basic-notification ()
   ((filter-fn nil ir)
    (priority 0 ir)
-   (who-cares nil ir))
-  #+Ignore
-  (:copy-set-slots filter-fn priority)
-  #+Ignore
-  (:copy-slots who-cares))
+   (who-cares nil ir)))
 
 ;;; ---------------------------------------------------------------------------
 
@@ -271,6 +253,3 @@ of this type is created using 'args'."))
                    
 |#
 
-;;; ***************************************************************************
-;;; *                              End of File                                *
-;;; ***************************************************************************

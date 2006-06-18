@@ -783,9 +783,7 @@ specification.  KEYS-AND-PREDICATES is a list of key-predicate pairs:
 \(<key> <predicate>\), where precidence of key-predicate pair is based on
 order in KEYS-AND-PREDICATES list.  E.g., if \(\(first <\) \(second <\) \(third <\)\),
 then the sorter-predicate will first check wether the first item of one list is < 
-the first item of another, then the second, etc.  The sorter-predicate is used for
-performing a multi-sort using a sorting function that uses a predicate \(such as
-SORT\).  In COLAB, this is used by SORT-SPACE."
+the first item of another, then the second, etc."
   (lambda (item-1 item-2)
     (block sorter
       (loop for datum in keys-and-predicates do

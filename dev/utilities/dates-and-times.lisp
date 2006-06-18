@@ -25,6 +25,18 @@
 
 ;;; ---------------------------------------------------------------------------
 
+(defconstant +hours-per-day+ 24
+  "The number of hours in one day.")
+
+;;; ---------------------------------------------------------------------------
+
+(defconstant +seconds-per-day+
+  (* +hours-per-day+ +seconds-per-hour+)
+  "The number of seconds in one day.")
+     
+
+;;; ---------------------------------------------------------------------------
+
 ;;; these are lists of acceptable tokens
 
 ;;; make sure to use 'index-of' on these; it allows you to find an index in a deep list

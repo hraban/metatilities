@@ -350,6 +350,8 @@
    #:+seconds-per-hour+
    #:+seconds-per-minute+
    #:+usual-days-per-year+
+   #:+hours-per-day+
+   #:+seconds-per-hour+
    
    #:format-date
    #:days-in-month
