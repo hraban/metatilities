@@ -20,10 +20,14 @@
   (excl:exit))
 
 
-#|
 ;;; ---------------------------------------------------------------------------
 ;;; memory management stuff
 ;;; ---------------------------------------------------------------------------
+
+(defmethod collect-garbage* ((interface (eql :allegro)))
+  (excl:gc t))
+
+#|
 
 (defmethod total-bytes-allocated* ((interface (eql :allegro)))
   (values (allegro::total-bytes-allocated)))
@@ -33,10 +37,6 @@
 (defmethod gc-time* ((interface (eql :allegro)))
   (values (gctime)))
 
-;;; ---------------------------------------------------------------------------
-
-(defmethod collect-garbage* ((interface (eql :allegro)))
-  (gc))
 |#
 
 
