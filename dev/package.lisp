@@ -351,7 +351,7 @@
    #:+seconds-per-minute+
    #:+usual-days-per-year+
    #:+hours-per-day+
-   #:+seconds-per-hour+
+   #:+seconds-per-day+
    
    #:format-date
    #:days-in-month
