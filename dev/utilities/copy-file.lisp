@@ -38,13 +38,13 @@ keyword parameters are supported:
 
 * :if-exists
     this can be either :supersede or :error (the default). If it is :error then
-a source/target-source-does-not-exist-error will be signaled if the FORM pathname
-designator does not exist.
+a source/target-target-already-exists-error will be signaled if the file designated
+by the TO pathname already exists.
 
 * :if-does-not-exist 
     this can be either :ignore or :error (the default). If it is :error then
-a source/target-target-already-exists-error will be signaled if the file designated
-by the TO pathname already exists.
+a source/target-source-does-not-exist-error will be signaled if the FROM pathname
+designator does not exist.
 "
   (assert (member if-exists '(:error :supersede))
           nil
