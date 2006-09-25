@@ -27,14 +27,13 @@
 (defmethod collect-garbage* ((interface (eql :allegro)))
   (excl:gc t))
 
+(defmethod total-bytes-allocated* ((interface (eql :allegro)))
+  (values (sys::gsgc-totalloc-bytes t)))
+
+
 #|
 
-(defmethod total-bytes-allocated* ((interface (eql :allegro)))
-  (values (allegro::total-bytes-allocated)))
-
-;;; ---------------------------------------------------------------------------
-
-(defmethod gc-time* ((interface (eql :allegro)))
+efmethod gc-time* ((interface (eql :allegro)))
   (values (gctime)))
 
 |#
