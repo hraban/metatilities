@@ -63,22 +63,26 @@ necessary window close method so that clean-up-view is called."))
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod (setf left-margin) :after ((value fixnum) (view margins-mixin))
+(defmethod (setf left-margin) :after (value (view margins-mixin))
+  (check-type value fixnum)
   (note-view-settings-changed view))
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod (setf top-margin) :after ((value fixnum) (view margins-mixin))
+(defmethod (setf top-margin) :after (value (view margins-mixin))
+  (check-type value fixnum)
   (note-view-settings-changed view))
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod (setf right-margin) :after ((value fixnum) (view margins-mixin))
+(defmethod (setf right-margin) :after (value (view margins-mixin))
+  (check-type value fixnum)
   (note-view-settings-changed view))
 
 ;;; ---------------------------------------------------------------------------
 
-(defmethod (setf bottom-margin) :after ((value fixnum) (view margins-mixin))
+(defmethod (setf bottom-margin) :after (value (view margins-mixin))
+  (check-type value fixnum)
   (note-view-settings-changed view))
 
 #|
