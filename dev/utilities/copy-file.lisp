@@ -21,7 +21,8 @@
 
 ;;; ---------------------------------------------------------------------------
 
-(define-condition source/target-source-does-not-exist-error (source/target-file-error)
+(define-condition source/target-source-does-not-exist-error
+    (source/target-file-error)
                   ()
   (:report (lambda (c s)
              (format s "File action failed because source ~S does not exist"
@@ -70,13 +71,13 @@ designator does not exist.
                (unless out
                  (error (make-condition 'source/target-target-already-exists
                                         :pathname from
-                                        :to to)))
+                                        :target-pathname to)))
                (copy-stream in out))))
          (values t))
         (t
          ;; no source file!
          (ecase if-does-not-exist
            ((:error) (error 'source/target-source-does-not-exist-error
-                            :pathname from :to to))
+                            :pathname from :target-pathname to))
            ((:ignore) nil)))))
 
