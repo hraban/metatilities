@@ -81,3 +81,9 @@ designator does not exist.
                             :pathname from :target-pathname to))
            ((:ignore) nil)))))
 
+(defun move-file (from to &rest args &key (if-does-not-exist :error)
+		  (if-exists :error))
+  (declare (dynamic-extent args)
+	   (ignore if-exists if-does-not-exist))
+  (when (apply #'copy-file from to args)
+    (delete-file from)))
