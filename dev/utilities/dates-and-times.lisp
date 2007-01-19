@@ -911,7 +911,7 @@ None of %c, %F, %p, %x, %X, %Z, %z are implemented."
                             ((char= char #\z) (nyi))
                             
                             (t
-                             (error "Ouch"))))
+                             (error "Ouch - unknown formatter '%~c" char))))
                           (t char)))))))
   
 ;;; ---------------------------------------------------------------------------
