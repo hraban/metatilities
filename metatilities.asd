@@ -13,7 +13,7 @@ See the file COPYING for details
    (funcall (intern (symbol-name :install) :asdf-install) 'asdf-system-connections)))
 ;; give up with a useful (?) error message
 (unless (find-system 'asdf-system-connections nil)
-  (error "The LIFT system requires ASDF-SYSTEM-CONNECTIONS. See 
+  (error "The metatilities system requires asdf-system-connections. See 
 http://www.cliki.net/asdf-system-connections for details and download
 instructions."))
 

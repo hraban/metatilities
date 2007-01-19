@@ -16,7 +16,7 @@
           (return-from same-options-p nil)))
   (values t))
 
-(deftestsuite test-parse-brief-slot ()
+(deftestsuite test-parse-brief-slot (metatilities-base-test)
   ()
   (:dynamic-variables (*automatic-slot-accessors?* nil)
                       (*automatic-slot-initargs?* nil)
