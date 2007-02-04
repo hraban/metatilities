@@ -29,73 +29,67 @@ instructions."))
   :long-description "These are the rest of metabang.com's Common Lisp utilities and what not."
   :properties ((:ait-timeout . 10) 
                (:system-applicable-p . 3))
-  :components ((:module "extensions"
-                        :pathname #.(make-pathname :directory '(:relative "dev" "utilities"))
-                        :components ((:file "package-additional")
-                                     (:file "anaphoric"
-                                            :depends-on ("package-additional"))
-                                     (:file "graham" :depends-on ("anaphoric" "package-additional"))
-                                     (:file "dates-and-times"
-                                            :depends-on ("macros" "anaphoric" "package-additional"))
-                                     (:file "files"
-                                            :depends-on ("graham" "macros"))
-                                     (:file "macros"
-                                            :depends-on ("package-additional"))
-
-                                     #+Remove
-                                     (:file "locks"
-                                            :depends-on ("package-additional"))
-
-                                     #+Ignore
-                                     ;;?? Gary King 2005-11-17: Need priority queue heap
-                                     (:file "notifications"
-                                            :depends-on ("package-additional" "graham"))
-
-                                     (:file "sequences"
-                                            :depends-on ("package-additional"))
-                                     (:file "spy"
-                                            :depends-on ("package-additional" "macros"))
-                                     (:file "strings"
-                                            :depends-on ("package-additional"))
-                                     
-                                     #+Remove
-                                     (:file "threads")
-
-                                     (:file "utilities"
-                                            :depends-on ("macros" "graham"))  
-                                     (:file "searching"
-                                            :depends-on ("package-additional"))
-                                     (:file "copy-file"
-	                                    :depends-on ("package-additional"))
-	                             (:file "views-and-windows"
-                                            :depends-on ("package-additional"))))
+  :components ((:module 
+		"extensions"
+		:pathname #.(make-pathname 
+			     :directory '(:relative "dev" "utilities"))
+		:components 
+		((:file "package-additional")
+		 (:file "anaphoric"
+			:depends-on ("package-additional"))
+		 (:file "graham"
+			:depends-on ("anaphoric" "package-additional"))
+		 (:file "dates-and-times"
+			:depends-on ("macros" "anaphoric" "package-additional"))
+		 (:file "files"
+			:depends-on ("graham" "macros"))
+		 (:file "macros"
+			:depends-on ("package-additional"))
+		 (:file "sequences"
+			:depends-on ("package-additional"))
+		 (:file "spy"
+			:depends-on ("package-additional" "macros"))
+		 (:file "strings"
+			:depends-on ("package-additional"))
+		 (:file "utilities"
+			:depends-on ("macros" "graham"))  
+		 (:file "searching"
+			:depends-on ("package-additional"))
+		 (:file "copy-file"
+			:depends-on ("package-additional"))
+		 (:file "views-and-windows"
+			:depends-on ("package-additional"))))
                
+               (:module 
+		"what"
+		:pathname #.(make-pathname 
+			     :directory `(,@(pathname-directory *load-truename*)
+					    "dev"
+					    ,(or #+OpenMCL "openmcl"
+						 #+DIGITOOL "mcl"
+						 #+SBCL     "sbcl"
+						 #+allegro  "allegro" 
+						 #-(or OpenMCL DIGITOOL SBCL 
+						       allegro)
+						 "unsupported")))
+		:components ((:file "generic-lisp")
+			     #+DIGITOOL (:file "pop-up-menu")
+			     (:file "generic-interface-support" 
+				    :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))
                
-               (:module "what"
-  	                :pathname #.(make-pathname 
-                                     :directory `(,@(pathname-directory *load-truename*)
-                                                  "dev"
-                                                  ,(or #+OpenMCL "openmcl"
-                                                       #+DIGITOOL "mcl"
-                                                       #+SBCL     "sbcl"
-                                                       #+allegro  "allegro" 
-                                                       #-(or OpenMCL DIGITOOL SBCL allegro) "unsupported")))
-                        :components ((:file "generic-lisp")
-                                     #+DIGITOOL (:file "pop-up-menu")
-                                     (:file "generic-interface-support" 
-                                            :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))
-               
-               (:module "website"
-                        :components ((:module "source"
-                                              :components ((:static-file "index.lml"))))))
+               (:module 
+		"website"
+		:components
+		((:module "source"
+			  :components ((:static-file "index.lml"))))))
   
-    :depends-on (metatilities-base 
-                 moptilities
-                 cl-containers
-                 metabang-bind
-                 defsystem-compatibility
-		 cl-fad
-                 asdf-system-connections))
+    :depends-on (:metatilities-base 
+                 :moptilities
+                 :cl-containers
+                 :metabang-bind
+                 :defsystem-compatibility
+		 :cl-fad
+                 :asdf-system-connections))
 
 (asdf:defsystem-connection lift-and-metatilities
   :requires (lift metatilities-base)
