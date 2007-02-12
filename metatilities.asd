@@ -10,19 +10,21 @@ See the file COPYING for details
 ;; try hard
 (unless (find-system 'asdf-system-connections nil)
  (when (find-package 'asdf-install)
-   (funcall (intern (symbol-name :install) :asdf-install) 'asdf-system-connections)))
+   (funcall (intern (symbol-name :install) :asdf-install)
+	    'asdf-system-connections)))
 ;; give up with a useful (?) error message
 (unless (find-system 'asdf-system-connections nil)
-  (error "The metatilities system requires asdf-system-connections. See 
+  (warn "The metatilities system works best with asdf-system-connections. See 
 http://www.cliki.net/asdf-system-connections for details and download
 instructions."))
 
 ;; now make sure it's loaded
-(operate 'load-op 'asdf-system-connections)
+(when (find-system 'asdf-system-connections nil)
+  (operate 'load-op 'asdf-system-connections))
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.6.2"
+  :version "0.6.3"
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
@@ -91,6 +93,7 @@ instructions."))
 		 :cl-fad
                  :asdf-system-connections))
 
+#+asdf-system-connections
 (asdf:defsystem-connection lift-and-metatilities
   :requires (lift metatilities-base)
   :perform (load-op :after (op c)
@@ -102,8 +105,3 @@ instructions."))
                              :lift :metatilities)))
 
 
-#+(and DIGITOOL IGNORE)
-(defsystem :metatilities-development
-  ((("profile")
-    :base-dir "metatilities:source;contrib;mcl;"))
-  :depends-on (METATILITIES PHEX METABANG.INTERFACE))	
