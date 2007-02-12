@@ -1,4 +1,13 @@
 (in-package #:metatilities)
+
+(eval-always 
+  (export 
+   #:source/target-file-error
+   #:source-pathname
+   #:target-pathname
+   #:source/target-target-already-exists-error
+   #:source/target-source-does-not-exist-error
+   #:copy-file))
         
 (define-condition source/target-file-error (file-error)
                   ((pathname :reader source-pathname

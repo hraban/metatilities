@@ -496,14 +496,6 @@
    #:parse-brief-slot
    #:class-copyable-p)
   
-  (:export 
-   #:source/target-file-error
-   #:source-pathname
-   #:target-pathname
-   #:source/target-target-already-exists-error
-   #:source/target-source-does-not-exist-error
-   #:copy-file)
-
   (:export
    #:length-at-least-p
    #:length-at-most-p
