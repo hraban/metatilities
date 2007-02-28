@@ -18,13 +18,13 @@ See the file COPYING for details
 http://www.cliki.net/asdf-system-connections for details and download
 instructions."))
 
-;; now make sure it's loaded
+;; now try again
 (when (find-system 'asdf-system-connections nil)
   (operate 'load-op 'asdf-system-connections))
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.6.3"
+  :version "0.6.4"
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
