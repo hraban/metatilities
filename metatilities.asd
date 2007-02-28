@@ -8,6 +8,8 @@ See the file COPYING for details
 (in-package :asdf-metatilities)
 
 ;; try hard
+#+(or)
+;; no, too weird
 (unless (find-system 'asdf-system-connections nil)
  (when (find-package 'asdf-install)
    (funcall (intern (symbol-name :install) :asdf-install)
