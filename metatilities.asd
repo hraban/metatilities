@@ -16,7 +16,7 @@ See the file COPYING for details
 	    'asdf-system-connections)))
 ;; give up with a useful (?) error message
 (unless (find-system 'asdf-system-connections nil)
-  (warn "The metatilities system works best with asdf-system-connections. See 
+  (print "The metatilities system works best with asdf-system-connections. See 
 http://www.cliki.net/asdf-system-connections for details and download
 instructions."))
 
