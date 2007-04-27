@@ -354,35 +354,6 @@ that symbol is the name of the slot and is bound in the let.
 
 ;;; ---------------------------------------------------------------------------
 
-(defvar *file-if-exists* :supersede
-  "Default behavior to use when opening files if they already exist.")
-
-;;; ---------------------------------------------------------------------------
-
-(defvar *file-print-right-margin* nil
-  "Default print right margin to use in with-new-file")
-
-;;; ---------------------------------------------------------------------------
-
-(defmacro with-new-file ((stream pathname &key
-                                 (reset-io t) 
-                                 (print-right-margin *file-print-right-margin*))
-                         &body body)
-  `(with-open-file (,stream ,pathname 
-                            :if-exists *file-if-exists*
-                            :if-does-not-exist :create
-                            :direction :output)
-     (let ((*print-right-margin* (or ,print-right-margin *print-right-margin*)))
-       ,@(if reset-io
-           (with-gensyms (the-package)
-             `((let ((,the-package *package*))
-                 (with-standard-io-syntax 
-                   (let ((*package* ,the-package))
-                     ,@body)))))
-           body))))
-
-;;; ---------------------------------------------------------------------------
-
 (defmacro push-end (value place &environment env)
   "Like PUSH, except that the value goes on the end of the PLACE list.  
 If PLACE is (), then (value) is returned."
