@@ -177,3 +177,32 @@ i.e. so you usually fix the problem and then call retry."
      ,@body))
 
 
+(defvar *file-if-exists* :supersede
+  "Default behavior to use when opening files if they already exist.")
+
+(defvar *file-print-right-margin* nil
+  "Default print right margin to use in with-new-file")
+
+(defmacro with-new-file ((stream pathname &rest args &key
+                                 (reset-io t)
+                                 (print-right-margin *file-print-right-margin*)
+				 &allow-other-keys)
+                         &body body)
+  (remf args :reset-io)
+  (remf args :print-right-margin)
+  `(progn
+     (ensure-directories-exist ,pathname)
+     (with-open-file (,stream ,pathname
+			      :if-exists *file-if-exists*
+			      :if-does-not-exist :create
+			      :direction :output
+			      ,@args)
+       (let ((*print-right-margin*
+	      (or ,print-right-margin *print-right-margin*)))
+	 ,@(if reset-io
+	       (with-gensyms (the-package)
+		 `((let ((,the-package *package*))
+		     (with-standard-io-syntax
+		       (let ((*package* ,the-package))
+			 ,@body)))))
+	       body)))))
