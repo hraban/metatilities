@@ -26,7 +26,7 @@ instructions."))
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.6.4"
+  :version "0.6.5"
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
@@ -90,7 +90,7 @@ instructions."))
                  :cl-containers
                  :metabang-bind
                  :defsystem-compatibility
-		 :cl-fad
+		 ;:cl-fad
                  :asdf-system-connections))
 
 #+asdf-system-connections

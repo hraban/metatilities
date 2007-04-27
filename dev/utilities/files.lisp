@@ -2,18 +2,11 @@
 
 (defconstant +mac-os-filename-limit+ 31)
 
-;;; ---------------------------------------------------------------------------
-
 (defgeneric map-lines-in-file (function file-specifier)
   (:documentation "Reads the file to which file-specifier resolves one line at a time \(using read-line\) and applies `function` to each line. File-specifier can be a string pointing to a file, a logical or physical pathname or a stream."))
 
-;;; ---------------------------------------------------------------------------
-
 (defgeneric map-forms-in-file (function file-specifier)
   (:documentation "Reads file one form at a time \(using read\) and applies `function` to each one in turn."))
-
-
-;;; ---------------------------------------------------------------------------
 
 (defun nicely-format-filename (file stream &key
                                     (depth 2) (use-ellipsis? nil) (show-type? t) 
@@ -35,8 +28,6 @@
               (and initial-ellipsis? (<= (length directories) depth))
               (last directories depth)))))
 
-;;; ---------------------------------------------------------------------------
-
 (defun file-to-list (&optional (pathname (choose-file-question)))
   "Convert a file into a list by opening it and calling read repeatedly."
   (let ((eof (gensym)))
@@ -44,8 +35,6 @@
       (loop for line = (read in nil eof)
             while (not (eq line eof))
             collect line))))
-
-;;; ---------------------------------------------------------------------------
 
 #+GLU-GENERIC-LOAD-UTILS
 ;; Add this to experiment interface someday.
@@ -66,8 +55,6 @@
             minute
             type)))
 
-;;; ---------------------------------------------------------------------------
-
 (defun unique-file-name-from-date (name &key (date (get-universal-time))
                                         (type "lisp"))
   "Returns a namestring whose suffix is the `date` in the form YYMMMDDHHMMSS. The names prefix will include as much of the original name as possible given the limitations of the underlying OS. The name is _not_ guaranteed to be unique. [[Bad name]]."
@@ -75,7 +62,6 @@
          (date-part 
           (format nil "~2,'0d~2,'0d~2,'0d~2,'0d~2,'0d~2,'0d"
                   year (month->string month :short) date hour minute second)))
-    
     (namestring
      (make-pathname 
       :name (format nil "~A-~A" 
@@ -90,8 +76,6 @@
                     date-part)
       :type type))))
 
-;;; ---------------------------------------------------------------------------
-
 (defun pretty-namestring-from-date (prefix &optional (date (get-universal-time)))
   "Returns a representation of the date \(which defaults to the current date and time\) preceeded by a prefix. The date is printed as MM/DD/YYYY."
   (multiple-value-bind (second minute hour date month year) (decode-universal-time date)
@@ -104,8 +88,6 @@
              year))))
 
 ;;; (pretty-namestring-from-date 'foo) =>"FOO-12/17/2004"
-
-;;; ---------------------------------------------------------------------------
 
 (defun eos-namestring-from-date (prefix &optional (date (get-universal-time)))
   "forms a namestring based on date and time, in the form of
@@ -127,8 +109,6 @@
   (bind:bind ((str (eos-namestring-from-date prefix date)))
    (substring str 0 (- (length str) 2))))
 
-;;; ---------------------------------------------------------------------------
-
 ;; Rename the file based on the time it was created...
 (defun rename-file-if-present (filename)
   "Renames a file to a unique name based on its file-write-date. See unique-file-name-from-date."
@@ -140,17 +120,11 @@
                                         :date (file-write-date filename)))
                   filename))))
 
-;;; ---------------------------------------------------------------------------
-
 (defgeneric uniquify-file-name (file-specifier)
   (:documentation "Returns a file name that is not currently in use. The strategy used if there is a conflict is to append an integer to the name component until there is no conflict. This could fail in multi-threaded situations."))
 
-;;; ---------------------------------------------------------------------------
-
 (defmethod uniquify-file-name ((namestring pathname))
   (uniquify-file-name (namestring namestring)))
-
-;;; ---------------------------------------------------------------------------
 
 (defmethod uniquify-file-name ((namestring string))
   "Returns a file name with the prefix NAMESTRING but which is guarateed not to
@@ -167,8 +141,6 @@
        :defaults namestring)
       namestring)))
 
-;;; ---------------------------------------------------------------------------
-
 (defun map-files (wildcarded-file-spec function &rest args)
   "Apply the function to all of the files in wildcarded-file-spec. Any
 additional args are passed along to the function." 
@@ -178,21 +150,15 @@ additional args are passed along to the function."
                            wildcarded-file-spec))
     (apply function file args)))
 
-;;; ---------------------------------------------------------------------------
-
 (defmethod map-forms-in-file (fn (filename string))
   (with-open-file (stream filename
                           :direction :input)
     (map-forms-in-file fn stream)))
 
-;;; ---------------------------------------------------------------------------
-
 (defmethod map-forms-in-file (fn (filename pathname))
   (with-open-file (stream filename
                           :direction :input)
     (map-forms-in-file fn stream)))
-
-;;; ---------------------------------------------------------------------------
 
 (defmethod map-forms-in-file (fn stream)
   (loop for f = (read stream nil :eof) then (read stream nil :eof)   
@@ -201,21 +167,15 @@ additional args are passed along to the function."
           (funcall fn f)
           (reader-error (c) (print c)))))
 
-;;; ---------------------------------------------------------------------------
-
 (defmethod map-lines-in-file (fn (filename string))
   (with-open-file (stream filename
                           :direction :input)
     (map-lines-in-file fn stream)))
 
-;;; ---------------------------------------------------------------------------
-
 (defmethod map-lines-in-file (fn (filename pathname))
   (with-open-file (stream filename
                           :direction :input)
     (map-lines-in-file fn stream)))
-
-;;; ---------------------------------------------------------------------------
 
 (defmethod map-lines-in-file (fn stream)
   (flet ((get-next-line ()
@@ -223,8 +183,6 @@ additional args are passed along to the function."
     (loop for l = (get-next-line) then (get-next-line)
           until (eq l :eof) do
           (funcall fn l))))
-
-;;; ---------------------------------------------------------------------------
 
 (defmacro map-lines (fn source)
   "An enpowered version of map-lines-in-file. This one is a macro
@@ -251,8 +209,6 @@ source."
            (when ,close-stream?
              (close ,stream)))))))
 
-;;; ---------------------------------------------------------------------------
-
 (defun file-newer-than-file-p (file1 file2)
   "Compares the write dates of `file1' and `file' and returns T if `file' is newer than
 `file2' or if it cannot be determined.  `file1' is usually the source file and `file2'
@@ -262,9 +218,7 @@ the object file."
   (< (or (file-write-date file2) 0)
      (or (file-write-date file1) 1)))
 
-;;; ---------------------------------------------------------------------------
-
-#+(and MCL (not OPENMCL))
+#+(and mcl (not openmcl))
 (defun fix-type-and-creator (&optional (wildcarded-file-spec (choose-directory-question)))
   (map-files (ensure-wild-file-spec wildcarded-file-spec)
              (lambda (f)
@@ -279,8 +233,6 @@ the object file."
                        (t
                         nil))))))
 
-;;; ---------------------------------------------------------------------------
-
 ;;?? May be MCL specific; :wild is not necessarily portable
 (defun ensure-wild-file-spec (file-spec)
   (if (wild-pathname-p file-spec)
@@ -288,8 +240,6 @@ the object file."
     (merge-pathnames 
      (make-pathname :name :wild :type :wild)
      file-spec)))
-
-;;; ---------------------------------------------------------------------------
 
 (defun remove-dead-versions (wildcarded-file-spec &key (delete? nil))
   (let ((candidates nil))
@@ -308,8 +258,6 @@ the object file."
       (dolist (file candidates)
         (delete-file file)))))
 
-;;; ---------------------------------------------------------------------------
-
 #+MCL
 (defun fix-crlfs (wildcarded-file-spec)
   (map-files
@@ -323,8 +271,6 @@ the object file."
    (ensure-wild-file-spec wildcarded-file-spec)
    (lambda (f)
      (convert-newlines-to-unix f :no-query t :verbose? nil))))
-
-;;; ---------------------------------------------------------------------------
 
 #+MCL
 (defun convert-newlines (infile &key outfile (replace? (not outfile)) 
@@ -376,8 +322,6 @@ the object file."
   (when replace?
     (rename-file outfile infile :if-exists :supersede)))
 
-;;; ---------------------------------------------------------------------------
-
 (defun file-package (pathname)
   "Tries to determine the package of a file by reading it one form at a time and looking for in-package forms. Though it does handle the case of a file with multiple in-package and defpackages forms -- in which case it returns the last in-package encountered -- it  not handle the general case of files with multiple in-package forms."
   (let ((putative-package nil)) 
@@ -394,19 +338,6 @@ the object file."
                ((and putative-package (stop-form-p form))
                 (return-from file-package putative-package))))
        pathname))))
-
-;;; ---------------------------------------------------------------------------
-
-#+Old
-;; this one gives after after the first in-package.
-(defun file-package (pathname)
-  "Tries to determine the package of a file by reading it and return the package name of the first in-package form encountered. This obviously does not handle the case of files with multiple in-package forms."
-  (map-forms-in-file 
-   (lambda (form)
-     (when (and (consp form)
-                (eq (first form) 'in-package))
-       (return-from file-package (second form))))
-   pathname))
 
 #+New
 (defun file-package (pathname &key (ignore-errors? t))
@@ -426,17 +357,11 @@ the object file."
         (return-from file-package (second form))))
     pathname)))
 
-;;; ---------------------------------------------------------------------------
-
 (defvar *glu-blast-pathname-defaults*
   "glu:root;**;*.*")
 
-;;; ---------------------------------------------------------------------------
-
 (defvar *glu-blast-default-selector*
   (constantly nil))
-
-;;; ---------------------------------------------------------------------------
 
 (defun glu-blast (&optional (deletep *glu-blast-default-selector*)
                    (pathname-defaults *glu-blast-pathname-defaults*)
@@ -448,8 +373,6 @@ the object file."
                  (when (funcall deletep pathname)
                    (format t "~&;Deleting: ~s" pathname)
                    (funcall delete-fn pathname))))) 
-
-;;; ---------------------------------------------------------------------------
 
 (defun pathname-is-old-cvs-junk-p (f)
   (let* ((file-name (namestring f))
@@ -467,8 +390,6 @@ the object file."
 (glu-blast #'pathname-is-old-cvs-junk-p  
             (format nil "~A;**;*.*" user::*glu-search-systems-root*))
 
-;;; ---------------------------------------------------------------------------
-
 #+DIGITOOL
 (defun touch-file (file)
   "Updates the file-write-date of `file`."
@@ -477,12 +398,8 @@ the object file."
     (with-new-file (out file)
       (format out ""))))
 
-;;; ---------------------------------------------------------------------------
-
 (defparameter *filename-escape-characters* 
   (list #\/ #\* #\\ #\  #\< #\> #\@ #\. #\: #\( #\) #\& #\ ))
-
-;;; ---------------------------------------------------------------------------
 
 (defun ensure-filename-safe-for-os (name)
   (let* ((array (make-array (* 2 (length name)) :fill-pointer 0 :adjustable t)))
@@ -501,9 +418,6 @@ the object file."
                     (add-char ch))))
       (coerce array 'string))))
 
-;;; ---------------------------------------------------------------------------
-
-
 ;; we may want to conditionalize on OS here...
 (defun good-filename-char-p ( char )
   "Returns T if CHAR is legal in a filename."
@@ -511,23 +425,15 @@ the object file."
    (alphanumericp char)
    (find char "- ")))
 
-;;; ---------------------------------------------------------------------------
-
 (defun remove-illegal-filename-characters (name)
   "Removes illegal characters from the file name NAME."
   (remove-if-not #'good-filename-char-p name))
 
-;;; ---------------------------------------------------------------------------
-
 (defgeneric shorten-filename-for-os (file-specifier)
   (:documentation "Returns a file-name for file-specifier such that it is a valid name for the current underlying OS. Mainly, this means ensuring that the name component is not too long."))
 
-;;; ---------------------------------------------------------------------------
-
 (defmethod shorten-filename-for-os ((name pathname))
   (shorten-filename-for-os (namestring name)))
-
-;;; ---------------------------------------------------------------------------
 
 (defmethod shorten-filename-for-os ((name string))
   "Returns a unique _and_ legal filename for an OS."
@@ -535,10 +441,10 @@ the object file."
   (let* ((filetype (pathname-type name))
          (filename (pathname-name name))
          (type-length (1+ (length filetype))))
-    
     (if (> (+ type-length (length filename)) (maximum-filename-length))
       (shorten-filename-for-os
-       (uniquify-file-name (namestring
+       (uniquify-file-name
+	(namestring
                             (merge-pathnames 
                              (make-pathname 
                               :name (subseq filename 0 
@@ -547,13 +453,9 @@ the object file."
                              name))))
       name)))
 
-;;; ---------------------------------------------------------------------------
-
 (defun maximum-filename-length ()
   (or #+(and DIGITOOL (not CCL-5.1)) +mac-os-filename-limit+
       255)) 
-
-;;; ---------------------------------------------------------------------------
 
 #+MCL
 (defmethod samep ((file1 pathname) (file2 pathname))
@@ -574,10 +476,6 @@ the object file."
       (mapc #'close (list s1 s2)))
     (values (null result) (reverse result))))
 
-;;; ---------------------------------------------------------------------------
-
-#+Ignore
-;;?? Use cl-fad
 (defun delete-directory (directory-spec &key (verbose? nil) (dry-run? nil))
   (unless (directory-name-p directory-spec)
     (setf directory-spec 
@@ -618,10 +516,6 @@ the object file."
                   (list directory-spec)))
     (values nil)))
 
-;;; ---------------------------------------------------------------------------
-
-#+Ignore
-;;?? Use CL-FAD
 (defun directory-name-p (directory-spec)
   (and (null (pathname-name directory-spec))
        (null (pathname-type directory-spec))))
@@ -639,10 +533,7 @@ the object file."
   (touch-file "user-home:temporary;foo;bar;biz;what.x")
   (touch-file "user-home:temporary;foo;bar;biz;what.y")
   (touch-file "user-home:temporary;foo;bar;biz;what.z"))
+
 #+Test
 (delete-directory "user-home:temporary;foo;" :verbose? t :dry-run? t)        
 
-
-;;; ***************************************************************************
-;;; *                              End of File                                *
-;;; ***************************************************************************
