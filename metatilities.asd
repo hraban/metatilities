@@ -59,8 +59,6 @@ instructions."))
 			:depends-on ("macros" "graham"))  
 		 (:file "searching"
 			:depends-on ("package-additional"))
-		 (:file "copy-file"
-			:depends-on ("package-additional"))
 		 (:file "views-and-windows"
 			:depends-on ("package-additional"))))
                

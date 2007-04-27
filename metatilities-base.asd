@@ -40,7 +40,13 @@ See the file COPYING for details
 		 (:file "defclass-star"
 			:depends-on ("api" "l0-macros"))
 		 (:file "define-class"
-			:depends-on ("api" "defclass-star")))))
+			:depends-on ("api" "defclass-star"))))
+	       (:module 
+		"additional"
+		:pathname #.(make-pathname 
+			     :directory '(:relative "dev" "utilities"))
+		:components 
+		((:file "copy-file"))))
   :in-order-to ((test-op (load-op metatilities-base-test)))
   :perform (test-op :after (op c)
                     (describe 

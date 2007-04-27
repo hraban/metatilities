@@ -23,6 +23,9 @@
            #:lock-owner #:lock-name
            #:selected? #:whitespacep)
   
+  (:export
+   #:copy-file)
+
   (:export 
    neq)
   
@@ -79,6 +82,7 @@
   
   (:export 
    #:element
+   #:element-type
    #:parent
    #:tag
    #:find-or-create-class)
