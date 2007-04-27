@@ -29,9 +29,6 @@
   (:export 
    neq)
   
-  #+CLIM
-  (:shadow #:pointp #:point-y #:point #:point-x #:make-rgb-color)
-  
   #-(or allegro clisp)
   (:import-from #+lispworks #:mp
                 #+(or openmcl digitool)       #:ccl
@@ -40,12 +37,6 @@
 
                 #:without-interrupts)
     
-  (:export
-   #:size
-   #:root
-   #:next-element
-   #:total-size)
-  
   (:export
    #:defclass-property
    #:deprecated
@@ -85,8 +76,12 @@
    #:element-type
    #:parent
    #:tag
-   #:find-or-create-class)
-  
+   #:find-or-create-class
+   #:size
+   #:root
+   #:next-element
+   #:total-size)
+    
   (:export #:without-interrupts)
   
   (:export 
@@ -510,24 +505,3 @@
   (:export
    #:tree-search))
 
-
-#|
-
-  #+MCL
-  (:import-from ccl #:class-prototype #:class-direct-superclasses
-		#:class-direct-subclasses #:class-precedence-list
-                #:slot-definition-name #:neq)
-
-  #+allegro
-  (:import-from clos #:class-prototype #:class-direct-superclasses 
-		#:class-direct-subclasses #:class-precedence-list
-		#:class-finalized-p #:finalize-inheritance
-                #:class-slots #:slot-definition-name)
-  
-  #+Lispworks
-  (:import-from clos class-prototype class-direct-superclasses 
-		class-direct-subclasses class-precedence-list 
-		class-finalized-p finalize-inheritance
-                validate-superclass
-                class-slots slot-definition-name)
-|#
