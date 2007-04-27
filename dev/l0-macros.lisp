@@ -127,9 +127,16 @@ create the mnemonic gensyms.
     (let ((real-name (form-keyword property)))
       `(progn
          (defgeneric ,property (class-name)
-           (:documentation ,(format nil "Returns the value of `~(~A~)` for class-name" property))) 
+           (:documentation 
+	    ,(format nil "Returns the value of `~(~A~)` for class-name" 
+		     property))) 
+	 (defgeneric (setf ,property) (value symbol)
+           (:documentation 
+	    ,(format nil "Sets the value of `~(~A~)` for class-name" 
+		     property))) 
          (defmethod ,property ((class-name symbol))
-           (get class-name ,real-name ,@(when default-supplied? (list default))))
+           (get class-name ,real-name 
+		,@(when default-supplied? (list default))))
          (defmethod (setf ,property) (value (class-name symbol))
            (setf (get class-name ,real-name) value))))))
 
