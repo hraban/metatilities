@@ -111,15 +111,11 @@ create the mnemonic gensyms.
 		 symbols)
      . ,body))
 
-;;; ---------------------------------------------------------------------------
-
 ;; a simple shorthand
 (defmacro eval-always (&body body)
   "Expands into an eval-when with all the fixings. It's nothing but a shorthand."
   `(eval-when (:compile-toplevel :load-toplevel :execute)
      ,@body))
-
-;;; ---------------------------------------------------------------------------
 
 (defmacro defclass-property (property &optional (default nil default-supplied?))
   "Create getter and setter methods for 'property' on symbol's property lists." 
@@ -140,8 +136,6 @@ create the mnemonic gensyms.
          (defmethod (setf ,property) (value (class-name symbol))
            (setf (get class-name ,real-name) value))))))
 
-;;; ---------------------------------------------------------------------------
-
 #+(or allegro clisp)
 ;; everyone else already defines this...
 (defmacro without-interrupts (&body forms)
@@ -159,14 +153,10 @@ create the mnemonic gensyms.
    ;; default
    `(progn . ,forms)))
 
-;;; ---------------------------------------------------------------------------
-
 ;;; This is a more portable name, IMO.  It can't hurt.
 (defmacro with-atomic-execution (&body forms)
   `(without-interrupts
      ,@forms))
-
-;;; ---------------------------------------------------------------------------
 
 (defmacro handler-bind* (binds &rest body)
   "Special handler-bind which allow two special control contructs
@@ -179,8 +169,6 @@ i.e. so you usually fix the problem and then call retry."
               (:retry () ,@body))
          (handler-bind ,binds
            (:retry))))))
-
-;;; ---------------------------------------------------------------------------
 
 (defmacro with-gensyms (syms &body body)
   `(let ,(mapcar #'(lambda (s)
