@@ -8,37 +8,23 @@
 (defconstant +minutes-per-hour+ 60
   "The number of minutes in one hour.")
 
-;;; ---------------------------------------------------------------------------
-
 (defconstant +seconds-per-minute+ 60
   "The number of seconds in one minute.")
-
-;;; ---------------------------------------------------------------------------
 
 (defconstant +usual-days-per-year+ 365
   "The number of days in an ordinary year.")
 
-;;; ---------------------------------------------------------------------------
-
 (defconstant +seconds-per-hour+ (* +seconds-per-minute+ +minutes-per-hour+)
   "The number of seconds in one hour.")
-
-;;; ---------------------------------------------------------------------------
 
 (defconstant +hours-per-day+ 24
   "The number of hours in one day.")
 
-;;; ---------------------------------------------------------------------------
-
 (defconstant +seconds-per-day+
   (* +hours-per-day+ +seconds-per-hour+)
   "The number of seconds in one day.")
-     
-
-;;; ---------------------------------------------------------------------------
 
 ;;; these are lists of acceptable tokens
-
 ;;; make sure to use 'index-of' on these; it allows you to find an index in a deep list
 
 (defparameter +month-list+
@@ -51,20 +37,14 @@
 (defconstant +longer-format-index+ 0)
 (defconstant +shorter-format-index+ 1)
 
-;;; ---------------------------------------------------------------------------
-
 (defparameter +month-output-list+
   '(("January" "February" "March" "April" "May" "June" "July" "August" "September"
      "October" "November" "December")
     ("Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul" "Aug" "Sep" "Oct" "Nov" "Dec")))
 
-;;; ---------------------------------------------------------------------------
-
 (defparameter +dow-output-list
   '(("Monday" "Tuesday" "Wednesday" "Thursday" "Friday" "Saturday" "Sunday")
     ("Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun")))
-
-;;; ---------------------------------------------------------------------------
 
 (defparameter +days-per-month+
   '(31 28 31 30 31 30 31 31 30 31 30 31))
@@ -77,27 +57,23 @@
   "Returns the name of `day-of-the-week`. The parameter should be a number between 0 and 6 where 0 represents Sunday and 6 repressents Saturday. The optional format argument can be either :long or :short. In the latter case, the return string will be of length three; in the former it will be the complete name of the appropriate day."
   (check-type day-of-the-week (mod 7))
   (check-type format (member :long :short))
-  (nth day-of-the-week (case format
-                         (:long (nth +longer-format-index+ +dow-output-list))
-                         (:short (nth +shorter-format-index+ +dow-output-list)))))
-
-;;; ---------------------------------------------------------------------------
+  (nth day-of-the-week 
+       (case format
+	 (:long (nth +longer-format-index+ +dow-output-list))
+	 (:short (nth +shorter-format-index+ +dow-output-list)))))
 
 (defun month->string (month &optional (format :long))
   "Returns the name \(in English\) of the month. Format can be :long or :short."
   (check-type month (integer 1 12))
   (check-type format (member :long :short))
-  (nth (1- month) (case format
-                    (:long (nth +longer-format-index+ +month-output-list+))
-                    (:short (nth +shorter-format-index+ +month-output-list+)))))
-
-;;; ---------------------------------------------------------------------------
+  (nth (1- month) 
+       (case format
+	 (:long (nth +longer-format-index+ +month-output-list+))
+	 (:short (nth +shorter-format-index+ +month-output-list+)))))
 
 (defun string->month (string)
   (or (position string (first +month-list+) :test #'string-equal)
       (position string (second +month-list+)  :test #'string-equal)))
-
-;;; ---------------------------------------------------------------------------
 
 (defun print-date (stream year month day day-of-the-week)
   "Prints the information in the form `Wednesday, June 7, 1989'"
