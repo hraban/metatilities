@@ -321,7 +321,9 @@
    #:touch-file
    #:ensure-filename-safe-for-os
    #:pathname-name+type
-   #:physical-pathname-directory-separator)
+   #:physical-pathname-directory-separator
+   #:delete-directory
+   #:directory-name-p)
   
   ;; dates and times
   (:export
