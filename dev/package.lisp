@@ -23,6 +23,9 @@
            #:lock-owner #:lock-name
            #:selected? #:whitespacep)
   
+  (:intern
+   #:depth)
+
   (:export
    #:copy-file)
 
