@@ -317,7 +317,6 @@
    #:map-lines
    #:next-line
    #:file-package
-   #:nicely-format-filename
    #:touch-file
    #:ensure-filename-safe-for-os
    #:pathname-name+type

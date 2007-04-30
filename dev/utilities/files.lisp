@@ -8,6 +8,8 @@
 (defgeneric map-forms-in-file (function file-specifier)
   (:documentation "Reads file one form at a time \(using read\) and applies `function` to each one in turn."))
 
+#+(or)
+;; it's hard to imagine anyone else wanting this.
 (defun nicely-format-filename (file stream &key
                                     (depth 2) (use-ellipsis? nil) (show-type? t) 
                                     (initial-ellipsis? nil))
@@ -22,11 +24,31 @@
               (and show-type? (pathname-type file))
               (first directories)
               (last directories (1- depth)))
-      (format stream "~(~a~@[.~A~] {~:[...:~]~{~a:~}}~)"
+      (format stream "~(~a~@[.~A~] {~@[...:~]~{~a:~}}~)"
               (pathname-name file)
               (and show-type? (pathname-type file))
               (and initial-ellipsis? (<= (length directories) depth))
               (last directories depth)))))
+
+#|
+(lift:deftestsuite test-nff ()
+  ())
+
+(addtest (test-nff)
+  (ensure-cases (file depth use-ellipsis? show-type? initial-ellipsis? result) 
+      '((#p"/a/b/c/d/e/f.g" 2 nil t nil "f.g {d:e:}")	
+	(#p"/a/b/c/d/e/f.g" 2 nil nil nil "f {d:e:}")
+	(#p"/a/b/c/d/e/f.g" 100 nil nil nil "f {a:b:c:d:e:}")
+	(#p"/a/b/c/d/e/f.g" 0 nil nil nil "f {}")
+	(#p"/a/b/c/d/e/f.g" 2 t t nil "f.g {a:...:e:}")
+	)
+    (ensure-same 
+     (nicely-format-filename file nil :depth depth
+			     :use-ellipsis? use-ellipsis?
+			     :show-type? show-type?
+			     :initial-ellipsis? initial-ellipsis?)
+     result :test 'string=)))
+|#
 
 (defun file-to-list (&optional (pathname (choose-file-question)))
   "Convert a file into a list by opening it and calling read repeatedly."
