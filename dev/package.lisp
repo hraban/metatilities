@@ -47,7 +47,11 @@
    #:with-variables
    #:eval-always
    #:with-atomic-execution
-   #:handler-bind*)
+   #:handler-bind*
+   #:with-stream-from-specifier
+   #:with-input
+   #:with-output
+   )
   
   (:export
    #:defclass-brief 

@@ -1,7 +1,5 @@
 (in-package #:metatilities)
 
-;;; ---------------------------------------------------------------------------
-
 (defmacro deprecated (&body body)
   "Wrap a function definition with `deprecated' to indicate that it should
 no longer be used. If the first element of body is a string, it will be used
@@ -206,3 +204,35 @@ i.e. so you usually fix the problem and then call retry."
 		       (let ((*package* ,the-package))
 			 ,@body)))))
 	       body)))))
+
+
+(defmacro with-stream-from-specifier ((stream stream-specifier direction
+					      &rest args)
+				      &body body)
+  (with-gensyms (s close? output)
+    `(let (,s (,close? t) ,output)
+       (unwind-protect
+         (setf ,output
+               (prog1
+                 (let (,stream)
+                   (setf (values ,s ,close?) 
+			 (make-stream-from-specifier 
+			  ,stream-specifier ,direction ,@args)
+                         ,stream ,s)
+                   ,@body)))
+         (when (and ,close? ,s)
+	   (let ((it (close-stream-specifier ,s)))
+	     (when it 
+	       (setf ,output it)))))
+       ,output)))
+
+(defmacro with-input ((var source &rest args) &body body)
+  "Create an input stream from source and bind it to var within the body of the with-input form. The stream will be closed if necessary on exit." 
+  `(with-stream-from-specifier (,var ,source :input ,@args)
+     ,@body))
+
+(defmacro with-output ((var destination &rest args) &body body)
+  "Create an output stream from source and bind it to var within the body of the with-output form. The stream will be closed if necessary on exit." 
+  `(with-stream-from-specifier (,var ,destination :output ,@args)
+     ,@body))
+

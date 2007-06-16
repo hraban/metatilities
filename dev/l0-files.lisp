@@ -19,3 +19,48 @@
          (foo-pos (search directory-1 pn :test #'char-equal))
          (bar-pos (search directory-2 pn :test #'char-equal)))
     (subseq pn (+ foo-pos (length directory-1)) bar-pos)))
+
+(defgeneric make-stream-from-specifier (specifier direction &rest)
+  (:documentation "Create and return a stream from specifier, direction and any other argsuments"))
+
+(defgeneric close-stream-specifier (steam)
+  (:documentation "Close a stream and handle other bookkeeping as appropriate."))
+
+(defmethod make-stream-from-specifier ((stream-specifier stream) 
+				       (direction symbol) &rest args)
+  (declare (ignore args))
+  (values stream-specifier nil))
+
+(defmethod make-stream-from-specifier ((stream-specifier (eql t)) 
+				       (direction symbol) &rest args)
+  (declare (ignore args))
+  (values *standard-output* nil))
+
+(defmethod make-stream-from-specifier ((stream-specifier (eql nil)) 
+				       (direction symbol) &rest args)
+  (declare (ignore args))
+  (values (make-string-output-stream) t))
+
+(defmethod make-stream-from-specifier ((stream-specifier (eql :none)) 
+				       (direction symbol) &rest args)
+  (declare (ignore args))
+  (values nil nil))
+
+(defmethod make-stream-from-specifier ((stream-specifier pathname) 
+				       (direction symbol) &rest args)
+  (values (apply #'open stream-specifier :direction direction args)
+          t))
+
+(defmethod make-stream-from-specifier ((stream-specifier string) 
+				       (direction symbol) &rest args)
+  (declare (ignore args))
+  (values (make-string-input-stream stream-specifier) nil))
+
+(defmethod close-stream-specifier (s)
+  (close s)
+  (values nil))
+
+(defmethod close-stream-specifier ((s string-stream))
+  (prog1 
+    (values (get-output-stream-string s)) 
+    (close s)))

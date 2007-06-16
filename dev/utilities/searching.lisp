@@ -66,7 +66,6 @@
 ;;;; with minor modifications
 ;;; ---------------------------------------------------------------------------
 
-
 (defun tree-search (states goal-p successors combiner)
   "Find a state that satisfies goal-p.  Start with states,
   and search according to successors and combiner."
