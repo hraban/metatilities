@@ -56,7 +56,7 @@
   (defun form-keyword (&rest names)
     "Finds or interns a symbol in the keyword package whose name is formed by concatenating the pretty printed representation of the names together."
     (with-standard-printing
-      (apply #'form-symbol-in-package (find-package :keyword)
+      (apply #'form-symbol-in-package (load-time-value (find-package :keyword))
              names)))
   
   (defun form-uninterned-symbol (&rest names)
