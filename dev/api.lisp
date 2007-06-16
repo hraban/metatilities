@@ -1,8 +1,5 @@
 (in-package #:metatilities)
 
-(defgeneric (setf defclass*-superclasses) (value class-name)
-  (:documentation ""))
-
 (defgeneric choose-directory-question* (interface &rest args)
   (:documentation ""))
 
