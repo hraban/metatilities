@@ -20,7 +20,7 @@
          (bar-pos (search directory-2 pn :test #'char-equal)))
     (subseq pn (+ foo-pos (length directory-1)) bar-pos)))
 
-(defgeneric make-stream-from-specifier (specifier direction &rest)
+(defgeneric make-stream-from-specifier (specifier direction &rest args)
   (:documentation "Create and return a stream from specifier, direction and any other argsuments"))
 
 (defgeneric close-stream-specifier (steam)
