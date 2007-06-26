@@ -89,3 +89,33 @@ designator does not exist.
 	   (ignore if-exists if-does-not-exist))
   (when (apply #'copy-file from to args)
     (delete-file from)))
+
+;;; borrowed from asdf-install -- how did this every work ?!
+;; for non-SBCL we just steal this from SB-EXECUTABLE
+#-(or :digitool)
+(defvar *stream-buffer-size* 8192)
+#-(or :digitool)
+(defun copy-stream (from to)
+  "Copy into TO from FROM until end of the input stream, in blocks of
+*stream-buffer-size*.  The streams should have the same element type."
+  (unless (subtypep (stream-element-type to) (stream-element-type from))
+    (error "Incompatible streams ~A and ~A." from to))
+  (let ((buf (make-array *stream-buffer-size*
+			 :element-type (stream-element-type from))))
+    (loop
+      (let ((pos #-(or :clisp :cmu) (read-sequence buf from)
+                 #+:clisp (ext:read-byte-sequence buf from :no-hang nil)
+                 #+:cmu (sys:read-n-bytes from buf 0 *stream-buffer-size* nil)))
+        (when (zerop pos) (return))
+        (write-sequence buf to :end pos)))))
+
+#+:digitool
+(defun copy-stream (from to)
+  "Perform copy and map EOL mode."
+  (multiple-value-bind (reader reader-arg) (ccl::stream-reader from)
+    (multiple-value-bind (writer writer-arg) (ccl::stream-writer to)
+      (let ((datum nil))
+        (loop (unless (setf datum (funcall reader reader-arg))
+                (return))
+              (funcall writer writer-arg datum))))))
+
