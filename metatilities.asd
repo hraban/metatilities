@@ -26,7 +26,7 @@ instructions."))
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.6.8"
+  :version "0.6.7"
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
