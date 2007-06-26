@@ -46,7 +46,8 @@ See the file COPYING for details
 		:pathname #.(make-pathname 
 			     :directory '(:relative "dev" "utilities"))
 		:components 
-		((:file "copy-file"))))
+		((:file "copy-file"))
+		:depends-on ("dev")))
   :in-order-to ((test-op (load-op metatilities-base-test)))
   :perform (test-op :after (op c)
                     (describe 
