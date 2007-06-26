@@ -18,16 +18,12 @@
                      (source-pathname c) (target-pathname c))))
   (:documentation "General condition for file errors that have a source and target."))
 
-;;; ---------------------------------------------------------------------------
-
 (define-condition source/target-target-already-exists-error (source/target-file-error)
                   ()
   (:report (lambda (c s)
              (format s "File action failed because target ~S already exists"
                      (target-pathname c))))
   (:documentation "This error is signaled when the target pathname already exists."))
-
-;;; ---------------------------------------------------------------------------
 
 (define-condition source/target-source-does-not-exist-error
     (source/target-file-error)
@@ -36,8 +32,6 @@
              (format s "File action failed because source ~S does not exist"
                      (source-pathname c))))
   (:documentation "This error is signaled when the source file does not exist."))
-
-;;; ---------------------------------------------------------------------------
 
 (defun copy-file (from to &key (if-does-not-exist :error)
                        (if-exists :error))
