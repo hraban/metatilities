@@ -316,7 +316,7 @@ into this:
        (y2 (ensure-type (slot-value location-2 'y) 'double-float)))
    body)
 
-If the first item of the binding-spec {(x x2) above} is a symbol instead of  a cons, 
+If the first item of the binding-spec [(x x2) above] is a symbol instead of  a cons, 
 that symbol is the name of the slot and is bound in the let. 
 "
   `(let ,(mapcar (lambda (slot)
