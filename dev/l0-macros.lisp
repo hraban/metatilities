@@ -31,8 +31,6 @@ at compile time whereever foo-1 is used."
          (values form))
        ,@body)))
 
-;;; ---------------------------------------------------------------------------
-
 (defmacro once-only (variable-list &body body)
   "Generate code that evaluates certain expressions only once.
 This is used in macros, for computing expansions.
@@ -75,8 +73,6 @@ Example:
 	     result
 	     `((lambda
 		,(nreverse ,bind-vars) ,result) . ,(nreverse ,bind-vals)))))))
-
-;;; ---------------------------------------------------------------------------
 
 (defmacro with-variables (symbols &body body)
   "Using gensyms is necessary to prevent variables produced by macro expansions
