@@ -2,18 +2,13 @@
 
 (defpackage #:metabang.utilities
   (:nicknames #:metatilities)
-  (:use #-clim      #:common-lisp
-        #+clim      #:clim
-        #+clim      #:clim-lisp
-        
-        #:moptilities)
-  
+  (:use #:common-lisp #:moptilities)
 
-  #+ASDF
+  #+asdf
   (:import-from #:asdf
                 #:load-op #:compile-op #:test-op 
                 #:operate #:oos)
-  #+ASDF
+  #+asdf
   (:export
    #:load-op #:compile-op #:test-op 
    #:operate #:oos)
@@ -86,7 +81,7 @@
    #:find-or-create-class
    #:size
    #:root
-   #:next-element
+   ; #:next-element
    #:total-size)
     
   (:export #:without-interrupts)
@@ -186,8 +181,6 @@
    #:+very-small-number+
    #:set-equal
    #:remove-leading-quote
-   
-   #:shuffle-list! 
    
    #:nth-elt-of-cross-product
    #:nth-elt-of-cross-product-as-multiple-values
