@@ -61,24 +61,22 @@ instructions."))
 			:depends-on ("package-additional"))
 		 (:file "views-and-windows"
 			:depends-on ("package-additional"))))
-               
                (:module 
-		"what"
-		:pathname #.(make-pathname 
-			     :directory `(,@(pathname-directory *load-truename*)
-					    "dev"
-					    ,(or #+OpenMCL "openmcl"
-						 #+DIGITOOL "mcl"
-						 #+SBCL     "sbcl"
-						 #+allegro  "allegro" 
-						 #-(or OpenMCL DIGITOOL SBCL 
-						       allegro)
-						 "unsupported")))
+		"port"
+		:pathname #.(concatenate
+			     'string "dev/"
+			     (or #+OpenMCL "openmcl"
+				 #+DIGITOOL "mcl"
+				 #+SBCL     "sbcl"
+				 #+allegro  "allegro" 
+				 #-(or OpenMCL DIGITOOL SBCL allegro)
+				 "unsupported")
+			     "/")
 		:components ((:file "generic-lisp")
 			     #+DIGITOOL (:file "pop-up-menu")
 			     (:file "generic-interface-support" 
-				    :depends-on ("generic-lisp" #+DIGITOOL "pop-up-menu"))))
-               
+				    :depends-on ("generic-lisp" 
+						 #+DIGITOOL "pop-up-menu"))))
                (:module 
 		"website"
 		:components
