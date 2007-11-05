@@ -504,8 +504,9 @@ the object file."
           (make-pathname
            :directory (append (pathname-directory directory-spec)
                               (list (namestring
-                                     (make-pathname :name (pathname-name directory-spec)
-                                                    :type (pathname-type directory-spec)))))
+                                     (make-pathname
+				      :name (pathname-name directory-spec)
+				      :type (pathname-type directory-spec)))))
            :defaults directory-spec)))
   (let* ((wild-directory 
           (make-pathname
@@ -528,8 +529,8 @@ the object file."
                       (unless dry-run?
                         (delete-file file))))
                   (directory (make-pathname :name :wild 
-                                            :type :wild
-                                            :defaults directory)))
+						  :type :wild
+						  :defaults directory)))
             (when verbose?
               (format *debug-io* "~%;; deleting directory ~A" directory))
             (unless dry-run?

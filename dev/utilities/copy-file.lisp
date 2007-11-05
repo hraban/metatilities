@@ -90,7 +90,7 @@ designator does not exist.
   (when (apply #'copy-file from to args)
     (delete-file from)))
 
-;;; borrowed from asdf-install -- how did this every work ?!
+;;; borrowed from asdf-install -- how did this ever work ?!
 ;; for non-SBCL we just steal this from SB-EXECUTABLE
 #-(or :digitool)
 (defvar *stream-buffer-size* 8192)

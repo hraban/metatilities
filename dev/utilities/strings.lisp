@@ -108,7 +108,7 @@
 (defun string->symbol (string &optional (package nil))
   "Returns the string as a bare symbol, replacing any whitespace with dashes. ~
    This is the \(near\) inverse of symbol->string. Return nil for empty strings"
-  (let* ((new-string (substitute-if #\- 'whitespacep string))  
+ (let* ((new-string (substitute-if #\- 'whitespacep string))  
          (new-thing (read-from-string new-string nil :eof)))
     (cond ((eq new-thing :EOF) (values nil))
           
