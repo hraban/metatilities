@@ -83,20 +83,20 @@ instructions."))
 		((:module "source"
 			  :components ((:static-file "index.md"))))))
     :in-order-to ((test-op (load-op metatilities-test)))
-  :perform (test-op :after (op c)
-		    (funcall
-		     (intern (symbol-name '#:run-tests) :lift)
-		     :config :generic))
-  :depends-on (:metatilities-base 
-	       :moptilities
-	       :cl-containers
-	       :metabang-bind
-	       :defsystem-compatibility
-	       :asdf-system-connections))
+    :perform (test-op :after (op c)
+		      (funcall
+		       (intern (symbol-name '#:run-tests) :lift)
+		       :config :generic))
+    :depends-on (:metatilities-base 
+		 :moptilities
+		 :cl-containers
+		 :metabang-bind
+		 :defsystem-compatibility
+		 :asdf-system-connections))
 
 (defmethod operation-done-p 
            ((o test-op)
-            (c (eql (find-system 'metatilites))))
+            (c (eql (find-system 'metatilities))))
   (values nil))
 
 #+asdf-system-connections
