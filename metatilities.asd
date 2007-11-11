@@ -26,7 +26,7 @@ instructions."))
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.6.7"
+  :version "0.6.9"
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
@@ -81,15 +81,23 @@ instructions."))
 		"website"
 		:components
 		((:module "source"
-			  :components ((:static-file "index.lml"))))))
-  
-    :depends-on (:metatilities-base 
-                 :moptilities
-                 :cl-containers
-                 :metabang-bind
-                 :defsystem-compatibility
-		 ;:cl-fad
-                 :asdf-system-connections))
+			  :components ((:static-file "index.md"))))))
+    :in-order-to ((test-op (load-op metatilities-test)))
+  :perform (test-op :after (op c)
+		    (funcall
+		     (intern (symbol-name '#:run-tests) :lift)
+		     :config :generic))
+  :depends-on (:metatilities-base 
+	       :moptilities
+	       :cl-containers
+	       :metabang-bind
+	       :defsystem-compatibility
+	       :asdf-system-connections))
+
+(defmethod operation-done-p 
+           ((o test-op)
+            (c (eql (find-system 'metatilites))))
+  (values nil))
 
 #+asdf-system-connections
 (asdf:defsystem-connection lift-and-metatilities
