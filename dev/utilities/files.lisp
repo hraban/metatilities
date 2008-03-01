@@ -80,7 +80,8 @@
 (defun unique-file-name-from-date (name &key (date (get-universal-time))
                                         (type "lisp"))
   "Returns a namestring whose suffix is the `date` in the form YYMMMDDHHMMSS. The names prefix will include as much of the original name as possible given the limitations of the underlying OS. The name is _not_ guaranteed to be unique. [[Bad name]]."
-  (bind:bind (((values second minute hour date month year) (decode-universal-time date))
+  (bind:bind (((:values second minute hour date month year)
+	       (decode-universal-time date))
          (date-part 
           (format nil "~2,'0d~2,'0d~2,'0d~2,'0d~2,'0d~2,'0d"
                   year (month->string month :short) date hour minute second)))
