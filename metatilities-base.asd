@@ -29,7 +29,9 @@ See the file COPYING for details
 		 (:file "l0-clos"
 			:depends-on ("api"))
 		 (:file "l0-files"
-			:depends-on ("api"))
+			:depends-on ("api" "l0-macros"))
+		 (:file "l0-time"
+			:depends-on ("l0-macros"))
 		 (:file "set-equal"
 			:depends-on ("api"))
 		 (:file "generic-lisp"
