@@ -1,5 +1,5 @@
 ;;;; -*- Mode:Common-Lisp; Package:eksl-utilities; Fonts:(medfnt courierfb hl12i tr12 medfnb cptfonti hl12b); Base:10 -*-
-;;;; -**- $Source: /Users/eksl/repository/utils/dev/make-allocatable.lisp,v $ -**-
+;;;; -**- $Source: /cvs/cl-markdown/cl-markdown/metatilities/dev/utilities/make-allocatable.lisp,v $ -**-
 ;;;; *-* Last-edit: Friday, November 18, 2005 07:59:44; Edited-By: Gary *-* 
 ;;;; 
 ;;;; *-* Software: Macintosh Common Lisp, Version 4.3 *-*
