@@ -207,7 +207,7 @@ additional args are passed along to the function."
           until (eq l :eof) do
           (funcall fn l))))
 
-(defmacro map-lines (fn source)
+(defmacro iterate-lines (fn source)
   "An enpowered version of map-lines-in-file. This one is a macro
 so that you can use (return) to stop processing and so that you can
 use (next-line) within your code to advance to the next line of the 
