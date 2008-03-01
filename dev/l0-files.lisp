@@ -20,6 +20,28 @@
          (bar-pos (search directory-2 pn :test #'char-equal)))
     (subseq pn (+ foo-pos (length directory-1)) bar-pos)))
 
+(defun relative-pathname (relative-to pathname &key name type)
+  (let ((directory (pathname-directory pathname)))
+    (when (eq (car directory) :absolute)
+      (setf (car directory) :relative))
+    (merge-pathnames
+     (make-pathname :name (or name (pathname-name pathname))
+                    :type (or type (pathname-type pathname))
+                    :directory directory
+		    )
+     relative-to)))
+
+(defun directory-pathname-p (pathname)
+  (and (member (pathname-name pathname) (list nil :unspecified))
+       (member (pathname-type pathname) (list nil :unspecified))))
+
+(defun ensure-directory-pathname (pathname)
+  (if (directory-pathname-p pathname)
+      pathname
+      (make-pathname
+       :directory `(,@(pathname-directory pathname) 
+		      ,(namestring (pathname-name+type pathname))))))
+
 (defgeneric make-stream-from-specifier (specifier direction &rest args)
   (:documentation "Create and return a stream from specifier, direction and any other argsuments"))
 
@@ -56,6 +78,11 @@
   (declare (ignore args))
   (values (make-string-input-stream stream-specifier) nil))
 
+(defmethod make-stream-from-specifier ((stream-specifier string) 
+				       (direction (eql :output)) &rest args)
+  (apply #'make-stream-from-specifier
+	 (pathname stream-specifier) direction args))
+
 (defmethod close-stream-specifier (s)
   (close s)
   (values nil))
@@ -64,3 +91,48 @@
   (prog1 
     (values (get-output-stream-string s)) 
     (close s)))
+
+;;;;
+
+(defmethod map-forms (input fn &key (ignore-read-errors-p t))
+  (with-input (stream input)
+    (flet ((next ()
+	     (if ignore-read-errors-p
+		 (ignore-errors (read stream nil :eof))
+		 (read stream nil :eof))))
+      (loop for f = (next) then (next)   
+	 until (eq f :eof) do
+	 (handler-case
+	     (funcall fn f)
+	   (reader-error (c) (print c)))))))
+
+(defun map-lines (input fn &key include-empty-lines-p filter)
+  (with-input (s input)
+    (loop for line = (read-line s nil :eof)
+       until (eq line :eof)
+       when (and 
+	     (or include-empty-lines-p
+		 (some (complement 'whitespacep) line))
+	     (or (not filter)
+		 (funcall filter line)))
+       do (funcall fn line))))
+
+(defun collect-forms (input &key filter transform)
+  (let ((result nil))
+    (map-forms input (lambda (form) 
+		       (when (or (not filter) 
+				 (funcall filter form))
+			 (push (if transform (funcall transform form) form)
+			       result))))
+    (nreverse result)))
+
+(defun collect-lines (input &rest args &key 
+		      count-empty-lines-p filter transform)
+  (declare (ignore count-empty-lines-p filter))
+  (unless transform (setf transform #'identity))
+  (remf args :transform)
+  (let ((results nil))
+    (apply #'map-lines
+	   input (lambda (line) (push (funcall transform line) results))
+	   args)
+    (nreverse results)))

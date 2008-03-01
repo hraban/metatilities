@@ -44,8 +44,15 @@
    #:with-atomic-execution
    #:handler-bind*
    #:with-stream-from-specifier
+   #:relative-pathname
+   #:directory-pathname-p
+   #:ensure-directory-pathname
    #:with-input
    #:with-output
+   #:map-lines
+   #:map-forms
+   #:collect-lines
+   #:collect-forms
    )
   
   (:export
@@ -76,6 +83,7 @@
   (:export 
    #:element
    #:element-type
+   #:filter
    #:parent
    #:tag
    #:find-or-create-class
