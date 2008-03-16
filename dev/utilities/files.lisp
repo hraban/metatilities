@@ -500,7 +500,7 @@ the object file."
     (values (null result) (reverse result))))
 
 (defun delete-directory (directory-spec &key (verbose? nil) (dry-run? nil))
-  (unless (directory-name-p directory-spec)
+  (unless (directory-pathname-p directory-spec)
     (setf directory-spec 
           (make-pathname
            :directory (append (pathname-directory directory-spec)
@@ -540,6 +540,7 @@ the object file."
                   (list directory-spec)))
     (values nil)))
 
+#+(or)
 (defun directory-name-p (directory-spec)
   (and (null (pathname-name directory-spec))
        (null (pathname-type directory-spec))))
