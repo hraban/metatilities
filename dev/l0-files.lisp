@@ -136,3 +136,62 @@
 	   input (lambda (line) (push (funcall transform line) results))
 	   args)
     (nreverse results)))
+
+;;;;
+
+;; find . -name "_darcs" -type d -maxdepth 2 -exec ...
+(defun map-matching-files (root expression fn &key max-depth)
+  (let ((test (compile-expression expression)))
+    (labels ((make-wild (path)
+	       (make-pathname
+		:name :wild
+		:type :wild
+		:directory
+		(if (directory-pathname-p path)
+		    `(,@(pathname-directory path))
+		    `(,@(pathname-directory path) 
+			,(namestring (pathname-name+type path))))
+		:defaults path))
+	     (do-it (root depth)
+	       (when (and max-depth (>= depth max-depth))
+		 (return-from do-it nil))
+	       (dolist (match (directory (make-wild root)))
+		 (when (funcall test match)
+		   (funcall fn match))
+		 (when (probe-file (ensure-directory-pathname match))
+		   (do-it match (1+ depth))))))
+      (do-it root 0))))
+
+(defun compile-expression (expression)
+  (if (functionp expression)
+      expression
+      ;; not done
+      (constantly t)))
+
+#+(or)
+(map-matching-files
+ "~/darcs" 
+ (lambda (pathname)
+   (and (probe-file (ensure-directory-pathname pathname))
+	(string= "_darcs" (namestring (pathname-name+type pathname)))))
+ #'print
+ :max-depth 2)
+
+#+(or)
+(map-matching-files 
+ "~/darcs" 
+ (lambda (pathname)
+   (and (not (probe-file (ensure-directory-pathname pathname)))
+	(string= "common-lisp.net" (namestring (pathname-name+type pathname)))))
+ #'print
+ :max-depth 2)
+
+(defun collect-matching-files (root expression &key max-depth)
+  (let ((results nil))
+    (map-matching-files 
+     root expression
+     (lambda (file)
+       (push file results))
+     :max-depth max-depth)
+    (nreverse results)))
+

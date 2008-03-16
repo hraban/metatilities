@@ -53,7 +53,8 @@
    #:map-forms
    #:collect-lines
    #:collect-forms
-   )
+   #:map-matching-files
+   #:collect-matching-files)
   
   (:export
    #:defclass-brief 
