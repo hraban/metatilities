@@ -465,16 +465,16 @@ the object file."
          (filename (pathname-name name))
          (type-length (1+ (length filetype))))
     (if (> (+ type-length (length filename)) (maximum-filename-length))
-      (shorten-filename-for-os
-       (uniquify-file-name
-	(namestring
-                            (merge-pathnames 
-                             (make-pathname 
-                              :name (subseq filename 0 
-                                            (- (maximum-filename-length) type-length 2)) 
-                              :type filetype)
-                             name))))
-      name)))
+	(shorten-filename-for-os
+	 (uniquify-file-name
+	  (namestring
+	   (merge-pathnames 
+	    (make-pathname 
+	     :name (subseq filename 0 
+			   (- (maximum-filename-length) type-length 2)) 
+	     :type filetype)
+	    name))))
+	name)))
 
 (defun maximum-filename-length ()
   (or #+(and DIGITOOL (not CCL-5.1)) +mac-os-filename-limit+
@@ -483,12 +483,12 @@ the object file."
 #+MCL
 (defmethod samep ((file1 pathname) (file2 pathname))
   (bind:bind ((s1 (open file1 :direction :input
-                   :if-does-not-exist :error))
-         (s2 (open file2 :direction :input
-                   :if-does-not-exist :error))
-         (result nil))
+			:if-does-not-exist :error))
+	      (s2 (open file2 :direction :input
+			:if-does-not-exist :error))
+	      (result nil))
     (unwind-protect 
-      (loop with linenumber = 1
+	 (loop with linenumber = 1
             for line1 = (read-line s1 nil :eof)
             for line2 = (read-line s2 nil :eof)
             until (or (eq line1 :eof)
@@ -505,8 +505,9 @@ the object file."
           (make-pathname
            :directory (append (pathname-directory directory-spec)
                               (list (namestring
-                                     (make-pathname :name (pathname-name directory-spec)
-                                                    :type (pathname-type directory-spec)))))
+                                     (make-pathname 
+				      :name (pathname-name directory-spec)
+				      :type (pathname-type directory-spec)))))
            :defaults directory-spec)))
   (let* ((wild-directory 
           (make-pathname
