@@ -112,7 +112,7 @@
        until (eq line :eof)
        when (and 
 	     (or include-empty-lines-p
-		 (some (complement 'whitespacep) line))
+		 (some (complement #'whitespacep) line))
 	     (or (not filter)
 		 (funcall filter line)))
        do (funcall fn line))))
