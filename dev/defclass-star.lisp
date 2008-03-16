@@ -335,7 +335,8 @@ separator is the hypen, in which case the wrapping parentheses are optional."
                   (defclass*-problem "slots ~A do not specify a copying mechanism"
                     (format-list temp)))))))
         
-        `(eval-always  ; why does this need to be eval-always? ---L
+        `(eval-always	  ; why does this need to be eval-always? ---L
+			  ; b/c otherwise ACL complains about top-level exports
            (progn
              ,@(when export-p
                  `((export ',name)))
