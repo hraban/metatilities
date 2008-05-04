@@ -90,7 +90,7 @@
    #:find-or-create-class
    #:size
    #:root
-   ; #:next-element
+   #:next-element
    #:total-size)
     
   (:export #:without-interrupts)
