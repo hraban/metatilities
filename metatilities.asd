@@ -91,7 +91,6 @@ instructions."))
 		 :moptilities
 		 :cl-containers
 		 :metabang-bind
-		 :defsystem-compatibility
 		 :asdf-system-connections))
 
 (defmethod operation-done-p 
