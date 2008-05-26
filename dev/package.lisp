@@ -2,7 +2,7 @@
 
 (defpackage #:metabang.utilities
   (:nicknames #:metatilities)
-  (:use #:common-lisp #:moptilities)
+  (:use #:common-lisp)
 
   #+asdf
   (:import-from #:asdf

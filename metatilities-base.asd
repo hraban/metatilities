@@ -41,6 +41,7 @@ See the file COPYING for details
 					   "l0-macros"))
 		 (:file "defclass-star"
 			:depends-on ("api" "l0-macros"))
+		 #+(or)
 		 (:file "define-class"
 			:depends-on ("api" "defclass-star"))))
 	       (:module 
@@ -55,5 +56,5 @@ See the file COPYING for details
                     (describe 
 		     (funcall (intern (symbol-name '#:run-tests) :lift) 
 			      :suite '#:metatilities-base-test)))
-  :depends-on (moptilities))
+  :depends-on (#+(or) :moptilities))
 
