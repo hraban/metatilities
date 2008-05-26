@@ -36,6 +36,9 @@
                 #:without-interrupts)
     
   (:export
+   #:apply-if-exists)
+
+  (:export
    #:defclass-property
    #:deprecated
    #:once-only
