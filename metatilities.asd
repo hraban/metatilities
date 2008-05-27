@@ -4,8 +4,8 @@ See the file COPYING for details
 
 |#
 
-(defpackage :asdf-metatilities (:use #:asdf #:cl))
-(in-package :asdf-metatilities)
+(defpackage :metatilities-system (:use #:asdf #:cl))
+(in-package :metatilities-system)
 
 ;; try hard
 #+(or)
