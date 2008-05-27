@@ -286,14 +286,6 @@ enough to hold the element with the maximum index."
       (setf (aref array k) v))
     array))
 
-;;; ===========================================================================
-
-#-MCL ; already has this
-(defun fixnump (arg)
-  "Same as (typep arg 'fixnum).  A lot of Explorer code was written using this,
-and it's easier to implement it than to change them all."
-  (typep arg 'fixnum))
-
 ;;; ============================================================================
 
 (defun object->string (object)
