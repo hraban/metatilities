@@ -47,7 +47,7 @@ Metatilities isn't a separate project at this point but if you have questions, c
 
 ### Where is it
 
-A [Darcs][17] repository is available. You'll need [Moptilities][18] too. The commands to get them are listed below:
+A [darcs][] repository is available. You'll need [Moptilities][18] too. The commands to get them are listed below:
 
     darcs get http://common-lisp.net/project/metatilities
     darcs get http://common-lisp.net/project/moptilities
@@ -67,9 +67,12 @@ There's also a handy [gzipped tar file][21].
 
 ### What is happening
 
-11 Nov 2007 - Two years, lots of changes and no news to speak of! What is the world a'coming to.
+2008 May 26 - tweaks galore; cleanup and separation of 
+dynamic-classes and metatilities-base into their own projects.
 
-13 Nov 2005 - Initial setup
+2007 Nov 11 - Two years, lots of changes and no news to speak of! What is the world a'coming to.
+
+2005 Nov 13 - Initial setup
 
 </div>
 </div>
