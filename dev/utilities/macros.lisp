@@ -1,17 +1,5 @@
 (in-package #:metatilities)
 
-(defmacro nyi (&rest args)
-  "Signals an error saying that this function is not yet implemented.  The args
-are ignored, but by supplying args from the calling function, you can get them
-ignored by the compiler."
-  `(error "This function is not yet implemented for ~A ~A on ~A."
-	  (lisp-implementation-type)
-	  (lisp-implementation-version)
-	  (machine-type)
-          . ,args))
-
-;;; ---------------------------------------------------------------------------
-
 (defmacro make-obsolete (obsolete-definition new-definition)
   `(define-compiler-macro ,obsolete-definition (&whole form &rest args)
      (declare (ignore args))                          
