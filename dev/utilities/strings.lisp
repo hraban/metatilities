@@ -29,24 +29,6 @@
 ;;;   A few functions cribbed from Wiblur.  Feel free to improve.
 ;;;
 
-(defun string-starts-with (string prefix &key ignore-case-p)
-  (declare (type string string prefix))
-  (let ((prelen (length prefix)))
-    (when (<= prelen (length string))
-      (if ignore-case-p
-        (string-equal string prefix :end1 prelen)
-        (string= string prefix :end1 prelen)))))
-
-;; not cribbed from Wilbur --cas
-(defun string-ends-with (string suffix &key ignore-case-p)
-  (declare (type string string suffix))
-  (let ((suflen (length suffix))
-        (strlen (length string)))
-    (when (< suflen (length string))
-      (if ignore-case-p
-        (string-equal string suffix :start1 (- strlen suflen))
-        (string= string suffix :start1 (- strlen suflen))))))
-
 (defun substring (string start &optional end downcasep)
   (declare (type string string) (type fixnum start) (optimize (speed 3) (safety 0)))
   (let* ((end (or end (length string)))
