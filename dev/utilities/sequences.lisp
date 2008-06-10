@@ -230,40 +230,5 @@ k-elements from the original list."
          (len-b (length list-b)))
     (float (/ number-overlap len-b))))
 
-;;; ---------------------------------------------------------------------------
-
-(defun iterate-over-indexes (symbol-counts fn &optional (direction :left))
-  "Apply fn to lists of indexes generated from symbol counts. The counting is
-done so that the first symbol varies most quickly unless the optional direction
-parameter is set to :right."
-  (let* ((dimension (length symbol-counts))
-         (iterator (make-list dimension :initial-element 0))
-         (index-start (ecase direction (:right (1- dimension)) (:left 0)))
-         (increment (ecase direction (:right -1) (:left 1)))
-         (index-test (ecase direction 
-                       (:right (lambda (i) (>= i 0))) 
-                       (:left (lambda (i) (< i dimension))))) 
-         (index index-start))
-    (loop for i from 0 to (1- (reduce #'* (remove-if (complement #'plusp) symbol-counts)))
-          do
-          (funcall fn iterator)
-          (loop while (and (funcall index-test index)
-                           (>= (incf (elt iterator index)) 
-                               (elt symbol-counts index))) do
-                (setf (elt iterator index) 0)
-                (setf index (+ index increment))
-                finally 
-                (setf index index-start)))))
-
-#+Experimental
-(defun ioi (lists fn &optional (direction :left))
-  (iterate-over-indexes
-   (mapcar #'length lists)
-   (lambda (indexes)
-     (funcall fn (mapcar #'elt lists indexes)))
-   direction))
-
-#+Example
-(ioi '((:a :b) (:g) (:d :e :f)) #'print :right)
 
 
