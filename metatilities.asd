@@ -26,7 +26,7 @@ instructions."))
 
 (defsystem metatilities
   :author "Gary Warren King <gwking@metabang.com>"
-  :version "0.6.12"
+  :version "0.6.13"
   :maintainer "Gary Warren King <gwking@metabang.com>"
   :licence "MIT Style license"
   :description "These are the rest of metabang.com's Common Lisp utilities"
@@ -87,7 +87,7 @@ instructions."))
 		      (funcall
 		       (intern (symbol-name '#:run-tests) :lift)
 		       :config :generic))
-    :depends-on (:metatilities-base 
+    :depends-on ((:version :metatilities-base "0.6.0") 
 		 :moptilities
 		 :cl-containers
 		 :metabang-bind
