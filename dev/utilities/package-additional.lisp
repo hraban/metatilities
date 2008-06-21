@@ -145,7 +145,7 @@
 	    map->
 	    mapcars
 
-	    fn
+	    ;; fn
 	    compose
 	    concf
  
