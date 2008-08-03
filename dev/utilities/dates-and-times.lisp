@@ -123,7 +123,9 @@ this allows the user to make 'nicknames' for items in a list."
   (cond
    ((null list) nil)
    ((consp (car list)) (or (index-of item (car list)) (index-of item (cdr list))))
-   (t (let ((k (position item list)))
+   (t (let ((k (position item list :test (typecase item
+					   ((or symbol string) 'string-equal)
+					   (t 'eql)))))
         (if k (1+ k) nil)))))
 
 ;;; ---------------------------------------------------------------------------
@@ -221,7 +223,7 @@ this allows the user to make 'nicknames' for items in a list."
   (declare (ignore ho mi se))
   (let ((n (gensym "N-")))
     `(progn
-       (format t "HT:> ~S [~S/~S]~%" ,token ,context ,cont-q)
+       ;(format t "HT:> ~S [~S/~S]~%" ,token ,context ,cont-q)
        (cond
         ;; a month by name
         ((and (index-of ,token +month-list+)
