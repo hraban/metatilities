@@ -580,23 +580,10 @@ for \"never\" or variations, nil is returned."
     (if (search "now" string :test #'string-equal)
       (get-universal-time)
       (if (search ":" string)
-        (parse-date-and-time-string (subseq string (+ it 4)) t)
+        (parse-date-and-time-string string t)
         (if allow-intervals?
           (parse-interval-or-never string)
-          (error "~a is not parseable" string))))))
-
-#+TEST
-(defun test-parse-time ()
-  (print-universal-date-verbose (parse-time "now") *standard-output*)
-  (terpri)
-  (print-universal-date-verbose (parse-time "1 minute from now") *standard-output*)
-  (terpri)
-  (print-universal-date-verbose (parse-time "1 minute from 10:12") *standard-output*)
-  (terpri)
-  (print-universal-date-verbose (parse-time "1 minute from 9/9/89 10:12:43 AM") *standard-output*)
-  (terpri)
-  (print-time-interval (parse-time "1 minute") *standard-output*))
-  
+          (error "~a is not parseable" string))))))  
     
 #+LATER
 (defun print-interval-or-never (val &optional (stream t))
