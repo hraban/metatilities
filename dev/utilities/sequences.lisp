@@ -49,7 +49,7 @@ well optimized."
                     (nconc (rec (car list)) (rec (cdr list))))
                    (t               
                     (mapcan1 #'rec list)))))
-    (declare (dynamic-extent rec))
+    (declare (dynamic-extent #'rec))
     (if (atom list)
       list
       (rec list))))
