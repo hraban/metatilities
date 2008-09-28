@@ -1,6 +1,4 @@
-(in-package #:metatilities-base-test)
+(in-package #:metatilities-test)
 
-(deftestsuite metatilities-base-test () ())
-
-(deftestsuite metatilities-test (metatilities-base-test) ())
+(deftestsuite metatilities-test () ())
 	   
