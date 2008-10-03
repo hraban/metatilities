@@ -500,36 +500,41 @@ source."
 				      :name (pathname-name directory-spec)
 				      :type (pathname-type directory-spec)))))
            :defaults directory-spec)))
-  (let* ((wild-directory 
-          (make-pathname
-           :name :wild
-           :type :wild
-           :directory (append (pathname-directory directory-spec)
-                              (list :wild-inferiors))
-           :defaults directory-spec))      
-         (directories (sort
-                       (directory wild-directory :directories t :files nil)
-                       #'>
-                       :key (compose #'length #'namestring))))
-    (mapc (lambda (directory)
-            (when verbose?
-              (format *debug-io* "~%;;; processing directory ~A" directory))
-            (mapc (lambda (file)
-                    (when (probe-file file) 
-                      (when verbose?
-                        (format *debug-io* "~%;; deleting ~A" file))
-                      (unless dry-run?
-                        (delete-file file))))
-                  (directory (make-pathname :name :wild 
-                                            :type :wild
-                                            :defaults directory)))
-            (when verbose?
-              (format *debug-io* "~%;; deleting directory ~A" directory))
-            (unless dry-run?
-              (delete-file directory)))
-          (append directories
-                  (list directory-spec)))
-    (values nil)))
+  (flet ((directory-args ()
+	   #+allegro
+	   '(:directories t :files nil)
+	   #-allegro
+	   nil))
+    (let* ((wild-directory 
+	    (make-pathname
+	     :name :wild
+	     :type :wild
+	     :directory (append (pathname-directory directory-spec)
+				(list :wild-inferiors))
+	     :defaults directory-spec))      
+	   (directories (sort
+			 (apply #'directory wild-directory (directory-args))
+			 #'>
+			 :key (compose #'length #'namestring))))
+      (mapc (lambda (directory)
+	      (when verbose?
+		(format *debug-io* "~%;;; processing directory ~A" directory))
+	      (mapc (lambda (file)
+		      (when (probe-file file) 
+			(when verbose?
+			  (format *debug-io* "~%;; deleting ~A" file))
+			(unless dry-run?
+			  (delete-file file))))
+		    (directory (make-pathname :name :wild 
+					      :type :wild
+					      :defaults directory)))
+	      (when verbose?
+		(format *debug-io* "~%;; deleting directory ~A" directory))
+	      (unless dry-run?
+		(delete-file directory)))
+	    (append directories
+		    (list directory-spec)))
+      (values nil))))
 
 #+(or)
 (defun directory-name-p (directory-spec)
