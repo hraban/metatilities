@@ -9,7 +9,7 @@
 		#:time-hour
 		#:time-minute
 		#:time-second
-		#:day-of-week
+		#:time-day-of-week
 		#:time-daylight-savings-time-p)
   (:import-from #:metatilities
                 #:*automatic-slot-accessors?*
