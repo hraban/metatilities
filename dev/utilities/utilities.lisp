@@ -607,11 +607,10 @@ of the curry."
 
 (define-compiler-macro conjoin (&whole form &rest fns)
   (cond ((every #'(lambda (x) (or (symbolp x) (function-expression-p x))) fns)
-         (with-unique-names (args)
-           `#'(lambda (,args)
+         (with-unique-names (arg)
+           `#'(lambda (,arg)
                 (and ,@(mapcar #'(lambda (x) 
-                                   `(apply ,(extract-head-form x) 
-                                           ,args)) 
+                                   `(,(extract-head-form x) ,arg)) 
                                fns)))))
         (t form)))
               
@@ -629,11 +628,10 @@ of the curry."
 
 (define-compiler-macro disjoin (&whole form &rest fns)
   (cond ((every #'(lambda (x) (or (symbolp x) (function-expression-p x))) fns)
-         (with-unique-names (args)
-           `#'(lambda (,args)
+         (with-unique-names (arg)
+           `#'(lambda (,arg)
                 (or ,@(mapcar #'(lambda (x) 
-                                  `(apply ,(extract-head-form x) 
-                                          ,args)) 
+                                  `(,(extract-head-form x) ,arg)) 
                               fns)))))
         (t form)))
 
