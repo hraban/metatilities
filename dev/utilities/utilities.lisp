@@ -554,7 +554,8 @@ example:
   ;; Hard to say if it was worth the effort.
   (with-unique-names (args)
     `#'(lambda (&rest ,args)
-         ; can I safely declare this to have dynamic extent???
+         ; can I safely declare this to have dynamic extent??? - Well, why not?
+	 (declare (dynamic-extent ,args))
          (apply ,fun ,@curried-args ,args))))
 
 ;;; FIXME: I can't decide if the 1 argument case should get a special function.  If
@@ -586,6 +587,18 @@ of the curry."
               (setf result (funcall fn result)))
         result))))
 
+(define-compiler-macro compose (&rest fns)
+  (let ((last (car (last fns))))
+    (with-unique-names (args)
+      `(lambda (&rest ,args)
+	 ,(reduce #'(lambda (fn arg)
+		      (if (funcallable-expression-p fn)
+			  `(,(extract-head-form fn) ,arg)
+			  `(funcall ,fn ,arg)))
+		  (butlast fns)
+		  :initial-value `(apply ,last ,args)
+		  :from-end t)))))
+
 #+Old
 (defun compose (fn1 fn2)
   "Return a function that is the composition of fn1 and fn2. I.e., 
@@ -605,14 +618,14 @@ of the curry."
                     (and z (apply y args))))) (cons fn fns)
           :from-end t))
 
-(define-compiler-macro conjoin (&whole form &rest fns)
-  (cond ((every #'(lambda (x) (or (symbolp x) (function-expression-p x))) fns)
-         (with-unique-names (arg)
-           `#'(lambda (,arg)
-                (and ,@(mapcar #'(lambda (x) 
-                                   `(,(extract-head-form x) ,arg)) 
-                               fns)))))
-        (t form)))
+(define-compiler-macro conjoin (&rest fns)
+  (with-unique-names (arg)
+    `#'(lambda (,arg)
+	 (and ,@(mapcar #'(lambda (fn) 
+			    (if (funcallable-expression-p fn)
+				`(,(extract-head-form fn) ,arg)
+				`(funcall ,fn ,arg))) 
+			fns)))))
               
 ;;; ---------------------------------------------------------------------------
 ;;; return a function that is the disjunction of fns.  basically a functional or
@@ -626,14 +639,14 @@ of the curry."
                     (or z (apply y args))))) (cons fn fns)
           :from-end t))
 
-(define-compiler-macro disjoin (&whole form &rest fns)
-  (cond ((every #'(lambda (x) (or (symbolp x) (function-expression-p x))) fns)
-         (with-unique-names (arg)
-           `#'(lambda (,arg)
-                (or ,@(mapcar #'(lambda (x) 
-                                  `(,(extract-head-form x) ,arg)) 
-                              fns)))))
-        (t form)))
+(define-compiler-macro disjoin (&rest fns)
+  (with-unique-names (arg)
+    `#'(lambda (,arg)
+	 (or ,@(mapcar #'(lambda (fn) 
+			   (if (funcallable-expression-p fn)
+			       `(,(extract-head-form fn) ,arg)
+			       `(funcall ,fn ,arg))) 
+		       fns)))))
 
 ;;; ---------------------------------------------------------------------------
 

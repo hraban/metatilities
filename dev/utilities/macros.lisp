@@ -225,6 +225,9 @@ predicate."
 
 ;;; ---------------------------------------------------------------------------
 
+(defun funcallable-expression-p (exp)
+  (and (consp exp) (member (car exp) '(quote function))))
+
 (defun function-expression-p (exp)
   (and (consp exp) (eq (car exp) 'function)))
 
