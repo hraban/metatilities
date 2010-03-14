@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>currentDocument</key>
-	<string>source/index.md</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -20,7 +18,7 @@
 			<key>filename</key>
 			<string>source/index.md</string>
 			<key>lastUsed</key>
-			<date>2008-05-27T01:29:05Z</date>
+			<date>2009-04-29T21:59:15Z</date>
 			<key>selected</key>
 			<true/>
 		</dict>
@@ -34,58 +32,9 @@
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
-	<integer>390</integer>
+	<integer>197</integer>
 	<key>metaData</key>
-	<dict>
-		<key>source/index.md</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>29</integer>
-				<key>line</key>
-				<integer>56</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>source/resources/footer.md</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>6</integer>
-				<key>line</key>
-				<integer>14</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>source/resources/header.md</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>6</integer>
-				<key>line</key>
-				<integer>15</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>1</integer>
-		</dict>
-	</dict>
-	<key>openDocuments</key>
-	<array>
-		<string>source/index.md</string>
-		<string>source/resources/header.md</string>
-		<string>source/resources/footer.md</string>
-	</array>
+	<dict/>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
