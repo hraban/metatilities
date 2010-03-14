@@ -91,7 +91,8 @@ instructions."))
 		 :moptilities
 		 :cl-containers
 		 :metabang-bind
-		 :asdf-system-connections))
+		 ;:asdf-system-connections
+		 ))
 
 (defmethod operation-done-p 
            ((o test-op)
