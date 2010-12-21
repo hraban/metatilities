@@ -6,9 +6,9 @@
 
   * [Mailing Lists][3]
   * [Getting it][4]
-  * [Documentation][5]
+{remark  * [Documentation][5]}
   * [News][6]
-  * [Test results][tr]
+{remark  * [Test results][tr]}
   * [Changelog][7]
 
    [3]: #mailing-lists
@@ -50,15 +50,24 @@ on the way.
 
 ### Where is it
 
-A [darcs][] repository is available. You'll need
+metabang.com is switching from [darcs][] to [git][]
+for source control; the current metatilities repository is on
+[github][github-metatilities] and you can clone it using:
+
+    git clone git://github.com/gwkkwg/metatilities
+
+You can use [ASDF-Install][asdf-install] or just download a
+[tarball][]. 
+You can also follow development (such as it is :-)) on [unCLog][].
+
+You'll need
 [metatilities-base][] and [moptilities][] too. The commands
 to get them are listed below:
 
-    darcs get http://common-lisp.net/project/metatilities
-    darcs get http://common-lisp.net/project/metatilities-base
-    darcs get http://common-lisp.net/project/moptilities
+    git clone git://github.com/gwkkwg/metatilities-base
+    git clone git://github.com/gwkkwg/moptilities
 
-Metatilities is [ASDF installable][asdf-install]. Its CLiki home is
+metatilities is [ASDF installable][asdf-install]. Its CLiki home is
 right [where][cliki-home] you'd expect.
 
   [18]: http://common-lisp.net/project/cl-containers/moptilities/
@@ -69,6 +78,8 @@ There's also a handy [gzipped tar file][tarball].
 
 ### What is happening
 
+2010-Dec-20 - moved to git; cleanup.
+  
 2009 April 29 - lots of tweaks over the past year but nothing
 too exciting!
 
