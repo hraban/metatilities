@@ -265,7 +265,7 @@ Ex.
 
 ;;; ---------------------------------------------------------------------------
 
-
+#|
 (defun match (x y &optional binds)
   (acond2
     ((or (eql x y) (eql x '_) (eql y '_)) (values binds t))
@@ -301,7 +301,7 @@ Ex.
       (if (varsym? expr) (list expr))
       (union (vars-in (car expr) atom?)
              (vars-in (cdr expr) atom?))))
-
+|#
 
 ;;; ***************************************************************************
 ;;; *                              End of File                                *

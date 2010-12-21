@@ -39,12 +39,10 @@ instructions."))
 			     :directory '(:relative "dev" "utilities"))
 		:components 
 		((:file "package-additional")
-		 (:file "anaphoric"
-			:depends-on ("package-additional"))
 		 (:file "graham"
-			:depends-on ("anaphoric" "package-additional"))
+			:depends-on ("package-additional"))
 		 (:file "dates-and-times"
-			:depends-on ("macros" "anaphoric" "package-additional"))
+			:depends-on ("macros" "package-additional"))
 		 (:file "files"
 			:depends-on ("graham" "macros"))
 		 (:file "macros"

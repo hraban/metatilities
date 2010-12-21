@@ -416,20 +416,21 @@ source."
   (list #\/ #\* #\\ #\  #\< #\> #\@ #\. #\: #\( #\) #\& #\ ))
 
 (defun ensure-filename-safe-for-os (name)
-  (let* ((array (make-array (* 2 (length name)) :fill-pointer 0 :adjustable t)))
+  (let* ((array (make-array (* 2 (length name)) :fill-pointer 0 :adjustable t))
+	 it)
     (labels ((add-char (ch)
              (vector-push-extend ch array))
            (escape-char (index)
              (add-char #\-)
              (add-char (code-char (+ (char-code #\a) index)))))
       (loop for ch across name do
-            (acond ((char-equal ch #\-)
-                    (add-char #\-)
-                    (add-char #\-)) 
-                   ((position ch *filename-escape-characters*)
-                    (escape-char (1+ it)))
-                   (t
-                    (add-char ch))))
+            (cond ((char-equal ch #\-)
+		   (add-char #\-)
+		   (add-char #\-)) 
+		  ((setf it (position ch *filename-escape-characters*))
+		   (escape-char (1+ it)))
+		  (t
+		   (add-char ch))))
       (coerce array 'string))))
 
 ;; we may want to conditionalize on OS here...

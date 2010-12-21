@@ -9,9 +9,10 @@
                                 (min-bias 0.5)
                                 (max-bias 0.5))
   (when (not trust-me?)
-    (awhen (or (and (eq (funcall predicate min) t) min)
-               (and (eq (funcall predicate max) t) max))
-      (return-from binary-search (values it :exact))))
+    (let ((it (or (and (eq (funcall predicate min) t) min)
+               (and (eq (funcall predicate max) t) max))))
+    (when it 
+      (return-from binary-search (values it :exact)))))
   
   (unless trust-me?
     (assert (eq (funcall predicate min) :higher) nil

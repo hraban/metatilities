@@ -161,7 +161,7 @@ deleted items, and the new sequence."
   "Destructively compacts an array with fill-pointer. Works on type T
 arrays and considers elements with Nil in them to be empty."
   (declare (array array))
-  (let* ((next-index-to-fill (aif (position nil array :test #'eq) it -1))
+  (let* ((next-index-to-fill (or (position nil array :test #'eq) -1))
 	 (scan-index next-index-to-fill)
 	 (length (length array)))
     (declare (fixnum next-index-to-fill scan-index length))
@@ -325,7 +325,7 @@ fractional part of the float must be zero or an error is signalled."
 ;; large lists.
 (defun sort-using-list-order (x list &key (test #'eq) key (list-key #'identity))
   "Sorts the list `x' using the other list `list' as a index."
-  (flet ((item-lessp-function (list  test item-key list-key)
+  (flet ((item-lessp-function (list test item-key list-key)
            (if item-key
              #'(lambda (item-1 item-2)
                  (setf item-2 (funcall item-key item-2)
@@ -671,7 +671,7 @@ of the curry."
   (remove-duplicates
    (loop for superclass in (direct-superclasses-defclass* class-name) nconc
          (append (ensure-list superclass)
-                 (awhen (superclasses-defclass* superclass) it)))))
+                 (superclasses-defclass* superclass)))))
 
 ;;; ---------------------------------------------------------------------------
 

@@ -149,15 +149,15 @@ this allows the user to make 'nicknames' for items in a list."
          (sbuff (subseq string 0 (min (1+ end) (length string))))
          la hour minute (second 0) (seq '(:h :m :s)))
     (loop until (string= sbuff "") do
-          (setq la (min (or (position #\: sbuff) end)
-                        (or (position #\. sbuff) end)
-                        (length sbuff)))
-          (case (pop seq)
-	    (:h (setq hour   (read-from-string (subseq sbuff 0 la))))
-	    (:m (setq minute (read-from-string (subseq sbuff 0 la))))
-	    (:s (setq second (read-from-string (subseq sbuff 0 la))))
-            (t  (error "unrecognized time format in ~S" string)))
-          (setq sbuff (subseq sbuff (min (1+ la) (length sbuff)) (length sbuff))))
+	 (setq la (min (or (position #\: sbuff) end)
+		       (or (position #\. sbuff) end)
+		       (length sbuff)))
+	 (case (pop seq)
+	   (:h (setq hour   (read-from-string (subseq sbuff 0 la))))
+	   (:m (setq minute (read-from-string (subseq sbuff 0 la))))
+	   (:s (setq second (read-from-string (subseq sbuff 0 la))))
+	   (t  (error "unrecognized time format in ~S" string)))
+	 (setq sbuff (subseq sbuff (min (1+ la) (length sbuff)) (length sbuff))))
     (unless (and hour minute second)
       (error "incomplete time format in ~S" string))
     ;; Handle "midnight, noon, and 12 AM, 12 PM weirdness
@@ -165,13 +165,13 @@ this allows the user to make 'nicknames' for items in a list."
            (assert (= hour 12) () "12 is the only hour you can use with NOON")
            (assert (and (= second 0)
                         (= minute 0)) () "~2d:~2d:~2d NOON makes no sense"
-                   hour minute second)
+			hour minute second)
            (setf hour 12))
           ((search "midnight" string :test #'string-equal)
            (assert (= hour 12) () "12 is the only hour you can use with MIDNIGHT")
            (assert (and (= second 0)
                         (= minute 0)) () "~2d:~2d:~2d MIDNIGHT makes no sense"
-                   hour minute second)
+			hour minute second)
            (setf hour 0))
           ((search "AM" string :test #'string-equal)
            ;; 12 AM is a bad use of AM - should use Midnight, but we allow it
@@ -186,15 +186,16 @@ this allows the user to make 'nicknames' for items in a list."
              (incf hour 12)))
           (t nil))
     (values (list hour minute second)
-            (acond ((search "PM" string :test #'string-equal)
-                    (+ it 2))
-                   ((search "AM" string :test #'string-equal)
-                    (+ it 2))
-                   ((search "midnight" string :test #'string-equal)
-                    (+ it 8))
-                   ((search "noon" string :test #'string-equal)
-                    (+ it 4))
-                   (t end)))))
+	    (let ((it 0))
+	      (cond ((setf it (search "PM" string :test #'string-equal))
+		     (+ it 2))
+		    ((setf it (search "AM" string :test #'string-equal))
+		     (+ it 2))
+		    ((setf it (search "midnight" string :test #'string-equal))
+		     (+ it 8))
+		    ((setf it (search "noon" string :test #'string-equal))
+		     (+ it 4))
+		    (t end))))))
 
 (defun read-date (string &optional default-year)
   "strips the date signature off of the front of string. can handle slash-delimited format:
@@ -572,7 +573,8 @@ for \"never\" or variations, nil is returned."
               (if err (error "~a: ~a" string err) val)))))) 
 
 (defun parse-time (string &optional (allow-intervals? t))
-  (aif (search "from" string :test #'string-equal)
+  (let ((it (search "from" string :test #'string-equal)))
+  (if it 
     (+ (parse-interval-or-never (subseq string 0 it))
        (if (search "now" (subseq string (+ it 4)) :test #'string-equal)
          (get-universal-time)
@@ -583,7 +585,7 @@ for \"never\" or variations, nil is returned."
         (parse-date-and-time-string string t)
         (if allow-intervals?
           (parse-interval-or-never string)
-          (error "~a is not parseable" string))))))  
+          (error "~a is not parseable" string)))))))
     
 #+LATER
 (defun print-interval-or-never (val &optional (stream t))
